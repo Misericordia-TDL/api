@@ -1,6 +1,7 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 
 // DIC configuration
@@ -19,6 +20,17 @@ $container['view'] = function ($container) {
     return $view;
 };
 
+//mongo client
+$container['db'] = function ($container) {
+
+    $host = $container['settings']['db']['host'];
+    $port = $container['settings']['db']['port'];
+    $connectionUri = 'mongodb://' . $host . ':' . $port;
+    $dbConnection = new \MongoDB\Client($connectionUri);
+
+    return $dbConnection;
+};
+
 // monolog
 $container['logger'] = function ($container) {
     $settings = $container->get('settings')['logger'];
@@ -27,9 +39,22 @@ $container['logger'] = function ($container) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
-// monolog
+
+// UserModel
+$container['UserModel'] = function ($container) {
+
+    $mongoClient = $container['db'];
+    $usersCollection = $mongoClient->misericordia->users;
+    $userModel = new \App\Models\User($usersCollection);
+
+    return $userModel;
+};
+
+// HomeController
 $container['HomeController'] = function ($container) {
 
-    $view = $container->view;
-    return new \App\Controllers\HomeController($view);
+    return new \App\Controllers\HomeController(
+        $container->view,
+        $container['UserModel']
+    );
 };

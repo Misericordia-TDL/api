@@ -5,6 +5,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -13,6 +14,7 @@ use Slim\Views\Twig as View;
 /**
  * Class HomeController
  * @package App\Controllers
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 class HomeController
 {
@@ -20,29 +22,34 @@ class HomeController
      * @var View
      */
     protected $view;
+    /**
+     * @var User
+     */
+    protected $userModel;
 
     /**
      * HomeController constructor.
      * @param View $view
+     * @param User $userModel
      */
-    function __construct(View $view)
+    function __construct(
+        View $view,
+        User $userModel
+    )
     {
         $this->view = $view;
+        $this->userModel = $userModel;
     }
 
     /**
-     * @param Request $request≤
+     * @param Request $request
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function index(Request $request, Response $response) : ResponseInterface
+    public function index(Request $request, Response $response): ResponseInterface
     {
-        $arrayData = [
-            'index1' => 'value1',
-            'index2' => 'value2',
-            'index3' => 'value3',
-        ];
-        $data = ['data' => $arrayData];
-       return $this->view->render($response, 'home/index.twig', $data);
+
+        $data = ['data' => $this->userModel->findAll()];
+        return $this->view->render($response, 'home/index.twig', $data);
     }
 }

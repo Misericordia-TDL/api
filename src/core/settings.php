@@ -1,6 +1,7 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 
 return [
@@ -16,6 +17,17 @@ return [
             'name' => 'slim-app',
             'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
+        ],
+        'db' => [
+            'driver'   => 'mongodb',
+            'host'     => 'mongo',
+            'port'     => 27017,
+            'database' => 'misericordia',
+//            'username' => '',
+//            'password' => '',
+            'options'  => [
+                'database' => 'admin' // sets the authentication database required by mongo 3
+            ]
         ],
     ],
 ];
