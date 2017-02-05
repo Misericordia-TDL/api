@@ -1,5 +1,30 @@
 {
+    "name": "Misericordia-TDL/project-accoglienza-api",
+    "description": "API to provide access to storage layer",
+    "homepage": "https://github.com/Misericordia-TDL/project-accoglienza-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Javier Mellado",
+            "email": "sol@javiermellado.com",
+            "homepage": "http://www.misetdl.org/"
+        }
+    ],
     "require": {
-        "slim/slim": "^3.0"
+        "php": ">=5.5.0",
+        "slim/slim": "^3.1",
+        "slim/twig-view": "^2.0",
+        "monolog/monolog": "^1.17"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.8 < 6.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "process-timeout" : 0
     }
 }
