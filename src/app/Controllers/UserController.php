@@ -12,11 +12,11 @@ use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class HomeController
+ * Class UserController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class HomeController
+class UserController
 {
     /**
      * @var View
@@ -28,7 +28,7 @@ class HomeController
     protected $userModel;
 
     /**
-     * HomeController constructor.
+     * UserController constructor.
      * @param View $view
      * @param User $userModel
      */

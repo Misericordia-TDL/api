@@ -50,10 +50,10 @@ $container['UserModel'] = function ($container) {
     return $userModel;
 };
 
-// HomeController
-$container['HomeController'] = function ($container) {
+// UserController
+$container['UserController'] = function ($container) {
 
-    return new \App\Controllers\HomeController(
+    return new \App\Controllers\UserController(
         $container->view,
         $container['UserModel']
     );

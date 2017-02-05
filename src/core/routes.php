@@ -5,4 +5,4 @@
  */
 
 // Routes
-$app->get('/', 'HomeController:index');
+$app->get('/', 'UserController:index');
