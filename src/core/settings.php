@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ */
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
@@ -10,7 +14,7 @@ return [
         // Monolog settings
         'logger' => [
             'name' => 'slim-app',
-            'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+            'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
     ],

@@ -1,11 +1,7 @@
 <?php
-// Routes
-/*
-$app->get('/[{name}]', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("aa'/' route");
-    // Render index view
-    return $this->view->render($response, 'index.twig', $args);
-});*/
+/**
+ * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ */
+
 // Routes
 $app->get('/', 'HomeController:index');
