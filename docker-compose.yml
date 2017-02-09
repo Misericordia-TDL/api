@@ -1,0 +1,35 @@
+version: '2'
+
+networks:
+  back-tier:
+    driver: bridge
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGODB_ROOT_PASSWORD: password
+    networks:
+      - back-tier
+    volumes:
+      - data:/data/db
+
+
+  php:
+    image: teseo/mis_php
+    container_name: php
+    volumes:
+      - ${PWD}:/var/www
+    ports:
+      - "80:80"
+    environment:
+      - XDEBUG_HOST=${XDEBUG_HOST}
+    networks:
+      - back-tier
+
+volumes:
+  data:
+    driver: local
