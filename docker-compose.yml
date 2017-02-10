@@ -25,8 +25,6 @@ services:
       - ${PWD}:/var/www
     ports:
       - "80:80"
-    environment:
-      - XDEBUG_HOST=${XDEBUG_HOST}
     networks:
       - back-tier
 
