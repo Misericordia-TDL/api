@@ -103,7 +103,7 @@ $container['OperatorController'] = function (\Slim\Container $container): \App\C
  */
 $container['OperatorLevelModel'] = function (\Slim\Container $container): \App\Models\OperatorLevel {
     $mongoClient = $container['db'];
-    $operatorLevelCollection = $mongoClient->misericordia->Operator_level;
+    $operatorLevelCollection = $mongoClient->misericordia->operator_level;
     $userModel = new \App\Models\OperatorLevel($operatorLevelCollection);
 
     return $userModel;
@@ -111,13 +111,13 @@ $container['OperatorLevelModel'] = function (\Slim\Container $container): \App\M
 
 /**
  * @param \Slim\Container $container
- * @return \App\Controllers\OperatorController
+ * @return \App\Controllers\OperatorLevelController
  */
-$container['OperatorLevelController'] = function (\Slim\Container $container): \App\Controllers\OperatorController {
+$container['OperatorLevelController'] = function (\Slim\Container $container): \App\Controllers\OperatorLevelController {
 
-    return new \App\Controllers\OperatorController(
+    return new \App\Controllers\OperatorLevelController(
         $container->view,
-        $container['OperatorLevel']
+        $container['OperatorLevelModel']
     );
 };
 
@@ -230,5 +230,26 @@ $container['ClotheController'] = function (\Slim\Container $container): \App\Con
     return new \App\Controllers\ClotheController(
         $container->view,
         $container['ClotheModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\MedicalAttention
+ */
+$container['MedicalAttentionModel'] = function (\Slim\Container $container): \App\Models\MedicalAttention {
+    $mongoClient = $container['db'];
+    $medicalAttentionCollection = $mongoClient->misericordia->medical_attention;
+    return new \App\Models\MedicalAttention($medicalAttentionCollection);
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\MedicalAttentionController
+ */
+$container['MedicalAttentionController'] = function (\Slim\Container $container): \App\Controllers\MedicalAttentionController {
+
+    return new \App\Controllers\MedicalAttentionController(
+        $container->view,
+        $container['MedicalAttentionModel']
     );
 };

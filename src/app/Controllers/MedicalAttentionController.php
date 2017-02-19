@@ -5,40 +5,40 @@
 
 namespace App\Controllers;
 
-use App\Models\OperatorLevel;
+use App\Models\MedicalAttention;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class OperatorLevelController
+ * Class MedicalAttentionController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class OperatorLevelController
+class MedicalAttentionController
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var OperatorLevel
+     * @var MedicalAttention
      */
-    protected $operatorLevelModel;
+    protected $medicalAttentionModel;
 
     /**
-     * OperatorLevelController constructor.
+     * MedicineController constructor.
      * @param View $view
-     * @param OperatorLevel $operatorLevelModel
+     * @param MedicalAttention $medicalAttentionModel
      */
     function __construct(
         View $view,
-        OperatorLevel $operatorLevelModel
+        MedicalAttention $medicalAttentionModel
     )
     {
         $this->view = $view;
-        $this->operatorLevelModel = $operatorLevelModel;
+        $this->medicalAttentionModel = $medicalAttentionModel;
     }
 
     /**
@@ -49,15 +49,17 @@ class OperatorLevelController
     public function index(Request $request, Response $response): ResponseInterface
     {
 
-        $json = ' {
-    "name": "admin",
-    "description": "manages refugees, inventory, operators",
-    "level": 1,
-    "join_date": "03-03-1980"
+        $json = '   {
+    "operator_id": "id",
+    "refugee_id": "id",
+    "treatment": [
+    ],
+    "visit_date": "03-03-1980",
+    "next_appointment_date": "03-03-1980"
   }';
-        $operatorLevelData = json_decode($json, true);
-        //$this->operatorLevelModel->insert($operatorLevelData);
-        $data = ['data' => $this->operatorLevelModel->findAll()];
+        $medicalAttentionData = json_decode($json, true);
+        $this->medicalAttentionModel->insert($medicalAttentionData);
+        $data = ['data' => $this->medicalAttentionModel->findAll()];
 
         return $this->view->render($response, 'home/index.twig', $data);
     }

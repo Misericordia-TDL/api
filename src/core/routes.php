@@ -13,3 +13,4 @@ $app->get('/meal', 'MealController:index');
 $app->get('/food', 'FoodController:index');
 $app->get('/medicine', 'MedicineController:index');
 $app->get('/clothe', 'ClotheController:index');
+$app->get('/medical-attention', 'MedicalAttentionController:index');
