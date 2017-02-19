@@ -10,3 +10,6 @@ $app->get('/operator', 'OperatorController:index');
 $app->get('/operator-level', 'OperatorLevelController:index');
 $app->get('/structure', 'StructureController:index');
 $app->get('/meal', 'MealController:index');
+$app->get('/food', 'FoodController:index');
+$app->get('/medicine', 'MedicineController:index');
+$app->get('/clothe', 'ClotheController:index');

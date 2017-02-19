@@ -8,12 +8,12 @@ namespace App\Models {
     use MongoDB\InsertOneResult;
 
     /**
-     * Class OperatorLevel
+     * Class Food
      * @package App\Models
      *
      * @author Javier Mellado <sol@javiermellado.com>
      */
-    class OperatorLevel extends AbstractModel
+    class Food extends AbstractModel
     {
         /**
          * @param $data

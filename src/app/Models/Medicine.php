@@ -8,12 +8,12 @@ namespace App\Models {
     use MongoDB\InsertOneResult;
 
     /**
-     * Class OperatorLevel
+     * Class Medicine
      * @package App\Models
      *
      * @author Javier Mellado <sol@javiermellado.com>
      */
-    class OperatorLevel extends AbstractModel
+    class Medicine extends AbstractModel
     {
         /**
          * @param $data
@@ -21,7 +21,7 @@ namespace App\Models {
          */
         public function insert($data) : InsertOneResult
         {
-            return $this->persist($data);
+            return $this->persist($data, ['arrival_date', 'expiry_date']);
         }
     }
 }

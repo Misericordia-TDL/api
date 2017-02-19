@@ -5,40 +5,40 @@
 
 namespace App\Controllers;
 
-use App\Models\Operator;
+use App\Models\Refugee;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class OperatorController
+ * Class RefugeeController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class OperatorController
+class RefugeeController
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var Operator
+     * @var Refugee
      */
-    protected $operatorModel;
+    protected $refugeeModel;
 
     /**
-     * OperatorController constructor.
+     * RefugeeController constructor.
      * @param View $view
-     * @param Operator $operatorModel
+     * @param Refugee $refugeeModel
      */
     function __construct(
         View $view,
-        Operator $operatorModel
+        Refugee $refugeeModel
     )
     {
         $this->view = $view;
-        $this->operatorModel = $operatorModel;
+        $this->refugeeModel = $refugeeModel;
     }
 
     /**
@@ -49,16 +49,22 @@ class OperatorController
     public function index(Request $request, Response $response): ResponseInterface
     {
 
-        $json = ' {
+        $json = '{
     "name": "John",
-    "surname": "Operator",
-    "join_date": "03-03-1980",
-    "operator_level": 3,
-    "phone_number": "00447773651107"
+    "surname": "Refugee",
+    "birth_date": "03-03-1980",
+    "state_origin": "Atlantis",
+    "profession": "Athlete",
+    "phone_number": "00447773651107",
+    "meals": [],
+    "medical_aid": [],
+    "clothing": [],
+    "home": []
   }';
-        $operatorData = json_decode($json, true);
-      //  $this->operatorModel->insert($operatorData);
-        $data = ['data' => $this->operatorModel->findAll()];
+        $refugeeData = json_decode($json, true);
+        //$this->refugeeModel->insert($refugeeData);
+        $data = ['data' => $this->refugeeModel->findAll()];
+        //$data = ['data' => $this->refugeeModel->findById('58a8aea7a97b86b00126dba63')];
 
         return $this->view->render($response, 'home/index.twig', $data);
     }

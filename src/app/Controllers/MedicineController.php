@@ -5,40 +5,40 @@
 
 namespace App\Controllers;
 
-use App\Models\Operator;
+use App\Models\Medicine;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class OperatorController
+ * Class MedicineController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class OperatorController
+class MedicineController
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var Operator
+     * @var Medicine
      */
-    protected $operatorModel;
+    protected $medicineModel;
 
     /**
-     * OperatorController constructor.
+     * MedicineController constructor.
      * @param View $view
-     * @param Operator $operatorModel
+     * @param Medicine $medicineModel
      */
     function __construct(
         View $view,
-        Operator $operatorModel
+        Medicine $medicineModel
     )
     {
         $this->view = $view;
-        $this->operatorModel = $operatorModel;
+        $this->medicineModel = $medicineModel;
     }
 
     /**
@@ -50,15 +50,14 @@ class OperatorController
     {
 
         $json = ' {
-    "name": "John",
-    "surname": "Operator",
-    "join_date": "03-03-1980",
-    "operator_level": 3,
-    "phone_number": "00447773651107"
+    "name": "Ibuprofen",
+    "arrival_date": "03-03-1980",
+    "expiry_date": "03-03-1980",
+    "quantity": 40
   }';
-        $operatorData = json_decode($json, true);
-      //  $this->operatorModel->insert($operatorData);
-        $data = ['data' => $this->operatorModel->findAll()];
+        $foodData = json_decode($json, true);
+        $this->medicineModel->insert($foodData);
+        $data = ['data' => $this->medicineModel->findAll()];
 
         return $this->view->render($response, 'home/index.twig', $data);
     }

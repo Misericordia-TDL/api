@@ -5,40 +5,40 @@
 
 namespace App\Controllers;
 
-use App\Models\Operator;
+use App\Models\Food;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class OperatorController
+ * Class FoodController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class OperatorController
+class FoodController
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var Operator
+     * @var Food
      */
-    protected $operatorModel;
+    protected $foodModel;
 
     /**
-     * OperatorController constructor.
+     * FoodController constructor.
      * @param View $view
-     * @param Operator $operatorModel
+     * @param Food $foodModel
      */
     function __construct(
         View $view,
-        Operator $operatorModel
+        Food $foodModel
     )
     {
         $this->view = $view;
-        $this->operatorModel = $operatorModel;
+        $this->foodModel = $foodModel;
     }
 
     /**
@@ -49,16 +49,13 @@ class OperatorController
     public function index(Request $request, Response $response): ResponseInterface
     {
 
-        $json = ' {
-    "name": "John",
-    "surname": "Operator",
-    "join_date": "03-03-1980",
-    "operator_level": 3,
-    "phone_number": "00447773651107"
+        $json = '{
+    "name": "spaguetti bag",
+    "quantity": 40
   }';
-        $operatorData = json_decode($json, true);
-      //  $this->operatorModel->insert($operatorData);
-        $data = ['data' => $this->operatorModel->findAll()];
+        $foodData = json_decode($json, true);
+        $this->foodModel->insert($foodData);
+        $data = ['data' => $this->foodModel->findAll()];
 
         return $this->view->render($response, 'home/index.twig', $data);
     }

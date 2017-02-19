@@ -28,7 +28,7 @@ class OperatorLevelController
     protected $operatorLevelModel;
 
     /**
-     * UserController constructor.
+     * OperatorLevelController constructor.
      * @param View $view
      * @param OperatorLevel $operatorLevelModel
      */

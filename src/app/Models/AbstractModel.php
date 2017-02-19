@@ -6,7 +6,6 @@
 
 namespace App\Models;
 
-
 use App\Models\Base\CommonTrait;
 use App\Models\Exception\EmptyDataSetException;
 use MongoDB\BSON\ObjectID;

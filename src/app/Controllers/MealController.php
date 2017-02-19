@@ -6,7 +6,6 @@
 namespace App\Controllers;
 
 use App\Models\Meal;
-use App\Models\Refugee;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -29,7 +28,7 @@ class MealController
     protected $mealModel;
 
     /**
-     * UserController constructor.
+     * MealController constructor.
      * @param View $view
      * @param Meal $mealModel
      */
@@ -56,7 +55,7 @@ class MealController
         "menu": []
       }';
         $mealData = json_decode($json, true);
-        $this->mealModel->insert($mealData);
+        //$this->mealModel->insert($mealData);
         $data = ['data' => $this->mealModel->findAll()];
 
         return $this->view->render($response, 'home/index.twig', $data);
