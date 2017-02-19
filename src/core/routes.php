@@ -5,4 +5,8 @@
  */
 
 // Routes
-$app->get('/', 'UserController:index');
+$app->get('/refugee', 'RefugeeController:index');
+$app->get('/operator', 'OperatorController:index');
+$app->get('/operator-level', 'OperatorLevelController:index');
+$app->get('/structure', 'StructureController:index');
+$app->get('/meal', 'MealController:index');

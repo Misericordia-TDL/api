@@ -7,8 +7,11 @@
 // DIC configuration
 $container = $app->getContainer();
 
-// view renderer
-$container['view'] = function ($container) {
+/**
+ * @param \Slim\Container $container
+ * @return \Slim\Views\Twig
+ */
+$container['view'] = function (\Slim\Container $container) {
     $settings = $container->get('settings')['renderer'];
     $view = new Slim\Views\Twig($settings['template_path']);
 
@@ -20,8 +23,11 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-//mongo client
-$container['db'] = function ($container) {
+/**
+ * @param \Slim\Container $container
+ * @return \MongoDB\Client
+ */
+$container['db'] = function (\Slim\Container $container) {
 
     $host = $container['settings']['db']['host'];
     $port = $container['settings']['db']['port'];
@@ -31,8 +37,11 @@ $container['db'] = function ($container) {
     return $dbConnection;
 };
 
-// monolog
-$container['logger'] = function ($container) {
+/**
+ * @param \Slim\Container $container
+ * @return \Monolog\Logger
+ */
+$container['logger'] = function (\Slim\Container $container) {
     $settings = $container->get('settings')['logger'];
     $logger = new Monolog\Logger($settings['name']);
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
@@ -40,21 +49,120 @@ $container['logger'] = function ($container) {
     return $logger;
 };
 
-// UserModel
-$container['UserModel'] = function ($container) {
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\Refugee
+ */
+$container['RefugeeModel'] = function (\Slim\Container $container) {
 
     $mongoClient = $container['db'];
-    $usersCollection = $mongoClient->misericordia->users;
-    $userModel = new \App\Models\User($usersCollection);
+    $refugeeCollection = $mongoClient->misericordia->refugee;
+    return new \App\Models\Refugee($refugeeCollection);
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\RefugeeController
+ */
+$container['RefugeeController'] = function (\Slim\Container $container) {
+
+    return new \App\Controllers\RefugeeController(
+        $container->view,
+        $container['RefugeeModel']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\Operator
+ */
+$container['OperatorModel'] = function (\Slim\Container $container) {
+
+    $mongoClient = $container['db'];
+    $operatorCollection = $mongoClient->misericordia->operator;
+    $userModel = new \App\Models\Operator($operatorCollection);
 
     return $userModel;
 };
 
-// UserController
-$container['UserController'] = function ($container) {
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\OperatorController
+ */
+$container['OperatorController'] = function (\Slim\Container $container) {
 
-    return new \App\Controllers\UserController(
+    return new \App\Controllers\OperatorController(
         $container->view,
-        $container['UserModel']
+        $container['OperatorModel']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\OperatorLevel
+ */
+$container['OperatorLevelModel'] = function (\Slim\Container $container) {
+    $mongoClient = $container['db'];
+    $operatorLevelCollection = $mongoClient->misericordia->Operator_level;
+    $userModel = new \App\Models\OperatorLevel($operatorLevelCollection);
+
+    return $userModel;
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\OperatorController
+ */
+$container['OperatorLevelController'] = function (\Slim\Container $container) {
+
+    return new \App\Controllers\OperatorController(
+        $container->view,
+        $container['OperatorLevel']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\Structure
+ */
+$container['StructureModel'] = function (\Slim\Container $container) {
+    $mongoClient = $container['db'];
+    $operatorLevelCollection = $mongoClient->misericordia->structure;
+    $structureModel = new \App\Models\Structure($operatorLevelCollection);
+
+    return $structureModel;
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\StructureController
+ */
+$container['StructureController'] = function (\Slim\Container $container) {
+
+    return new \App\Controllers\StructureController(
+        $container->view,
+        $container['StructureModel']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Models\Meal
+ */
+$container['MealModel'] = function (\Slim\Container $container) {
+    $mongoClient = $container['db'];
+    $mealCollection = $mongoClient->misericordia->meal;
+    return new \App\Models\Meal($mealCollection);
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\MealController
+ */
+$container['MealController'] = function (\Slim\Container $container) {
+
+    return new \App\Controllers\MealController(
+        $container->view,
+        $container['MealModel']
     );
 };

@@ -5,40 +5,41 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
+use App\Models\Meal;
+use App\Models\Refugee;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class UserController
+ * Class MealController
  * @package App\Controllers
  * @author Javier Mellado <sol@javiermellado.com>
  */
-class UserController
+class MealController
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var User
+     * @var Meal
      */
-    protected $userModel;
+    protected $mealModel;
 
     /**
      * UserController constructor.
      * @param View $view
-     * @param User $userModel
+     * @param Meal $mealModel
      */
     function __construct(
         View $view,
-        User $userModel
+        Meal $mealModel
     )
     {
         $this->view = $view;
-        $this->userModel = $userModel;
+        $this->mealModel = $mealModel;
     }
 
     /**
@@ -49,7 +50,15 @@ class UserController
     public function index(Request $request, Response $response): ResponseInterface
     {
 
-        $data = ['data' => $this->userModel->findAll()];
+        $json = '{
+        "serve_date": "03-03-1980",
+        "refugee_id": 100,
+        "menu": []
+      }';
+        $mealData = json_decode($json, true);
+        $this->mealModel->insert($mealData);
+        $data = ['data' => $this->mealModel->findAll()];
+
         return $this->view->render($response, 'home/index.twig', $data);
     }
 }
