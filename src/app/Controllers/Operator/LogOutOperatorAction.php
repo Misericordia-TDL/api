@@ -14,11 +14,11 @@ use Slim\Route;
 use Slim\Views\Twig as View;
 
 /**
- * Class AuthOperatorAction
+ * Class LogOutOperatorAction
  * @package App\Controllers\Operator
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class AuthOperatorAction
+final class LogOutOperatorAction
 {
     /**
      * @var Auth
@@ -50,10 +50,9 @@ final class AuthOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $email = $request->getParam('email');
-        $password = $request->getParam('password');
-
-        $this->auth->attempt($email, $password);
+        if ($this->auth->check()) {
+            unset($_SESSION['operator']);
+        }
 
         return $response->withRedirect($this->router->pathFor('home'));
     }

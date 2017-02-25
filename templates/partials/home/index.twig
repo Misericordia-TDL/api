@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block container %}
+    {% include 'partials/home/navbar.twig' %}
     {% if auth %}
         {% include 'partials/home/logged-in-index.twig' %}
     {% else %}

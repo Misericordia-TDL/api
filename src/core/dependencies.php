@@ -20,16 +20,18 @@ use App\Models\Refugee;
 use App\Models\Structure;
 use App\Controllers\ClotheController;
 use App\Controllers\FoodController;
-use App\Controllers\Home\IndexAction;
 use App\Controllers\MealController;
 use App\Controllers\MedicalAttentionController;
 use App\Controllers\MedicineController;
-use App\Controllers\Operator\AuthOperatorAction;
-use App\Controllers\Operator\CreateOperatorAction;
 use App\Controllers\OperatorLevelController;
 use App\Controllers\StructureController;
 use App\Controllers\RefugeeController;
+use App\Controllers\Home\IndexAction;
+use App\Controllers\Operator\AuthOperatorAction;
+use App\Controllers\Operator\LogOutOperatorAction;
+use App\Controllers\Operator\CreateOperatorAction;
 use App\Auth\Auth;
+use Slim\Csrf\Guard;
 
 
 // DIC configuration
@@ -277,7 +279,9 @@ $container['auth'] = function (Container $container): Auth {
     return new Auth($container['OperatorModel']);
 };
 
-
+$container['csrf'] = function (Container $container): Guard {
+    return new Guard();
+};
 //ACTIONS
 /**
  * @param \Slim\Container $container
@@ -309,7 +313,18 @@ $container['CreateOperatorAction'] = function (Container $container): CreateOper
 $container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
 
     return new AuthOperatorAction(
-        $container->view,
+        $container->router,
+        $container['auth']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\AuthOperatorAction
+ */
+$container['LogOutOperatorAction'] = function (Container $container): LogOutOperatorAction {
+
+    return new LogOutOperatorAction(
         $container->router,
         $container['auth']
     );
