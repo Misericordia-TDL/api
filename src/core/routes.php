@@ -5,6 +5,7 @@
  */
 
 // Routes
+$app->get('/', 'HomeIndexAction');
 $app->get('/refugee', 'RefugeeController:index');
 $app->get('/operator', 'OperatorController:index');
 $app->get('/operator-level', 'OperatorLevelController:index');
