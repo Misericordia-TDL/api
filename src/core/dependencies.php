@@ -24,10 +24,12 @@ use App\Controllers\Home\IndexAction;
 use App\Controllers\MealController;
 use App\Controllers\MedicalAttentionController;
 use App\Controllers\MedicineController;
-use App\Controllers\OperatorController;
+use App\Controllers\Operator\AuthOperatorAction;
+use App\Controllers\Operator\CreateOperatorAction;
 use App\Controllers\OperatorLevelController;
 use App\Controllers\StructureController;
 use App\Controllers\RefugeeController;
+use App\Auth\Auth;
 
 
 // DIC configuration
@@ -39,12 +41,14 @@ $container = $app->getContainer();
  */
 $container['view'] = function (Container $container): \Slim\Views\Twig {
     $settings = $container->get('settings')['renderer'];
-    $view = new Slim\Views\Twig($settings['template_path']);
+    $view = new Slim\Views\Twig($settings['template_path'], $settings['debugger']);
 
     $view->addExtension(new \Slim\Views\TwigExtension(
         $container->router,
         $container->request->getUri()
     ));
+
+    $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
 };
@@ -109,18 +113,6 @@ $container['OperatorModel'] = function (Container $container): Operator {
     $userModel = new Operator($operatorCollection);
 
     return $userModel;
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\OperatorController
- */
-$container['OperatorController'] = function (Container $container): OperatorController {
-
-    return new \App\Controllers\OperatorController(
-        $container->view,
-        $container['OperatorModel']
-    );
 };
 
 /**
@@ -279,6 +271,14 @@ $container['MedicalAttentionController'] = function (Container $container): Medi
         $container['MedicalAttentionModel']
     );
 };
+
+$container['auth'] = function (Container $container): Auth {
+
+    return new Auth($container['OperatorModel']);
+};
+
+
+//ACTIONS
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\Home\IndexAction
@@ -287,6 +287,30 @@ $container['HomeIndexAction'] = function (Container $container): IndexAction {
 
     return new IndexAction(
         $container->view,
-        $container['MedicalAttentionModel']
+        $container['auth']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\CreateOperatorAction
+ */
+$container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
+
+    return new CreateOperatorAction(
+        $container->view,
+        $container['OperatorModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\AuthOperatorAction
+ */
+$container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
+
+    return new AuthOperatorAction(
+        $container->view,
+        $container->router,
+        $container['auth']
     );
 };

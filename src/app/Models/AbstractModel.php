@@ -11,6 +11,7 @@ use App\Models\Exception\EmptyDataSetException;
 use MongoDB\BSON\ObjectID;
 use MongoDB\Collection;
 use MongoDB\InsertOneResult;
+use MongoDB\Model\BSONDocument;
 
 /**
  * Class AbstractModel
@@ -46,12 +47,12 @@ abstract class AbstractModel
 
     /**
      * @param $id
-     * @return array
+     * @return BSONDocument
      */
-    public function findById($id) : array
+    public function findById($id) : BSONDocument
     {
         $mongoId = new ObjectID($id);
-        return $this->collection->find(['_id' => $mongoId])->toArray();
+        return $this->collection->findOne(['_id' => $mongoId]);
     }
 
     /**

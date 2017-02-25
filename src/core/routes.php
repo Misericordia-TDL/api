@@ -5,9 +5,10 @@
  */
 
 // Routes
-$app->get('/', 'HomeIndexAction');
+$app->get('/', 'HomeIndexAction')->setName('home');
 $app->get('/refugee', 'RefugeeController:index');
-$app->get('/operator', 'OperatorController:index');
+$app->post('/create-operator', 'CreateOperatorAction')->setName('create-operator');
+$app->post('/auth-operator', 'AuthOperatorAction')->setName('auth-operator');
 $app->get('/operator-level', 'OperatorLevelController:index');
 $app->get('/structure', 'StructureController:index');
 $app->get('/meal', 'MealController:index');

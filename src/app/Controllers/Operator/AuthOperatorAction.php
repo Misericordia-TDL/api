@@ -3,20 +3,22 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Home;
+namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Interfaces\RouterInterface;
+use Slim\Route;
 use Slim\Views\Twig as View;
 
 /**
- * Class IndexAction
- * @package App\Controllers\Home
+ * Class AuthOperatorAction
+ * @package App\Controllers\Operator
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class IndexAction
+final class AuthOperatorAction
 {
     /**
      * @var View
@@ -26,19 +28,26 @@ final class IndexAction
      * @var Auth
      */
     protected $auth;
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
 
     /**
-     * IndexAction constructor.
+     * OperatorController constructor.
      * @param View $view
+     * @param RouterInterface $router
      * @param Auth $auth
      */
     function __construct(
         View $view,
+        RouterInterface $router,
         Auth $auth
     )
     {
         $this->view = $view;
         $this->auth = $auth;
+        $this->router = $router;
     }
 
     /**
@@ -48,13 +57,11 @@ final class IndexAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
+        $email = $request->getParam('email');
+        $password = $request->getParam('password');
 
-        $authCheck = $this->auth->check();
-        $data = ['auth' => $authCheck];
+        $this->auth->attempt($email, $password);
 
-        if ($authCheck) {
-            $data['user'] = $this->auth->user();
-        }
-        return $this->view->render($response, 'partials/home/index.twig', $data);
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 }

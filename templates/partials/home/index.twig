@@ -1,0 +1,23 @@
+{% extends "base/base.twig" %}
+
+{% block head %}
+    {{ parent() }}
+    <!-- Custom styles for this template -->
+{% endblock %}
+
+
+{% block title %}
+    {% if auth %}
+        Hello {{ user.name }}
+    {% else %}
+        Sign in
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    {% if auth %}
+        {% include 'partials/home/logged-in-index.twig' %}
+    {% else %}
+        {% include 'partials/home/sign-in-form.twig' %}
+    {% endif %}
+{% endblock %}

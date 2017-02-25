@@ -5,6 +5,7 @@
 
 namespace App\Models {
     use MongoDB\InsertOneResult;
+    use MongoDB\Model\BSONDocument;
 
     /**
      * Class Operator
@@ -20,9 +21,19 @@ namespace App\Models {
          * @param $data
          * @return InsertOneResult
          */
-        public function insert($data) : InsertOneResult
+        public function insert($data): InsertOneResult
         {
             return $this->persist($data, ['join_date']);
+        }
+
+
+        /**
+         * @param string $email
+         * @return BSONDocument
+         */
+        public function findByEmail(string $email): BSONDocument
+        {
+            return $this->collection->findOne(['email' => $email]);
         }
     }
 }
