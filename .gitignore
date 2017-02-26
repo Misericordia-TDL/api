@@ -3,3 +3,5 @@
 composer.lock
 vendor/
 src/logs
+#vim swap files 
+*.swp
