@@ -100,6 +100,7 @@ final class UpdateOperatorAction
         $operatorData['_id'] = $id;
 
         $this->operatorModel->update($operatorData);
+        $this->flash->addMessage('info', 'Operator updated correctly');
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
     }
