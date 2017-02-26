@@ -4,16 +4,8 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
-use App\Middleware\AuthMiddleware;
-use App\Middleware\CsrfMiddleware;
 
 // Routes
-$container = $app->getContainer();
-
-$app->add( new AuthMiddleware($container));
-$app->add( new CsrfMiddleware($container));
-
-$app->add( $container->csrf);
 
 $app->get('/', 'HomeIndexAction')->setName('home');
 $app->get('/refugee', 'RefugeeController:index');

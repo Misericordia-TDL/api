@@ -4,5 +4,18 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
+use App\Middleware\AuthMiddleware;
+use App\Middleware\CsrfMiddleware;
+use App\Middleware\ValidationErrorsMiddleware;
+use App\Middleware\OldInputMiddleware;
+
 // Application middleware
-// e.g: $app->add(new \Slim\Csrf\Guard);
+
+$container = $app->getContainer();
+
+$app->add(new AuthMiddleware($container));
+$app->add(new CsrfMiddleware($container));
+$app->add(new ValidationErrorsMiddleware($container));
+$app->add(new OldInputMiddleware($container));
+
+//$app->add($container->csrf);

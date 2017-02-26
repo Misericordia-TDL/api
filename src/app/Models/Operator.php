@@ -31,7 +31,7 @@ namespace App\Models {
          * @param string $email
          * @return BSONDocument
          */
-        public function findByEmail(string $email): BSONDocument
+        public function findByEmail(string $email)
         {
             return $this->collection->findOne(['email' => $email]);
         }

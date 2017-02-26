@@ -32,7 +32,8 @@ use App\Controllers\Operator\LogOutOperatorAction;
 use App\Controllers\Operator\CreateOperatorAction;
 use App\Auth\Auth;
 use Slim\Csrf\Guard;
-
+use App\Validation\Validator;
+use Respect\Validation\Validator as v;
 
 // DIC configuration
 $container = $app->getContainer();
@@ -282,6 +283,9 @@ $container['auth'] = function (Container $container): Auth {
 $container['csrf'] = function (Container $container): Guard {
     return new Guard();
 };
+$container['validator'] = function (Container $container): Validator {
+    return new Validator();
+};
 //ACTIONS
 /**
  * @param \Slim\Container $container
@@ -314,13 +318,15 @@ $container['AuthOperatorAction'] = function (Container $container): AuthOperator
 
     return new AuthOperatorAction(
         $container->router,
-        $container['auth']
+        $container['auth'],
+        $container['validator'],
+        $container['OperatorModel']
     );
 };
 
 /**
  * @param \Slim\Container $container
- * @return \App\Controllers\Operator\AuthOperatorAction
+ * @return \App\Controllers\Operator\LogOutOperatorAction
  */
 $container['LogOutOperatorAction'] = function (Container $container): LogOutOperatorAction {
 
@@ -329,3 +335,5 @@ $container['LogOutOperatorAction'] = function (Container $container): LogOutOper
         $container['auth']
     );
 };
+
+v::with('App\\Validation\\Rules');

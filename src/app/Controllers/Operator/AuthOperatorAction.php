@@ -6,12 +6,13 @@
 namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
+use App\Models\Operator;
 use Psr\Http\Message\ResponseInterface;
+use App\Validation\Validator;
+use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
-use Slim\Route;
-use Slim\Views\Twig as View;
 
 /**
  * Class AuthOperatorAction
@@ -25,22 +26,36 @@ final class AuthOperatorAction
      */
     protected $auth;
     /**
+     * @var Validator
+     */
+    protected $validator;
+    /**
      * @var RouterInterface
      */
     protected $router;
+    /**
+     * @var Operator
+     */
+    protected $operatorModel;
 
     /**
      * OperatorController constructor.
      * @param RouterInterface $router
      * @param Auth $auth
+     * @param Validator $validator
+     * @param Operator $operatorModel
      */
     function __construct(
         RouterInterface $router,
-        Auth $auth
+        Auth $auth,
+        Validator $validator,
+        Operator $operatorModel
     )
     {
         $this->auth = $auth;
         $this->router = $router;
+        $this->validator = $validator;
+        $this->operatorModel = $operatorModel;
     }
 
     /**
@@ -50,10 +65,14 @@ final class AuthOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $email = $request->getParam('email');
-        $password = $request->getParam('password');
+        $validation = $this->validator->validate($request, [
+            'email' => v::noWhitespace()->notEmpty()->emailValid($this->operatorModel),
+            'password' => v::noWhitespace()->notEmpty()->passwordValid($request->getParam('email'), $this->auth),
+        ]);
 
-        $this->auth->attempt($email, $password);
+        if ($validation->failed()) {
+            return $response->withRedirect($this->router->pathFor('home'));
+        }
 
         return $response->withRedirect($this->router->pathFor('home'));
     }
