@@ -11,6 +11,7 @@ return [
         // Renderer settings
         'renderer' => [
             'template_path' => __DIR__ . '/../../templates',
+            'debugger' => ['debug' => true]
         ],
         // Monolog settings
         'logger' => [

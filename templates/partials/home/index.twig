@@ -1,0 +1,17 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    {% if auth.check %}
+        Hello {{ auth.user.name }}
+    {% else %}
+        Sign in
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    {% if auth.check %}
+        {% include 'partials/home/logged-in-index.twig' %}
+    {% else %}
+        {% include 'partials/home/sign-in-form.twig' %}
+    {% endif %}
+{% endblock %}

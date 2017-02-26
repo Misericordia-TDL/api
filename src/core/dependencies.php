@@ -4,21 +4,72 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
+use Slim\Container;
+use MongoDB\Client;
+use Monolog\Processor\UidProcessor;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use App\Models\Clothe;
+use App\Models\Food;
+use App\Models\Meal;
+use App\Models\MedicalAttention;
+use App\Models\Medicine;
+use App\Models\Operator;
+use App\Models\OperatorLevel;
+use App\Models\Refugee;
+use App\Models\Structure;
+use App\Controllers\ClotheController;
+use App\Controllers\FoodController;
+use App\Controllers\MealController;
+use App\Controllers\MedicalAttentionController;
+use App\Controllers\MedicineController;
+use App\Controllers\OperatorLevelController;
+use App\Controllers\StructureController;
+use App\Controllers\RefugeeController;
+use App\Controllers\Home\IndexAction;
+use App\Controllers\Home\IndexLoggedAction;
+use App\Controllers\Operator\AuthOperatorAction;
+use App\Controllers\Operator\EditOperatorAction;
+use App\Controllers\Operator\LogOutOperatorAction;
+use App\Controllers\Operator\CreateOperatorAction;
+use App\Controllers\Operator\EnterOperatorDataAction;
+use App\Controllers\Operator\UpdateOperatorAction;
+use App\Controllers\Operator\DeleteOperatorAction;
+use App\Controllers\Operator\IndexAction as OperatorIndexAction;
+use App\Controllers\Operator\ListOperatorAction;
+use App\Auth\Auth;
+use Slim\Csrf\Guard;
+use App\Validation\Validator;
+use Respect\Validation\Validator as v;
+use Slim\Flash\Messages;
 // DIC configuration
 $container = $app->getContainer();
+
+
+$container['auth'] = function (Container $container): Auth {
+
+    return new Auth($container['OperatorModel']);
+};
 
 /**
  * @param \Slim\Container $container
  * @return \Slim\Views\Twig
  */
-$container['view'] = function (\Slim\Container $container): \Slim\Views\Twig {
+$container['view'] = function (Container $container): \Slim\Views\Twig {
     $settings = $container->get('settings')['renderer'];
-    $view = new Slim\Views\Twig($settings['template_path']);
+    $view = new Slim\Views\Twig($settings['template_path'], $settings['debugger']);
 
     $view->addExtension(new \Slim\Views\TwigExtension(
         $container->router,
         $container->request->getUri()
     ));
+
+    $view->getEnvironment()->addGlobal('flash', $container->flash);
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => $container->auth->check(),
+        'user'  => $container->auth->user()
+    ]);
+    $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
 };
@@ -27,25 +78,25 @@ $container['view'] = function (\Slim\Container $container): \Slim\Views\Twig {
  * @param \Slim\Container $container
  * @return \MongoDB\Client
  */
-$container['db'] = function (\Slim\Container $container): \MongoDB\Client {
+$container['db'] = function (Container $container): Client {
 
     $host = $container['settings']['db']['host'];
     $port = $container['settings']['db']['port'];
     $connectionUri = 'mongodb://' . $host . ':' . $port;
-    $dbConnection = new \MongoDB\Client($connectionUri);
+    $dbConnection = new Client($connectionUri);
 
     return $dbConnection;
 };
 
 /**
  * @param \Slim\Container $container
- * @return \Monolog\Logger
+ * @return Logger
  */
-$container['logger'] = function (\Slim\Container $container): \Monolog\Logger {
+$container['logger'] = function (Container $container): Logger {
     $settings = $container->get('settings')['logger'];
-    $logger = new Monolog\Logger($settings['name']);
-    $logger->pushProcessor(new Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+    $logger = new Logger($settings['name']);
+    $logger->pushProcessor(new UidProcessor());
+    $logger->pushHandler(new StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
 
@@ -53,20 +104,20 @@ $container['logger'] = function (\Slim\Container $container): \Monolog\Logger {
  * @param \Slim\Container $container
  * @return \App\Models\Refugee
  */
-$container['RefugeeModel'] = function (\Slim\Container $container): \App\Models\Refugee {
+$container['RefugeeModel'] = function (Container $container): Refugee {
 
     $mongoClient = $container['db'];
     $refugeeCollection = $mongoClient->misericordia->refugee;
-    return new \App\Models\Refugee($refugeeCollection);
+    return new Refugee($refugeeCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\RefugeeController
  */
-$container['RefugeeController'] = function (\Slim\Container $container): \App\Controllers\RefugeeController {
+$container['RefugeeController'] = function (Container $container): RefugeeController {
 
-    return new \App\Controllers\RefugeeController(
+    return new RefugeeController(
         $container->view,
         $container['RefugeeModel']
     );
@@ -76,35 +127,23 @@ $container['RefugeeController'] = function (\Slim\Container $container): \App\Co
  * @param \Slim\Container $container
  * @return \App\Models\Operator
  */
-$container['OperatorModel'] = function (\Slim\Container $container): \App\Models\Operator {
+$container['OperatorModel'] = function (Container $container): Operator {
 
     $mongoClient = $container['db'];
     $operatorCollection = $mongoClient->misericordia->operator;
-    $userModel = new \App\Models\Operator($operatorCollection);
+    $userModel = new Operator($operatorCollection);
 
     return $userModel;
 };
 
 /**
  * @param \Slim\Container $container
- * @return \App\Controllers\OperatorController
- */
-$container['OperatorController'] = function (\Slim\Container $container): \App\Controllers\OperatorController {
-
-    return new \App\Controllers\OperatorController(
-        $container->view,
-        $container['OperatorModel']
-    );
-};
-
-/**
- * @param \Slim\Container $container
  * @return \App\Models\OperatorLevel
  */
-$container['OperatorLevelModel'] = function (\Slim\Container $container): \App\Models\OperatorLevel {
+$container['OperatorLevelModel'] = function (Container $container): OperatorLevel {
     $mongoClient = $container['db'];
     $operatorLevelCollection = $mongoClient->misericordia->operator_level;
-    $userModel = new \App\Models\OperatorLevel($operatorLevelCollection);
+    $userModel = new OperatorLevel($operatorLevelCollection);
 
     return $userModel;
 };
@@ -113,9 +152,9 @@ $container['OperatorLevelModel'] = function (\Slim\Container $container): \App\M
  * @param \Slim\Container $container
  * @return \App\Controllers\OperatorLevelController
  */
-$container['OperatorLevelController'] = function (\Slim\Container $container): \App\Controllers\OperatorLevelController {
+$container['OperatorLevelController'] = function (Container $container): OperatorLevelController {
 
-    return new \App\Controllers\OperatorLevelController(
+    return new OperatorLevelController(
         $container->view,
         $container['OperatorLevelModel']
     );
@@ -125,10 +164,10 @@ $container['OperatorLevelController'] = function (\Slim\Container $container): \
  * @param \Slim\Container $container
  * @return \App\Models\Structure
  */
-$container['StructureModel'] = function (\Slim\Container $container): \App\Models\Structure {
+$container['StructureModel'] = function (Container $container): Structure {
     $mongoClient = $container['db'];
     $operatorLevelCollection = $mongoClient->misericordia->structure;
-    $structureModel = new \App\Models\Structure($operatorLevelCollection);
+    $structureModel = new Structure($operatorLevelCollection);
 
     return $structureModel;
 };
@@ -137,9 +176,9 @@ $container['StructureModel'] = function (\Slim\Container $container): \App\Model
  * @param \Slim\Container $container
  * @return \App\Controllers\StructureController
  */
-$container['StructureController'] = function (\Slim\Container $container): \App\Controllers\StructureController {
+$container['StructureController'] = function (Container $container): StructureController {
 
-    return new \App\Controllers\StructureController(
+    return new StructureController(
         $container->view,
         $container['StructureModel']
     );
@@ -149,19 +188,19 @@ $container['StructureController'] = function (\Slim\Container $container): \App\
  * @param \Slim\Container $container
  * @return \App\Models\Meal
  */
-$container['MealModel'] = function (\Slim\Container $container): \App\Models\Meal {
+$container['MealModel'] = function (Container $container): Meal {
     $mongoClient = $container['db'];
     $mealCollection = $mongoClient->misericordia->meal;
-    return new \App\Models\Meal($mealCollection);
+    return new Meal($mealCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\MealController
  */
-$container['MealController'] = function (\Slim\Container $container): \App\Controllers\MealController {
+$container['MealController'] = function (Container $container): MealController {
 
-    return new \App\Controllers\MealController(
+    return new MealController(
         $container->view,
         $container['MealModel']
     );
@@ -171,19 +210,19 @@ $container['MealController'] = function (\Slim\Container $container): \App\Contr
  * @param \Slim\Container $container
  * @return \App\Models\Food
  */
-$container['FoodModel'] = function (\Slim\Container $container): \App\Models\Food {
+$container['FoodModel'] = function (Container $container): Food {
     $mongoClient = $container['db'];
     $foodCollection = $mongoClient->misericordia->food;
-    return new \App\Models\Food($foodCollection);
+    return new Food($foodCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\FoodController
  */
-$container['FoodController'] = function (\Slim\Container $container): \App\Controllers\FoodController {
+$container['FoodController'] = function (Container $container): FoodController {
 
-    return new \App\Controllers\FoodController(
+    return new FoodController(
         $container->view,
         $container['FoodModel']
     );
@@ -193,19 +232,19 @@ $container['FoodController'] = function (\Slim\Container $container): \App\Contr
  * @param \Slim\Container $container
  * @return \App\Models\Medicine
  */
-$container['MedicineModel'] = function (\Slim\Container $container): \App\Models\Medicine {
+$container['MedicineModel'] = function (Container $container): Medicine {
     $mongoClient = $container['db'];
     $foodCollection = $mongoClient->misericordia->medicine;
-    return new \App\Models\Medicine($foodCollection);
+    return new Medicine($foodCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\MedicineController
  */
-$container['MedicineController'] = function (\Slim\Container $container): \App\Controllers\MedicineController {
+$container['MedicineController'] = function (Container $container): MedicineController {
 
-    return new \App\Controllers\MedicineController(
+    return new MedicineController(
         $container->view,
         $container['MedicineModel']
     );
@@ -215,19 +254,19 @@ $container['MedicineController'] = function (\Slim\Container $container): \App\C
  * @param \Slim\Container $container
  * @return \App\Models\Clothe
  */
-$container['ClotheModel'] = function (\Slim\Container $container): \App\Models\Clothe {
+$container['ClotheModel'] = function (Container $container): Clothe {
     $mongoClient = $container['db'];
     $foodCollection = $mongoClient->misericordia->clothe;
-    return new \App\Models\Clothe($foodCollection);
+    return new Clothe($foodCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\ClotheController
  */
-$container['ClotheController'] = function (\Slim\Container $container): \App\Controllers\ClotheController {
+$container['ClotheController'] = function (Container $container): ClotheController {
 
-    return new \App\Controllers\ClotheController(
+    return new ClotheController(
         $container->view,
         $container['ClotheModel']
     );
@@ -236,20 +275,168 @@ $container['ClotheController'] = function (\Slim\Container $container): \App\Con
  * @param \Slim\Container $container
  * @return \App\Models\MedicalAttention
  */
-$container['MedicalAttentionModel'] = function (\Slim\Container $container): \App\Models\MedicalAttention {
+$container['MedicalAttentionModel'] = function (Container $container): MedicalAttention {
     $mongoClient = $container['db'];
     $medicalAttentionCollection = $mongoClient->misericordia->medical_attention;
-    return new \App\Models\MedicalAttention($medicalAttentionCollection);
+    return new MedicalAttention($medicalAttentionCollection);
 };
 
 /**
  * @param \Slim\Container $container
  * @return \App\Controllers\MedicalAttentionController
  */
-$container['MedicalAttentionController'] = function (\Slim\Container $container): \App\Controllers\MedicalAttentionController {
+$container['MedicalAttentionController'] = function (Container $container): MedicalAttentionController {
 
-    return new \App\Controllers\MedicalAttentionController(
+    return new MedicalAttentionController(
         $container->view,
         $container['MedicalAttentionModel']
     );
 };
+
+
+$container['csrf'] = function (Container $container): Guard {
+    return new Guard();
+};
+$container['validator'] = function (Container $container): Validator {
+    return new Validator();
+};
+$container['flash'] = function (Container $container): Messages {
+    return new Messages;
+};
+//ACTIONS
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Home\IndexAction
+ */
+$container['HomeIndexAction'] = function (Container $container): IndexAction {
+
+    return new IndexAction(
+        $container->view
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Home\IndexLoggedAction
+ */
+$container['HomeLoggedinIndexAction'] = function (Container $container): IndexLoggedAction {
+
+    return new IndexLoggedAction(
+        $container->view,
+        $container['auth']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\IndexAction
+ */
+$container['OperatorIndexAction'] = function (Container $container): OperatorIndexAction {
+
+    return new OperatorIndexAction(
+        $container->view
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\IndexAction
+ */
+$container['ListOperatorAction'] = function (Container $container): ListOperatorAction {
+
+    return new ListOperatorAction(
+        $container->view,
+        $container['OperatorModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\EnterOperatorDataAction
+ */
+$container['EnterOperatorDataAction'] = function (Container $container): EnterOperatorDataAction {
+
+    return new EnterOperatorDataAction(
+        $container->view,
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\CreateOperatorAction
+ */
+$container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
+
+    return new CreateOperatorAction(
+        $container->router,
+        $container['validator'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\CreateOperatorAction
+ */
+$container['UpdateOperatorAction'] = function (Container $container): UpdateOperatorAction {
+
+    return new UpdateOperatorAction(
+        $container->router,
+        $container['validator'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\EditOperatorAction
+ */
+$container['EditOperatorAction'] = function (Container $container): EditOperatorAction {
+
+    return new EditOperatorAction(
+        $container->view,
+        $container['OperatorModel'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\DeleteOperatorAction
+ */
+$container['DeleteOperatorAction'] = function (Container $container): DeleteOperatorAction {
+
+    return new DeleteOperatorAction(
+        $container->router,
+        $container['auth'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\AuthOperatorAction
+ */
+$container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
+
+    return new AuthOperatorAction(
+        $container->router,
+        $container['auth'],
+        $container['validator'],
+        $container['OperatorModel'],
+        $container['flash']
+    );
+};
+
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\LogOutOperatorAction
+ */
+$container['LogOutOperatorAction'] = function (Container $container): LogOutOperatorAction {
+
+    return new LogOutOperatorAction(
+        $container->router,
+        $container['auth']
+    );
+};
+
+v::with('App\\Validation\\Rules');

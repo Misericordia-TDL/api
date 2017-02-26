@@ -1,0 +1,42 @@
+<!-- Fixed navbar -->
+{% if auth.check %}
+    {% set home = path_for('home-loggedin') %}
+{% else %}
+    {% set home = path_for('home') %}
+{% endif %}
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ home }}">Misericordia Accoglienza</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            {% if auth.check %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="{{ home }}">Home</a></li>
+                    <li><a href="#about">Inventory</a></li>
+                    <li><a href="#refugee">Refugees</a></li>
+                    <li><a href="{{ path_for('index-operator') }}">Operators</a></li>
+                    <li><a href="#medical-assitance">Medical Assitance</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ auth.user.name }} {{ auth.user.surname }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ path_for('logout-operator') }}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endif %}
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
