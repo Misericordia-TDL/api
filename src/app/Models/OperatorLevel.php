@@ -23,5 +23,13 @@ namespace App\Models {
         {
             return $this->persist($data, ['join_date']);
         }
+
+        /**
+         * @param $level
+         */
+        public function findByLevel($level)
+        {
+            return $this->collection->findOne(['level' => (int) $level]);
+        }
     }
 }

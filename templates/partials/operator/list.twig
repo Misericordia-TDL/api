@@ -1,0 +1,46 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Operators
+{% endblock %}
+{% block container %}
+    <div class="jumbotron">
+        <h1>List Operators section</h1>
+        <p>In this part you can edit, delete or add operators</p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Panel heading </div>
+        <div class="panel-body"><p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean
+                lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam
+                venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p></div>
+        <div class="panel-body">
+            <a class="btn btn-primary" href="{{ path_for('enter-operator-data') }}" role="button">Add a new operator</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Admin Level</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for operator in operators %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ operator.name|e }} {{ operator.surname|e }} </td>
+                    <td>{{ operator.operator_level|e }}</td>
+                    <td>
+                        <div class="btn-toolbar" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default">Edit</button>
+                            <button type="button" class="btn btn-default btn-danger ">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

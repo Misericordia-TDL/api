@@ -6,10 +6,14 @@
 namespace App\Controllers\Operator;
 
 use App\Models\Operator;
+use App\Models\OperatorLevel;
+use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Views\Twig as View;
+use Slim\Interfaces\RouterInterface;
+use Respect\Validation\Validator as v;
 
 /**
  * Class createOperator
@@ -19,26 +23,48 @@ use Slim\Views\Twig as View;
 final class CreateOperatorAction
 {
     /**
-     * @var View
-     */
-    protected $view;
-    /**
      * @var Operator
      */
     protected $operatorModel;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+    /**
+     * @var Validator
+     */
+    private $validator;
+    /**
+     * @var Messages
+     */
+    private $flash;
+    /**
+     * @var OperatorLevel
+     */
+    private $operatorLevel;
 
     /**
      * OperatorController constructor.
-     * @param View $view
+     * @param RouterInterface $router
+     * @param Validator $validator
      * @param Operator $operatorModel
+     * @param Messages $flash
+     * @param OperatorLevel $operatorLevel
+     * @internal param View $view
      */
     function __construct(
-        View $view,
-        Operator $operatorModel
+        RouterInterface $router,
+        Validator $validator,
+        Operator $operatorModel,
+        Messages $flash,
+        OperatorLevel $operatorLevel
     )
     {
-        $this->view = $view;
         $this->operatorModel = $operatorModel;
+        $this->router = $router;
+        $this->validator = $validator;
+        $this->flash = $flash;
+        $this->operatorLevel = $operatorLevel;
     }
 
     /**
@@ -48,20 +74,32 @@ final class CreateOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $password = password_hash('test',PASSWORD_DEFAULT);
-        $json = ' {
-    "name": "John",
-    "surname": "Operator",
-    "email": "pepe@as.com",
-    "password": "'. $password .'",
-    "join_date": "03-03-1980",
-    "operator_level": 3,
-    "phone_number": "00447773651107"
-  }';
-        $operatorData = json_decode($json, true);
-      //  $this->operatorModel->insert($operatorData);
-        $data = ['data' => $this->operatorModel->findAll()];
 
-        return $this->view->render($response, 'partials/home/index-back.twig', $data);
+        $validation = $this->validator->validate($request, [
+            'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken($this->operatorModel),
+            'password' => v::noWhitespace()->notEmpty(),
+            'name' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
+            'surname' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
+            'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
+            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
+        ]);
+
+        if ($validation->failed()) {
+            $this->flash->addMessage('error', 'Operator data is not correct');
+            return $response->withRedirect($this->router->pathFor('enter-operator-data'));
+        }
+
+        $operatorData = $request->getParams();
+        unset(
+            $operatorData['csrf_name'],
+            $operatorData['csrf_value']
+        );
+
+        $operatorData['join_date'] = date('m-d-y');
+        $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
+
+        $this->operatorModel->insert($operatorData);
+
+        return $response->withRedirect($this->router->pathFor('list-operator'));
     }
 }

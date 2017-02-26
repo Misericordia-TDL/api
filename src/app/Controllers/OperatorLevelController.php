@@ -50,15 +50,14 @@ class OperatorLevelController
     {
 
         $json = ' {
-    "name": "admin",
-    "description": "manages refugees, inventory, operators",
-    "level": 1,
+    "name": "Manage Inventory",
+    "description": "manages inventory",
+    "level": 3,
     "join_date": "03-03-1980"
   }';
         $operatorLevelData = json_decode($json, true);
-        //$this->operatorLevelModel->insert($operatorLevelData);
-        $data = ['data' => $this->operatorLevelModel->findAll()];
+        $this->operatorLevelModel->insert($operatorLevelData);
 
-        return $this->view->render($response, 'partials/home/index.twig', $data);
+        return $this->view->render($response, 'partials/operator/list.twig', []);
     }
 }

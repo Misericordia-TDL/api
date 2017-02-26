@@ -3,42 +3,42 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Home;
+namespace App\Controllers\Operator;
 
-use App\Auth\Auth;
+use App\Models\Operator;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class IndexAction
+ * Class ListOperatorAction
  * @package App\Controllers\Home
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class IndexLoggedAction
+final class ListOperatorAction
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var Auth
+     * @var Operator
      */
-    protected $auth;
+    private $operatorModel;
 
     /**
      * IndexAction constructor.
      * @param View $view
-     * @param Auth $auth
+     * @param Operator $operatorModel
      */
     function __construct(
         View $view,
-        Auth $auth
+        Operator $operatorModel
     )
     {
         $this->view = $view;
-        $this->auth = $auth;
+        $this->operatorModel = $operatorModel;
     }
 
     /**
@@ -48,7 +48,10 @@ final class IndexLoggedAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $data = [];
-        return $this->view->render($response, 'partials/home/index.twig', $data);
+
+        $data = [
+            'operators' => $this->operatorModel->findAll()
+        ];
+        return $this->view->render($response, 'partials/operator/list.twig', $data);
     }
 }

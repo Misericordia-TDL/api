@@ -31,6 +31,9 @@ use App\Controllers\Home\IndexLoggedAction;
 use App\Controllers\Operator\AuthOperatorAction;
 use App\Controllers\Operator\LogOutOperatorAction;
 use App\Controllers\Operator\CreateOperatorAction;
+use App\Controllers\Operator\EnterOperatorDataAction;
+use App\Controllers\Operator\IndexAction as OperatorIndexAction;
+use App\Controllers\Operator\ListOperatorAction;
 use App\Auth\Auth;
 use Slim\Csrf\Guard;
 use App\Validation\Validator;
@@ -322,13 +325,48 @@ $container['HomeLoggedinIndexAction'] = function (Container $container): IndexLo
 
 /**
  * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\IndexAction
+ */
+$container['OperatorIndexAction'] = function (Container $container): OperatorIndexAction {
+
+    return new OperatorIndexAction(
+        $container->view
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\IndexAction
+ */
+$container['ListOperatorAction'] = function (Container $container): ListOperatorAction {
+
+    return new ListOperatorAction(
+        $container->view,
+        $container['OperatorModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\EnterOperatorDataAction
+ */
+$container['EnterOperatorDataAction'] = function (Container $container): EnterOperatorDataAction {
+
+    return new EnterOperatorDataAction(
+        $container->view,
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
  * @return \App\Controllers\Operator\CreateOperatorAction
  */
 $container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
 
     return new CreateOperatorAction(
-        $container->view,
-        $container['OperatorModel']
+        $container->router,
+        $container['validator'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
     );
 };
 /**
