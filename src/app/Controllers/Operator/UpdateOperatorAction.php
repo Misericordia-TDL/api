@@ -80,8 +80,8 @@ final class UpdateOperatorAction
 
         $validation = $this->validator->validate($request, [
             'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($this->operatorModel,$originalOperator->email),
-            'name' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
-            'surname' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
+            'name' => v::notEmpty()->alpha()->length(2, 20),
+            'surname' => v::notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
             'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
         ]);

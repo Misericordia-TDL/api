@@ -78,8 +78,8 @@ final class CreateOperatorAction
         $validation = $this->validator->validate($request, [
             'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken($this->operatorModel),
             'password' => v::noWhitespace()->notEmpty(),
-            'name' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
-            'surname' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
+            'name' => v::notEmpty()->alpha()->length(2, 20),
+            'surname' => v::notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
             'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
         ]);
@@ -100,6 +100,8 @@ final class CreateOperatorAction
         $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
 
         $this->operatorModel->insert($operatorData);
+
+        $this->flash->addMessage('info', 'Operator created correctly');
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
     }
