@@ -49,11 +49,7 @@ final class IndexLoggedAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $authCheck = $this->auth->check();
-        $data = ['auth' => $authCheck];
-        if ($authCheck) {
-            $data['user'] = $this->auth->user();
-        }
+        $data = [];
         return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

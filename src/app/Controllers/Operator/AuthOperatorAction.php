@@ -81,6 +81,6 @@ final class AuthOperatorAction
             return $response->withRedirect($this->router->pathFor('home'));
         }
 
-        return $response->withRedirect($this->router->pathFor('home'));
+        return $response->withRedirect($this->router->pathFor('home-loggedin'));
     }
 }

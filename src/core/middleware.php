@@ -16,4 +16,4 @@ $app->add(new CsrfMiddleware($container));
 $app->add(new ValidationErrorsMiddleware($container));
 $app->add(new OldInputMiddleware($container));
 
-//$app->add($container->csrf);
+$app->add($container->csrf);

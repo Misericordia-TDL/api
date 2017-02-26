@@ -35,7 +35,10 @@ class Auth
         return isset($_SESSION['operator']);
     }
     public function user() {
-        return $this->operator->findById($_SESSION['operator']);
+        if(isset($_SESSION['operator'])) {
+            return $this->operator->findById($_SESSION['operator']);
+        }
+        return null;
     }
     /**
      * @param string $email

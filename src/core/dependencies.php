@@ -39,6 +39,12 @@ use Slim\Flash\Messages;
 // DIC configuration
 $container = $app->getContainer();
 
+
+$container['auth'] = function (Container $container): Auth {
+
+    return new Auth($container['OperatorModel']);
+};
+
 /**
  * @param \Slim\Container $container
  * @return \Slim\Views\Twig
@@ -53,6 +59,10 @@ $container['view'] = function (Container $container): \Slim\Views\Twig {
     ));
 
     $view->getEnvironment()->addGlobal('flash', $container->flash);
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => $container->auth->check(),
+        'user'  => $container->auth->user()
+    ]);
     $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
@@ -277,10 +287,6 @@ $container['MedicalAttentionController'] = function (Container $container): Medi
     );
 };
 
-$container['auth'] = function (Container $container): Auth {
-
-    return new Auth($container['OperatorModel']);
-};
 
 $container['csrf'] = function (Container $container): Guard {
     return new Guard();

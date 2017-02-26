@@ -42,7 +42,7 @@ final class IndexAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $data = ['auth' => false];
+        $data = [];
         return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }
