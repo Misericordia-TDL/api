@@ -27,6 +27,7 @@ use App\Controllers\OperatorLevelController;
 use App\Controllers\StructureController;
 use App\Controllers\RefugeeController;
 use App\Controllers\Home\IndexAction;
+use App\Controllers\Home\IndexLoggedAction;
 use App\Controllers\Operator\AuthOperatorAction;
 use App\Controllers\Operator\LogOutOperatorAction;
 use App\Controllers\Operator\CreateOperatorAction;
@@ -34,7 +35,7 @@ use App\Auth\Auth;
 use Slim\Csrf\Guard;
 use App\Validation\Validator;
 use Respect\Validation\Validator as v;
-
+use Slim\Flash\Messages;
 // DIC configuration
 $container = $app->getContainer();
 
@@ -51,6 +52,7 @@ $container['view'] = function (Container $container): \Slim\Views\Twig {
         $container->request->getUri()
     ));
 
+    $view->getEnvironment()->addGlobal('flash', $container->flash);
     $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
@@ -286,6 +288,9 @@ $container['csrf'] = function (Container $container): Guard {
 $container['validator'] = function (Container $container): Validator {
     return new Validator();
 };
+$container['flash'] = function (Container $container): Messages {
+    return new Messages;
+};
 //ACTIONS
 /**
  * @param \Slim\Container $container
@@ -294,6 +299,16 @@ $container['validator'] = function (Container $container): Validator {
 $container['HomeIndexAction'] = function (Container $container): IndexAction {
 
     return new IndexAction(
+        $container->view
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Home\IndexLoggedAction
+ */
+$container['HomeLoggedinIndexAction'] = function (Container $container): IndexLoggedAction {
+
+    return new IndexLoggedAction(
         $container->view,
         $container['auth']
     );
@@ -320,7 +335,8 @@ $container['AuthOperatorAction'] = function (Container $container): AuthOperator
         $container->router,
         $container['auth'],
         $container['validator'],
-        $container['OperatorModel']
+        $container['OperatorModel'],
+        $container['flash']
     );
 };
 

@@ -16,22 +16,29 @@ use Slim\Views\Twig as View;
  * @package App\Controllers\Home
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class IndexAction
+final class IndexLoggedAction
 {
     /**
      * @var View
      */
     protected $view;
+    /**
+     * @var Auth
+     */
+    protected $auth;
 
     /**
      * IndexAction constructor.
      * @param View $view
+     * @param Auth $auth
      */
     function __construct(
-        View $view
+        View $view,
+        Auth $auth
     )
     {
         $this->view = $view;
+        $this->auth = $auth;
     }
 
     /**
@@ -42,7 +49,11 @@ final class IndexAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $data = ['auth' => false];
+        $authCheck = $this->auth->check();
+        $data = ['auth' => $authCheck];
+        if ($authCheck) {
+            $data['user'] = $this->auth->user();
+        }
         return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

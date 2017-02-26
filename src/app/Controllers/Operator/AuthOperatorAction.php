@@ -10,6 +10,7 @@ use App\Models\Operator;
 use Psr\Http\Message\ResponseInterface;
 use App\Validation\Validator;
 use Respect\Validation\Validator as v;
+use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
@@ -37,6 +38,8 @@ final class AuthOperatorAction
      * @var Operator
      */
     protected $operatorModel;
+    /** @var Messages  */
+    protected $flash;
 
     /**
      * OperatorController constructor.
@@ -44,18 +47,21 @@ final class AuthOperatorAction
      * @param Auth $auth
      * @param Validator $validator
      * @param Operator $operatorModel
+     * @param Messages $flash
      */
     function __construct(
         RouterInterface $router,
         Auth $auth,
         Validator $validator,
-        Operator $operatorModel
+        Operator $operatorModel,
+        Messages $flash
     )
     {
         $this->auth = $auth;
         $this->router = $router;
         $this->validator = $validator;
         $this->operatorModel = $operatorModel;
+        $this->flash = $flash;
     }
 
     /**
@@ -71,6 +77,7 @@ final class AuthOperatorAction
         ]);
 
         if ($validation->failed()) {
+            $this->flash->addMessage('error', 'Login failed. Wrong Credentials');
             return $response->withRedirect($this->router->pathFor('home'));
         }
 

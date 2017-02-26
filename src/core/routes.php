@@ -4,18 +4,29 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
+use App\Middleware\AuthMiddleware;
+use App\Middleware\GuestMiddleware;
 
 // Routes
 
-$app->get('/', 'HomeIndexAction')->setName('home');
-$app->get('/refugee', 'RefugeeController:index');
-$app->post('/create-operator', 'CreateOperatorAction')->setName('create-operator');
-$app->post('/auth-operator', 'AuthOperatorAction')->setName('auth-operator');
-$app->get('/operator-level', 'OperatorLevelController:index');
-$app->get('/logout-operator', 'LogOutOperatorAction')->setName('logout-operator');
-$app->get('/structure', 'StructureController:index');
-$app->get('/meal', 'MealController:index');
-$app->get('/food', 'FoodController:index');
-$app->get('/medicine', 'MedicineController:index');
-$app->get('/clothe', 'ClotheController:index');
-$app->get('/medical-attention', 'MedicalAttentionController:index');
+$app->group('', function () {
+    $this->get('/', 'HomeIndexAction')->setName('home');
+    $this->post('/auth-operator', 'AuthOperatorAction')->setName('auth-operator');
+
+})->add(new GuestMiddleware($container));
+
+$app->group('', function () {
+
+    $this->get('/home', 'HomeLoggedinIndexAction')->setName('home-loggedin');
+    $this->get('/logout-operator', 'LogOutOperatorAction')->setName('logout-operator');
+    $this->get('/refugee', 'RefugeeController:index');
+    $this->post('/create-operator', 'CreateOperatorAction')->setName('create-operator');
+    $this->get('/operator-level', 'OperatorLevelController:index');
+    $this->get('/structure', 'StructureController:index');
+    $this->get('/meal', 'MealController:index');
+    $this->get('/food', 'FoodController:index');
+    $this->get('/medicine', 'MedicineController:index');
+    $this->get('/clothe', 'ClotheController:index');
+    $this->get('/medical-attention', 'MedicalAttentionController:index');
+
+})->add(new AuthMiddleware($container));

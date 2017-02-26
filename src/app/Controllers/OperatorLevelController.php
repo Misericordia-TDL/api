@@ -59,6 +59,6 @@ class OperatorLevelController
         //$this->operatorLevelModel->insert($operatorLevelData);
         $data = ['data' => $this->operatorLevelModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }
