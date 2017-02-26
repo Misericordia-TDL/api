@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Auth\Auth;
 use App\Models\Operator;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
@@ -16,11 +17,11 @@ use Slim\Interfaces\RouterInterface;
 use Respect\Validation\Validator as v;
 
 /**
- * Class createOperator
+ * Class DeleteOperatorAction
  * @package App\Controllers\Operator
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class CreateOperatorAction
+final class DeleteOperatorAction
 {
     /**
      * @var Operator
@@ -42,19 +43,24 @@ final class CreateOperatorAction
      * @var OperatorLevel
      */
     private $operatorLevel;
+    /**
+     * @var Auth
+     */
+    private $auth;
 
     /**
      * OperatorController constructor.
      * @param RouterInterface $router
-     * @param Validator $validator
+     * @param Auth $auth
      * @param Operator $operatorModel
      * @param Messages $flash
      * @param OperatorLevel $operatorLevel
+     * @internal param Validator $validator
      * @internal param View $view
      */
     function __construct(
         RouterInterface $router,
-        Validator $validator,
+        Auth $auth,
         Operator $operatorModel,
         Messages $flash,
         OperatorLevel $operatorLevel
@@ -62,9 +68,9 @@ final class CreateOperatorAction
     {
         $this->operatorModel = $operatorModel;
         $this->router = $router;
-        $this->validator = $validator;
         $this->flash = $flash;
         $this->operatorLevel = $operatorLevel;
+        $this->auth = $auth;
     }
 
     /**
@@ -75,31 +81,21 @@ final class CreateOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken($this->operatorModel),
-            'password' => v::noWhitespace()->notEmpty(),
-            'name' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
-            'surname' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
-            'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
-            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
-        ]);
+        $id = $request->getParam('id');
 
-        if ($validation->failed()) {
-            $this->flash->addMessage('error', 'Operator data is not correct');
-            return $response->withRedirect($this->router->pathFor('enter-operator-data'));
+        if ($this->auth->currentUserId() == $id) {
+            $this->flash->addMessage('error', 'You can\'t delete yourself');
+            return $response->withRedirect($this->router->pathFor('list-operator'));
         }
 
-        $operatorData = $request->getParams();
-        unset(
-            $operatorData['csrf_name'],
-            $operatorData['csrf_value']
-        );
+        $operator = $this->operatorModel->delete($id);
 
-        $operatorData['join_date'] = date('m-d-y');
-        $operatorData['active'] = 1;
-        $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
+        if ($operator->active == 0) {
+            $this->flash->addMessage('info', 'Operator disabled correctly');
+        } else {
+            $this->flash->addMessage('error', 'Operator not disabled correctly');
 
-        $this->operatorModel->insert($operatorData);
+        }
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
     }

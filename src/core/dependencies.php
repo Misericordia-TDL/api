@@ -29,9 +29,12 @@ use App\Controllers\RefugeeController;
 use App\Controllers\Home\IndexAction;
 use App\Controllers\Home\IndexLoggedAction;
 use App\Controllers\Operator\AuthOperatorAction;
+use App\Controllers\Operator\EditOperatorAction;
 use App\Controllers\Operator\LogOutOperatorAction;
 use App\Controllers\Operator\CreateOperatorAction;
 use App\Controllers\Operator\EnterOperatorDataAction;
+use App\Controllers\Operator\UpdateOperatorAction;
+use App\Controllers\Operator\DeleteOperatorAction;
 use App\Controllers\Operator\IndexAction as OperatorIndexAction;
 use App\Controllers\Operator\ListOperatorAction;
 use App\Auth\Auth;
@@ -364,6 +367,46 @@ $container['CreateOperatorAction'] = function (Container $container): CreateOper
     return new CreateOperatorAction(
         $container->router,
         $container['validator'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\CreateOperatorAction
+ */
+$container['UpdateOperatorAction'] = function (Container $container): UpdateOperatorAction {
+
+    return new UpdateOperatorAction(
+        $container->router,
+        $container['validator'],
+        $container['OperatorModel'],
+        $container['flash'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\EditOperatorAction
+ */
+$container['EditOperatorAction'] = function (Container $container): EditOperatorAction {
+
+    return new EditOperatorAction(
+        $container->view,
+        $container['OperatorModel'],
+        $container['OperatorLevelModel']
+    );
+};
+/**
+ * @param \Slim\Container $container
+ * @return \App\Controllers\Operator\DeleteOperatorAction
+ */
+$container['DeleteOperatorAction'] = function (Container $container): DeleteOperatorAction {
+
+    return new DeleteOperatorAction(
+        $container->router,
+        $container['auth'],
         $container['OperatorModel'],
         $container['flash'],
         $container['OperatorLevelModel']

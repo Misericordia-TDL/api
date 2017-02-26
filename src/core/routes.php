@@ -20,9 +20,12 @@ $app->group('', function () {
     $this->get('/home', 'HomeLoggedinIndexAction')->setName('home-loggedin');
     $this->get('/operator', 'OperatorIndexAction')->setName('index-operator');
     $this->get('/operator/add', 'EnterOperatorDataAction')->setName('enter-operator-data');
-    $this->post('/operator/create', 'CreateOperatorAction')->setName('create-operator');
     $this->get('/operator/list', 'ListOperatorAction')->setName('list-operator');
+    $this->get('/operator/edit/{id}', 'EditOperatorAction')->setName('edit-operator');
     $this->get('/operator/logout', 'LogOutOperatorAction')->setName('logout-operator');
+    $this->post('/operator/create', 'CreateOperatorAction')->setName('create-operator');
+    $this->post('/operator/update', 'UpdateOperatorAction')->setName('update-operator');
+    $this->post('/operator/delete', 'DeleteOperatorAction')->setName('delete-operator');
     $this->get('/refugee', 'RefugeeController:index');
     $this->get('/operator-level', 'OperatorLevelController:index');
     $this->get('/structure', 'StructureController:index')->setName('structure');

@@ -19,6 +19,7 @@ class Auth
 
     /** @var Operator */
     private $operator;
+    private $user = null;
 
     /**
      * Auth constructor.
@@ -31,15 +32,30 @@ class Auth
         $this->operator = $operator;
     }
 
-    public function check() {
+    public function check()
+    {
         return isset($_SESSION['operator']);
     }
-    public function user() {
-        if(isset($_SESSION['operator'])) {
-            return $this->operator->findById($_SESSION['operator']);
+
+    public function user()
+    {
+        if (isset($_SESSION['operator'])) {
+            if ($this->user === null) {
+                $this->user = $this->operator->findById($_SESSION['operator']);
+            }
+            return $this->user;
         }
         return null;
     }
+
+    public function currentUserId()
+    {
+        if (isset($_SESSION['operator'])) {
+            return $_SESSION['operator'];
+        }
+        return null;
+    }
+
     /**
      * @param string $email
      * @param string $password

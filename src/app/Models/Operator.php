@@ -4,8 +4,11 @@
  */
 
 namespace App\Models {
+
     use MongoDB\InsertOneResult;
     use MongoDB\Model\BSONDocument;
+    use MongoDB\UpdateResult;
+    use MongoDB\BSON\ObjectID;
 
     /**
      * Class Operator
@@ -26,6 +29,37 @@ namespace App\Models {
             return $this->persist($data, ['join_date']);
         }
 
+        /**
+         * @param $data
+         * @return UpdateResult
+         */
+        public function update($data): UpdateResult
+        {
+            $id = $data['_id'];
+            unset($data['_id']);
+
+            return $this->collection->updateOne(
+                ['_id' => new ObjectID($id)],
+                ['$set' => $data]
+            );
+        }
+
+        /**
+         * @return array
+         */
+        public function getAll(): array
+        {
+            return $this->findAll('active');
+        }
+
+        /**
+         * @param $id
+         * @return UpdateResult
+         */
+        public function delete($id): UpdateResult
+        {
+            return $this->update(['_id' => $id, 'active' => 0]);
+        }
 
         /**
          * @param string $email

@@ -38,18 +38,23 @@ abstract class AbstractModel
     }
 
     /**
+     * @param string $activeField
      * @return array
      */
-    public function findAll() : array
+    public function findAll(string $activeField = null): array
     {
-        return $this->collection->find()->toArray();
+        $activeData = [];
+        if ($activeField !== null) {
+            $activeData = [$activeField => 1];
+        }
+        return $this->collection->find($activeData)->toArray();
     }
 
     /**
      * @param $id
      * @return BSONDocument
      */
-    public function findById($id) : BSONDocument
+    public function findById($id): BSONDocument
     {
         $mongoId = new ObjectID($id);
         return $this->collection->findOne(['_id' => $mongoId]);
@@ -67,13 +72,13 @@ abstract class AbstractModel
      * @return InsertOneResult
      * @throws \Exception
      */
-    public function persist(array $data, array $dateFields = []) : InsertOneResult
+    public function persist(array $data, array $dateFields = []): InsertOneResult
     {
-        if(empty($data)){
+        if (empty($data)) {
             throw new EmptyDataSetException('data set provided to persist is empty');
         }
         if (!empty($dateFields)) {
-            $this->prepareDateFields($data,$dateFields);
+            $this->prepareDateFields($data, $dateFields);
         }
         return $this->collection->insertOne($data);
     }

@@ -16,11 +16,11 @@ use Slim\Interfaces\RouterInterface;
 use Respect\Validation\Validator as v;
 
 /**
- * Class createOperator
+ * Class UpdateOperatorAction
  * @package App\Controllers\Operator
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class CreateOperatorAction
+final class UpdateOperatorAction
 {
     /**
      * @var Operator
@@ -75,9 +75,11 @@ final class CreateOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
+        $id = $request->getParam('id');
+        $originalOperator = $this->operatorModel->findById($id);
+
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken($this->operatorModel),
-            'password' => v::noWhitespace()->notEmpty(),
+            'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($this->operatorModel,$originalOperator->email),
             'name' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
             'surname' => v::noWhitespace()->notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
@@ -86,7 +88,7 @@ final class CreateOperatorAction
 
         if ($validation->failed()) {
             $this->flash->addMessage('error', 'Operator data is not correct');
-            return $response->withRedirect($this->router->pathFor('enter-operator-data'));
+            return $response->withRedirect($this->router->pathFor('edit-operator', ['id' => $id]));
         }
 
         $operatorData = $request->getParams();
@@ -95,11 +97,9 @@ final class CreateOperatorAction
             $operatorData['csrf_value']
         );
 
-        $operatorData['join_date'] = date('m-d-y');
-        $operatorData['active'] = 1;
-        $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
+        $operatorData['_id'] = $id;
 
-        $this->operatorModel->insert($operatorData);
+        $this->operatorModel->update($operatorData);
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
     }

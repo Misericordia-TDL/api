@@ -10,7 +10,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Panel heading </div>
+        <div class="panel-heading">Panel heading</div>
         <div class="panel-body"><p>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean
                 lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam
                 venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</p></div>
@@ -27,18 +27,24 @@
             </tr>
             </thead>
             <tbody>
+
             {% for operator in operators %}
-                <tr>
-                    <th scope="row">1</th>
-                    <td>{{ operator.name|e }} {{ operator.surname|e }} </td>
-                    <td>{{ operator.operator_level|e }}</td>
-                    <td>
-                        <div class="btn-toolbar" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default">Edit</button>
-                            <button type="button" class="btn btn-default btn-danger ">Delete</button>
-                        </div>
-                    </td>
-                </tr>
+                <form action="{{ path_for('delete-operator') }}" method="post" id="delete-user-{{ operator._id }}" name="delete-user-{{ operator._id }}">
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ operator.name }} {{ operator.surname }} </td>
+                        <td>{{ operator.operator_level }}</td>
+                        <td>
+                            <div class="btn-toolbar" role="group" aria-label="...">
+                                <a class="btn btn-default" href="{{ path_for('edit-operator',{'id': operator._id}) }}"
+                                   role="button">Edit</a>
+                                <input type="submit" class="btn btn-default btn-danger" value="Delete">
+                            </div>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="id" value="{{ operator._id }}">
+                    {{ csrf.field  | raw }}
+                </form>
             {% endfor %}
             </tbody>
         </table>
