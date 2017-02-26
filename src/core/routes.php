@@ -22,7 +22,7 @@ $app->group('', function () {
     $this->get('/refugee', 'RefugeeController:index');
     $this->post('/create-operator', 'CreateOperatorAction')->setName('create-operator');
     $this->get('/operator-level', 'OperatorLevelController:index');
-    $this->get('/structure', 'StructureController:index');
+    $this->get('/structure', 'StructureController:index')->setName('structure');
     $this->get('/meal', 'MealController:index');
     $this->get('/food', 'FoodController:index');
     $this->get('/medicine', 'MedicineController:index');

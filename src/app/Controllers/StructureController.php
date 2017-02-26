@@ -60,6 +60,6 @@ class StructureController
         $data = ['data' => $this->structureModel->findAll()];
         //$data = ['data' => $this->refugeeModel->findById('58a8aea7a97b86b00126dba63')];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }
