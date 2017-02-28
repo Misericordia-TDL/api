@@ -5,3 +5,5 @@ vendor/
 src/logs
 #vim swap files 
 *.swp
+#mac silly files
+.DS_Store
