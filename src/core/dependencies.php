@@ -5,17 +5,12 @@
  */
 
 use Slim\Container;
-use MongoDB\Client;
-use Monolog\Processor\UidProcessor;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use App\Models\Clothe;
 use App\Models\Food;
 use App\Models\Meal;
 use App\Models\MedicalAttention;
 use App\Models\Medicine;
 use App\Models\Operator;
-use App\Models\OperatorLevel;
 use App\Models\Refugee;
 use App\Models\Structure;
 use App\Controllers\ClotheController;
@@ -23,82 +18,19 @@ use App\Controllers\FoodController;
 use App\Controllers\MealController;
 use App\Controllers\MedicalAttentionController;
 use App\Controllers\MedicineController;
-use App\Controllers\OperatorLevelController;
 use App\Controllers\StructureController;
 use App\Controllers\RefugeeController;
 use App\Controllers\Home\IndexAction;
 use App\Controllers\Home\IndexLoggedAction;
-use App\Controllers\Operator\AuthOperatorAction;
-use App\Controllers\Operator\EditOperatorAction;
-use App\Controllers\Operator\LogOutOperatorAction;
-use App\Controllers\Operator\CreateOperatorAction;
-use App\Controllers\Operator\EnterOperatorDataAction;
-use App\Controllers\Operator\UpdateOperatorAction;
-use App\Controllers\Operator\DeleteOperatorAction;
-use App\Controllers\Operator\IndexAction as OperatorIndexAction;
-use App\Controllers\Operator\ListOperatorAction;
-use App\Auth\Auth;
-use Slim\Csrf\Guard;
-use App\Validation\Validator;
-use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
+use Respect\Validation\Validator;
+use Core\Services\Common as CommonServices;
+use Core\Services\Operator\Operator as OperatorModel;
+use Core\Services\Operator\OperatorActions;
+use Core\Services\OperatorLevel\OperatorLevel;
+use Core\Services\OperatorLevel\OperatorLevelActions;
+
 // DIC configuration
 $container = $app->getContainer();
-
-
-$container['auth'] = function (Container $container): Auth {
-
-    return new Auth($container['OperatorModel']);
-};
-
-/**
- * @param \Slim\Container $container
- * @return \Slim\Views\Twig
- */
-$container['view'] = function (Container $container): \Slim\Views\Twig {
-    $settings = $container->get('settings')['renderer'];
-    $view = new Slim\Views\Twig($settings['template_path'], $settings['debugger']);
-
-    $view->addExtension(new \Slim\Views\TwigExtension(
-        $container->router,
-        $container->request->getUri()
-    ));
-
-    $view->getEnvironment()->addGlobal('flash', $container->flash);
-    $view->getEnvironment()->addGlobal('auth', [
-        'check' => $container->auth->check(),
-        'user'  => $container->auth->user()
-    ]);
-    $view->addExtension(new \Twig_Extension_Debug());
-
-    return $view;
-};
-
-/**
- * @param \Slim\Container $container
- * @return \MongoDB\Client
- */
-$container['db'] = function (Container $container): Client {
-
-    $host = $container['settings']['db']['host'];
-    $port = $container['settings']['db']['port'];
-    $connectionUri = 'mongodb://' . $host . ':' . $port;
-    $dbConnection = new Client($connectionUri);
-
-    return $dbConnection;
-};
-
-/**
- * @param \Slim\Container $container
- * @return Logger
- */
-$container['logger'] = function (Container $container): Logger {
-    $settings = $container->get('settings')['logger'];
-    $logger = new Logger($settings['name']);
-    $logger->pushProcessor(new UidProcessor());
-    $logger->pushHandler(new StreamHandler($settings['path'], $settings['level']));
-    return $logger;
-};
 
 /**
  * @param \Slim\Container $container
@@ -123,42 +55,6 @@ $container['RefugeeController'] = function (Container $container): RefugeeContro
     );
 };
 
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Operator
- */
-$container['OperatorModel'] = function (Container $container): Operator {
-
-    $mongoClient = $container['db'];
-    $operatorCollection = $mongoClient->misericordia->operator;
-    $userModel = new Operator($operatorCollection);
-
-    return $userModel;
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Models\OperatorLevel
- */
-$container['OperatorLevelModel'] = function (Container $container): OperatorLevel {
-    $mongoClient = $container['db'];
-    $operatorLevelCollection = $mongoClient->misericordia->operator_level;
-    $userModel = new OperatorLevel($operatorLevelCollection);
-
-    return $userModel;
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\OperatorLevelController
- */
-$container['OperatorLevelController'] = function (Container $container): OperatorLevelController {
-
-    return new OperatorLevelController(
-        $container->view,
-        $container['OperatorLevelModel']
-    );
-};
 
 /**
  * @param \Slim\Container $container
@@ -293,16 +189,6 @@ $container['MedicalAttentionController'] = function (Container $container): Medi
     );
 };
 
-
-$container['csrf'] = function (Container $container): Guard {
-    return new Guard();
-};
-$container['validator'] = function (Container $container): Validator {
-    return new Validator();
-};
-$container['flash'] = function (Container $container): Messages {
-    return new Messages;
-};
 //ACTIONS
 /**
  * @param \Slim\Container $container
@@ -326,117 +212,10 @@ $container['HomeLoggedinIndexAction'] = function (Container $container): IndexLo
     );
 };
 
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\IndexAction
- */
-$container['OperatorIndexAction'] = function (Container $container): OperatorIndexAction {
+Validator::with('App\\Validation\\Rules');
 
-    return new OperatorIndexAction(
-        $container->view
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\IndexAction
- */
-$container['ListOperatorAction'] = function (Container $container): ListOperatorAction {
-
-    return new ListOperatorAction(
-        $container->view,
-        $container['OperatorModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\EnterOperatorDataAction
- */
-$container['EnterOperatorDataAction'] = function (Container $container): EnterOperatorDataAction {
-
-    return new EnterOperatorDataAction(
-        $container->view,
-        $container['OperatorLevelModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\CreateOperatorAction
- */
-$container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
-
-    return new CreateOperatorAction(
-        $container->router,
-        $container['validator'],
-        $container['OperatorModel'],
-        $container['flash'],
-        $container['OperatorLevelModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\CreateOperatorAction
- */
-$container['UpdateOperatorAction'] = function (Container $container): UpdateOperatorAction {
-
-    return new UpdateOperatorAction(
-        $container->router,
-        $container['validator'],
-        $container['OperatorModel'],
-        $container['flash'],
-        $container['OperatorLevelModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\EditOperatorAction
- */
-$container['EditOperatorAction'] = function (Container $container): EditOperatorAction {
-
-    return new EditOperatorAction(
-        $container->view,
-        $container['OperatorModel'],
-        $container['OperatorLevelModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\DeleteOperatorAction
- */
-$container['DeleteOperatorAction'] = function (Container $container): DeleteOperatorAction {
-
-    return new DeleteOperatorAction(
-        $container->router,
-        $container['auth'],
-        $container['OperatorModel'],
-        $container['flash'],
-        $container['OperatorLevelModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\AuthOperatorAction
- */
-$container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
-
-    return new AuthOperatorAction(
-        $container->router,
-        $container['auth'],
-        $container['validator'],
-        $container['OperatorModel'],
-        $container['flash']
-    );
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Operator\LogOutOperatorAction
- */
-$container['LogOutOperatorAction'] = function (Container $container): LogOutOperatorAction {
-
-    return new LogOutOperatorAction(
-        $container->router,
-        $container['auth']
-    );
-};
-
-v::with('App\\Validation\\Rules');
+$container->register(new CommonServices());
+$container->register(new OperatorModel());
+$container->register(new OperatorActions());
+$container->register(new OperatorLevel());
+$container->register(new OperatorLevelActions());
