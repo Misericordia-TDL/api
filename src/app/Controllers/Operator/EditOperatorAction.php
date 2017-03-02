@@ -10,6 +10,7 @@ use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Interfaces\RouterInterface;
 use Slim\Views\Twig as View;
 
 /**
@@ -41,13 +42,15 @@ final class EditOperatorAction
     function __construct(
         View $view,
         Operator $operatorModel,
-        OperatorLevel $operatorLevel
-
+        OperatorLevel $operatorLevel,
+        RouterInterface $router
     )
     {
         $this->operatorModel = $operatorModel;
         $this->operatorLevel = $operatorLevel;
         $this->view = $view;
+        $this->router = $router;
+
     }
 
     /**
@@ -59,10 +62,16 @@ final class EditOperatorAction
     {
         $id = $request->getAttribute('id');
         $levels = $this->operatorLevel->findAll();
-        $data = [
-            'operator' => $this->operatorModel->findById($id),
-            'levels' => $levels,
-        ];
-        return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
+        try {
+            $data = [
+                'operator' => $this->operatorModel->findById($id),
+                'levels' => $levels,
+            ];
+
+            return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
+
+        } catch (\InvalidArgumentException $e) {
+            return $response->withRedirect($this->router->pathFor('list-operator'));
+        }
     }
 }

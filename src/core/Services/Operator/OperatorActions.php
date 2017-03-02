@@ -96,7 +96,8 @@ class OperatorActions implements ServiceProviderInterface
             return new EditOperatorAction(
                 $container->view,
                 $container['OperatorModel'],
-                $container['OperatorLevelModel']
+                $container['OperatorLevelModel'],
+                $container->router
             );
         };
         /**
