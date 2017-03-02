@@ -88,13 +88,16 @@ final class DeleteOperatorAction
             return $response->withRedirect($this->router->pathFor('list-operator'));
         }
 
-        $operator = $this->operatorModel->delete($id);
+        try {
+            $operator = $this->operatorModel->delete($id);
 
-        if ($operator->active == 0) {
-            $this->flash->addMessage('info', 'Operator disabled correctly');
-        } else {
-            $this->flash->addMessage('error', 'Operator not disabled correctly');
-
+            if ($operator->active == 0) {
+                $this->flash->addMessage('info', 'Operator disabled correctly');
+            } else {
+                $this->flash->addMessage('error', 'Operator not disabled correctly');
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->flash->addMessage('error', 'Operator not found. Could not perform deletion.');
         }
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
