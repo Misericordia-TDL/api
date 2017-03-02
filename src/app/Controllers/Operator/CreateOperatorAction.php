@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Models\Exception\EmptyDataSetException;
 use App\Models\Operator;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
@@ -99,9 +100,16 @@ final class CreateOperatorAction
         $operatorData['active'] = 1;
         $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
 
-        $this->operatorModel->insert($operatorData);
+        try {
+            $this->operatorModel->insert($operatorData);
+            $this->flash->addMessage('info', 'Operator created correctly');
 
-        $this->flash->addMessage('info', 'Operator created correctly');
+        } catch (\InvalidArgumentException $e) {
+            $this->flash->addMessage('error', 'Operator not found. Could not perform deletion.');
+        } catch (EmptyDataSetException $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+        }
+
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
     }
