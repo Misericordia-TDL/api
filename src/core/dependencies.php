@@ -5,10 +5,6 @@
  */
 
 use Slim\Container;
-use App\Models\Clothe;
-use App\Models\MedicalAttention;
-use App\Controllers\ClotheController;
-use App\Controllers\MedicalAttentionController;
 use App\Controllers\Home\IndexAction;
 use App\Controllers\Home\IndexLoggedAction;
 use Respect\Validation\Validator;
@@ -27,6 +23,8 @@ use Core\Services\Food\Food;
 use Core\Services\Food\FoodActions;
 use Core\Services\Medicine\Medicine;
 use Core\Services\Medicine\MedicineActions;
+use Core\Services\Clothe\Clothe;
+use Core\Services\Clothe\ClotheActions;
 
 // DIC configuration
 $container = $app->getContainer();
@@ -35,49 +33,6 @@ $container = $app->getContainer();
 
 
 
-
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Clothe
- */
-$container['ClotheModel'] = function (Container $container): Clothe {
-    $mongoClient = $container['db'];
-    $foodCollection = $mongoClient->misericordia->clothe;
-    return new Clothe($foodCollection);
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\ClotheController
- */
-$container['ClotheController'] = function (Container $container): ClotheController {
-
-    return new ClotheController(
-        $container->view,
-        $container['ClotheModel']
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Models\MedicalAttention
- */
-$container['MedicalAttentionModel'] = function (Container $container): MedicalAttention {
-    $mongoClient = $container['db'];
-    $medicalAttentionCollection = $mongoClient->misericordia->medical_attention;
-    return new MedicalAttention($medicalAttentionCollection);
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\MedicalAttentionController
- */
-$container['MedicalAttentionController'] = function (Container $container): MedicalAttentionController {
-
-    return new MedicalAttentionController(
-        $container->view,
-        $container['MedicalAttentionModel']
-    );
-};
 
 //ACTIONS
 /**
@@ -119,3 +74,5 @@ $container->register(new Food());
 $container->register(new FoodActions());
 $container->register(new Medicine());
 $container->register(new MedicineActions());
+$container->register(new Clothe());
+$container->register(new ClotheActions());
