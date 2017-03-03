@@ -10,50 +10,26 @@ use App\Models\Food;
 use App\Models\Meal;
 use App\Models\MedicalAttention;
 use App\Models\Medicine;
-use App\Models\Structure;
 use App\Controllers\ClotheController;
 use App\Controllers\FoodController;
 use App\Controllers\MealController;
 use App\Controllers\MedicalAttentionController;
 use App\Controllers\MedicineController;
-use App\Controllers\StructureController;
 use App\Controllers\Home\IndexAction;
 use App\Controllers\Home\IndexLoggedAction;
 use Respect\Validation\Validator;
 use Core\Services\Common as CommonServices;
-use Core\Services\Operator\Operator as OperatorModel;
+use Core\Services\Operator\Operator as Operator;
 use Core\Services\Operator\OperatorActions;
 use Core\Services\OperatorLevel\OperatorLevel;
 use Core\Services\OperatorLevel\OperatorLevelActions;
 use Core\Services\Refugee\Refugee;
 use Core\Services\Refugee\RefugeeActions;
+use Core\Services\Structure\Structure;
 
 // DIC configuration
 $container = $app->getContainer();
 
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Structure
- */
-$container['StructureModel'] = function (Container $container): Structure {
-    $mongoClient = $container['db'];
-    $operatorLevelCollection = $mongoClient->misericordia->structure;
-    $structureModel = new Structure($operatorLevelCollection);
-
-    return $structureModel;
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\StructureController
- */
-$container['StructureController'] = function (Container $container): StructureController {
-
-    return new StructureController(
-        $container->view,
-        $container['StructureModel']
-    );
-};
 
 /**
  * @param \Slim\Container $container
@@ -190,9 +166,10 @@ $container['HomeLoggedinIndexAction'] = function (Container $container): IndexLo
 Validator::with('App\\Validation\\Rules');
 
 $container->register(new CommonServices());
-$container->register(new OperatorModel());
+$container->register(new Operator());
 $container->register(new OperatorActions());
 $container->register(new OperatorLevel());
 $container->register(new OperatorLevelActions());
 $container->register(new Refugee());
 $container->register(new RefugeeActions());
+$container->register(new Structure());
