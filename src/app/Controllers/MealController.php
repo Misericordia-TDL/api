@@ -58,6 +58,6 @@ class MealController
         //$this->mealModel->insert($mealData);
         $data = ['data' => $this->mealModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

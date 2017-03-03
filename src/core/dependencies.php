@@ -4,9 +4,6 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
-use Slim\Container;
-use App\Controllers\Home\IndexAction;
-use App\Controllers\Home\IndexLoggedAction;
 use Respect\Validation\Validator;
 use Core\Services\Common as CommonServices;
 use Core\Services\Operator\Operator as Operator;
@@ -25,38 +22,15 @@ use Core\Services\Medicine\Medicine;
 use Core\Services\Medicine\MedicineActions;
 use Core\Services\Clothe\Clothe;
 use Core\Services\Clothe\ClotheActions;
+use Core\Services\MedicalAttention\MedicalAttention;
+use Core\Services\MedicalAttention\MedicalAttentionActions;
+use Core\Services\Home\Home;
+use Core\Services\Home\HomeActions;
 
 // DIC configuration
 $container = $app->getContainer();
 
-
-
-
-
-
 //ACTIONS
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Home\IndexAction
- */
-$container['HomeIndexAction'] = function (Container $container): IndexAction {
-
-    return new IndexAction(
-        $container->view
-    );
-};
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\Home\IndexLoggedAction
- */
-$container['HomeLoggedinIndexAction'] = function (Container $container): IndexLoggedAction {
-
-    return new IndexLoggedAction(
-        $container->view,
-        $container['auth']
-    );
-};
-
 Validator::with('App\\Validation\\Rules');
 
 $container->register(new CommonServices());
@@ -76,3 +50,7 @@ $container->register(new Medicine());
 $container->register(new MedicineActions());
 $container->register(new Clothe());
 $container->register(new ClotheActions());
+$container->register(new MedicalAttention());
+$container->register(new MedicalAttentionActions());
+$container->register(new Home());
+$container->register(new HomeActions());

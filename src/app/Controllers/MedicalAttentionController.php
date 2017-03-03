@@ -58,9 +58,9 @@ class MedicalAttentionController
     "next_appointment_date": "03-03-1980"
   }';
         $medicalAttentionData = json_decode($json, true);
-        $this->medicalAttentionModel->insert($medicalAttentionData);
+        //$this->medicalAttentionModel->insert($medicalAttentionData);
         $data = ['data' => $this->medicalAttentionModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

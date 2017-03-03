@@ -61,6 +61,6 @@ class ClotheController
         $this->clotheModel->insert($clotheData);
         $data = ['data' => $this->clotheModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

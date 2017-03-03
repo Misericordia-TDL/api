@@ -57,6 +57,6 @@ class FoodController
         $this->foodModel->insert($foodData);
         $data = ['data' => $this->foodModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

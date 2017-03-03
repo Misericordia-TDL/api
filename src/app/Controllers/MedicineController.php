@@ -56,9 +56,9 @@ class MedicineController
     "quantity": 40
   }';
         $foodData = json_decode($json, true);
-        $this->medicineModel->insert($foodData);
+        //$this->medicineModel->insert($foodData);
         $data = ['data' => $this->medicineModel->findAll()];
 
-        return $this->view->render($response, 'home/index.twig', $data);
+        return $this->view->render($response, 'partials/home/index.twig', $data);
     }
 }

@@ -26,13 +26,13 @@ class Medicine implements ServiceProviderInterface
          * @param Container $container
          * @return MedicineModel
          */
-        $container['OperatorModel'] = function (Container $container): MedicineModel {
+        $container['MedicineModel'] = function (Container $container): MedicineModel {
 
             $mongoClient = $container['db'];
-            $operatorCollection = $mongoClient->misericordia->operator;
-            $userModel = new MedicineModel($operatorCollection);
+            $medicineCollection = $mongoClient->misericordia->medicine;
+            $medicineModel = new MedicineModel($medicineCollection);
 
-            return $userModel;
+            return $medicineModel;
         };
     }
 }

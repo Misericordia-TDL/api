@@ -58,7 +58,7 @@ namespace App\Models {
          */
         public function delete($id): UpdateResult
         {
-            return $this->update(['_id' => 'poo', 'active' => 0]);
+            return $this->update(['_id' => $id, 'active' => 0]);
         }
 
         /**
