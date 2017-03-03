@@ -4,6 +4,7 @@
  */
 
 namespace Core\Services\Operator;
+
 use App\Controllers\Operator\AuthOperatorAction;
 use App\Controllers\Operator\LogOutOperatorAction;
 use Pimple\Container;
@@ -15,8 +16,9 @@ use App\Controllers\Operator\UpdateOperatorAction;
 use App\Controllers\Operator\DeleteOperatorAction;
 use App\Controllers\Operator\IndexAction as OperatorIndexAction;
 use App\Controllers\Operator\ListOperatorAction;
+
 /**
- * Class Logout
+ * Class OperatorActions
  * @package Core\Services\Operator\Actions
  */
 class OperatorActions implements ServiceProviderInterface

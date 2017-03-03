@@ -31,27 +31,9 @@ use Core\Services\Structure\Structure;
 $container = $app->getContainer();
 
 
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Meal
- */
-$container['MealModel'] = function (Container $container): Meal {
-    $mongoClient = $container['db'];
-    $mealCollection = $mongoClient->misericordia->meal;
-    return new Meal($mealCollection);
-};
 
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\MealController
- */
-$container['MealController'] = function (Container $container): MealController {
 
-    return new MealController(
-        $container->view,
-        $container['MealModel']
-    );
-};
+
 
 /**
  * @param \Slim\Container $container

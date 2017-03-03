@@ -10,6 +10,10 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use App\Models\Refugee as RefugeeModel;
 
+/**
+ * Class Refugee
+ * @package Core\Services\Refugee
+ */
 class Refugee implements ServiceProviderInterface
 {
     /**

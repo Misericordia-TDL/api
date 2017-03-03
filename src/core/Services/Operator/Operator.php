@@ -12,7 +12,7 @@ use Pimple\ServiceProviderInterface;
 
 
 /**
- * Class Logout
+ * Class Operator
  * @package Core\Services\Operator\Actions
  */
 class Operator implements ServiceProviderInterface

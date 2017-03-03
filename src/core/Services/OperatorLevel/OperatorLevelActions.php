@@ -10,6 +10,10 @@ use App\Controllers\OperatorLevelController;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
+/**
+ * Class OperatorLevelActions
+ * @package Core\Services\OperatorLevel
+ */
 class OperatorLevelActions implements ServiceProviderInterface
 {
     /**

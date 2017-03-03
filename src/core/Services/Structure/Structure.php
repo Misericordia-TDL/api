@@ -8,7 +8,7 @@ namespace Core\Services\Structure;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-
+use App\Models\Structure as StructureModel;
 
 /**
  * Class Logout
@@ -24,12 +24,12 @@ class Structure implements ServiceProviderInterface
 
         /**
          * @param Container $container
-         * @return Structure
+         * @return StructureModel
          */
-        $container['StructureModel'] = function (Container $container): Structure {
+        $container['StructureModel'] = function (Container $container): StructureModel {
             $mongoClient = $container['db'];
             $operatorLevelCollection = $mongoClient->misericordia->structure;
-            $structureModel = new Structure($operatorLevelCollection);
+            $structureModel = new StructureModel($operatorLevelCollection);
 
             return $structureModel;
         };
