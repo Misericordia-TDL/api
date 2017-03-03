@@ -7,10 +7,8 @@
 use Slim\Container;
 use App\Models\Clothe;
 use App\Models\MedicalAttention;
-use App\Models\Medicine;
 use App\Controllers\ClotheController;
 use App\Controllers\MedicalAttentionController;
-use App\Controllers\MedicineController;
 use App\Controllers\Home\IndexAction;
 use App\Controllers\Home\IndexLoggedAction;
 use Respect\Validation\Validator;
@@ -27,33 +25,16 @@ use Core\Services\Meal\Meal;
 use Core\Services\Meal\MealActions;
 use Core\Services\Food\Food;
 use Core\Services\Food\FoodActions;
+use Core\Services\Medicine\Medicine;
+use Core\Services\Medicine\MedicineActions;
 
 // DIC configuration
 $container = $app->getContainer();
 
 
 
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Medicine
- */
-$container['MedicineModel'] = function (Container $container): Medicine {
-    $mongoClient = $container['db'];
-    $foodCollection = $mongoClient->misericordia->medicine;
-    return new Medicine($foodCollection);
-};
 
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\MedicineController
- */
-$container['MedicineController'] = function (Container $container): MedicineController {
 
-    return new MedicineController(
-        $container->view,
-        $container['MedicineModel']
-    );
-};
 
 /**
  * @param \Slim\Container $container
@@ -136,3 +117,5 @@ $container->register(new Meal());
 $container->register(new MealActions());
 $container->register(new Food());
 $container->register(new FoodActions());
+$container->register(new Medicine());
+$container->register(new MedicineActions());
