@@ -6,13 +6,9 @@
 
 use Slim\Container;
 use App\Models\Clothe;
-use App\Models\Food;
-use App\Models\Meal;
 use App\Models\MedicalAttention;
 use App\Models\Medicine;
 use App\Controllers\ClotheController;
-use App\Controllers\FoodController;
-use App\Controllers\MealController;
 use App\Controllers\MedicalAttentionController;
 use App\Controllers\MedicineController;
 use App\Controllers\Home\IndexAction;
@@ -26,36 +22,16 @@ use Core\Services\OperatorLevel\OperatorLevelActions;
 use Core\Services\Refugee\Refugee;
 use Core\Services\Refugee\RefugeeActions;
 use Core\Services\Structure\Structure;
+use Core\Services\Structure\StructureActions;
+use Core\Services\Meal\Meal;
+use Core\Services\Meal\MealActions;
+use Core\Services\Food\Food;
+use Core\Services\Food\FoodActions;
 
 // DIC configuration
 $container = $app->getContainer();
 
 
-
-
-
-
-/**
- * @param \Slim\Container $container
- * @return \App\Models\Food
- */
-$container['FoodModel'] = function (Container $container): Food {
-    $mongoClient = $container['db'];
-    $foodCollection = $mongoClient->misericordia->food;
-    return new Food($foodCollection);
-};
-
-/**
- * @param \Slim\Container $container
- * @return \App\Controllers\FoodController
- */
-$container['FoodController'] = function (Container $container): FoodController {
-
-    return new FoodController(
-        $container->view,
-        $container['FoodModel']
-    );
-};
 
 /**
  * @param \Slim\Container $container
@@ -155,3 +131,8 @@ $container->register(new OperatorLevelActions());
 $container->register(new Refugee());
 $container->register(new RefugeeActions());
 $container->register(new Structure());
+$container->register(new StructureActions());
+$container->register(new Meal());
+$container->register(new MealActions());
+$container->register(new Food());
+$container->register(new FoodActions());
