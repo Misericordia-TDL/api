@@ -38,6 +38,7 @@ final class EditOperatorAction
      * @param View $view
      * @param Operator $operatorModel
      * @param OperatorLevel $operatorLevel
+     * @param RouterInterface $router
      */
     function __construct(
         View $view,
