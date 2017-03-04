@@ -26,4 +26,15 @@ require __DIR__ . '/../src/core/middleware.php';
 // Register routes.php
 require __DIR__ . '/../src/core/routes.php';
 // Run app
+/**
+ * Workaround to use eloquent outside of laravel
+ * @see https://github.com/jenssegers/laravel-mongodb/issues/1037
+ */
+function app() {
+    return new class() {
+        public function version() {
+            return '5.3';
+        }
+    };
+}
 $app->run();
