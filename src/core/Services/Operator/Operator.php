@@ -6,6 +6,7 @@
 
 namespace Core\Services\Operator;
 
+use App\Models\Eloquent\OperatorRepository;
 use App\Models\Operator as OperatorModel;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -34,6 +35,14 @@ class Operator implements ServiceProviderInterface
             $userModel = new OperatorModel($operatorCollection);
 
             return $userModel;
+        };
+        /**
+         * @param Container $container
+         * @return OperatorRepository
+         */
+        $container['OperatorRepository'] = function (Container $container): OperatorRepository {
+
+            return new OperatorRepository();
         };
     }
 }

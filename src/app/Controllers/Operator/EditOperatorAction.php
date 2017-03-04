@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Models\Eloquent\OperatorRepository;
 use App\Models\Operator;
 use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
@@ -32,23 +33,27 @@ final class EditOperatorAction
      * @var OperatorLevel
      */
     private $operatorLevel;
+    /**
+     * @var OperatorRepository
+     */
+    private $operatorRepository;
 
     /**
      * IndexAction constructor.
      * @param View $view
-     * @param Operator $operatorModel
+     * @param OperatorRepository $operatorRepository
      * @param OperatorLevel $operatorLevel
      * @param RouterInterface $router
      */
     function __construct(
         View $view,
-        Operator $operatorModel,
+        OperatorRepository $operatorRepository,
         OperatorLevel $operatorLevel,
         RouterInterface $router
     )
     {
-        $this->operatorModel = $operatorModel;
         $this->operatorLevel = $operatorLevel;
+        $this->operatorRepository = $operatorRepository;
         $this->view = $view;
         $this->router = $router;
 
@@ -63,16 +68,16 @@ final class EditOperatorAction
     {
         $id = $request->getAttribute('id');
         $levels = $this->operatorLevel->findAll();
-        try {
-            $data = [
-                'operator' => $this->operatorModel->findById($id),
-                'levels' => $levels,
-            ];
 
-            return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
+        $operator = $this->operatorRepository->findById($id);
+        if (!$operator) return $response->withRedirect($this->router->pathFor('list-operator'));
 
-        } catch (\InvalidArgumentException $e) {
-            return $response->withRedirect($this->router->pathFor('list-operator'));
-        }
+        $data = [
+            'operator' => $operator,
+            'levels' => $levels,
+        ];
+
+        return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
+
     }
 }

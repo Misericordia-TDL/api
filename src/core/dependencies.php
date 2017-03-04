@@ -26,7 +26,8 @@ use Core\Services\MedicalAttention\MedicalAttention;
 use Core\Services\MedicalAttention\MedicalAttentionActions;
 use Core\Services\Home\Home;
 use Core\Services\Home\HomeActions;
-
+use Illuminate\Database\Capsule\Manager;
+use Jenssegers\Mongodb\Connection;
 // DIC configuration
 $container = $app->getContainer();
 
@@ -54,3 +55,14 @@ $container->register(new MedicalAttention());
 $container->register(new MedicalAttentionActions());
 $container->register(new Home());
 $container->register(new HomeActions());
+
+//Setup eloquent for mongodb to work
+$capsule = new Manager();
+$capsule->getDatabaseManager()->extend('mongodb', function($config)
+{
+    return new Connection($config);
+});
+
+$capsule->addConnection($container['settings']['db']);
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
