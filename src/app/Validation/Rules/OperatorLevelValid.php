@@ -5,26 +5,13 @@
 
 namespace App\Validation\Rules;
 
-use App\Models\Operator;
-use App\Models\OperatorLevel;
+use App\Models\OperatorLevelEloquent as OperatorLevel;
 use Respect\Validation\Rules\AbstractRule;
 
 class OperatorLevelValid extends AbstractRule
 {
-    /**
-     * @var OperatorLevel
-     */
-    private $operatorLevelModel;
-
-    function __construct(
-        OperatorLevel $operatorLevelModel
-    )
-    {
-        $this->operatorLevelModel = $operatorLevelModel;
-    }
-
     public function validate($input)
     {
-        return !empty($this->operatorLevelModel->findByLevel($input));
+        return !empty(OperatorLevel::where('level', '=', $input)->first());
     }
 }

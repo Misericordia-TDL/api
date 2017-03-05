@@ -6,7 +6,6 @@
 namespace App\Controllers\Operator;
 
 use App\Repository\OperatorRepository;
-use App\Models\OperatorLevel;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Flash\Messages;
@@ -38,10 +37,6 @@ final class UpdateOperatorAction
      * @var Messages
      */
     private $flash;
-    /**
-     * @var OperatorLevel
-     */
-    private $operatorLevel;
 
     /**
      * OperatorController constructor.
@@ -49,21 +44,18 @@ final class UpdateOperatorAction
      * @param Validator $validator
      * @param OperatorRepository $operatorRepository
      * @param Messages $flash
-     * @param OperatorLevel $operatorLevel
      * @internal param View $view
      */
     function __construct(
         RouterInterface $router,
         Validator $validator,
         OperatorRepository $operatorRepository,
-        Messages $flash,
-        OperatorLevel $operatorLevel
+        Messages $flash
     )
     {
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
-        $this->operatorLevel = $operatorLevel;
         $this->operatorRepository = $operatorRepository;
     }
 
@@ -85,7 +77,7 @@ final class UpdateOperatorAction
             'name' => v::notEmpty()->alpha()->length(2, 20),
             'surname' => v::notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
-            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
+            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
         ]);
 
         if ($validation->failed()) {
