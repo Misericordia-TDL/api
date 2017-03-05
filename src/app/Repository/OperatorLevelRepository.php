@@ -14,7 +14,7 @@ class OperatorLevelRepository extends AbstractRepository
     /**
      * @var string
      */
-    protected $modelClass = '\App\Models\OperatorLevelEloquent';
+    protected $modelClass = '\App\Models\OperatorLevel';
 
     /**
      * @param $level
