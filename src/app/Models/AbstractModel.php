@@ -6,80 +6,31 @@
 
 namespace App\Models;
 
-use App\Models\Base\CommonTrait;
-use App\Models\Exception\EmptyDataSetException;
-use MongoDB\BSON\ObjectID;
-use MongoDB\Collection;
-use MongoDB\InsertOneResult;
-use MongoDB\Model\BSONDocument;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 /**
  * Class AbstractModel
  * @package App\Models
  * @author Javier Mellado <sol@javiermellado.com>
  */
-abstract class AbstractModel
+abstract class AbstractModel extends Eloquent
 {
-    use CommonTrait;
-
     /**
-     * @var \MongoDB\Collection
+     * string collection name
      */
     protected $collection;
 
+    use SoftDeletes;
+
     /**
+     * The attributes that should be mutated to dates.
      *
-     * Refugee constructor.
-     * @param Collection $collection
+     * @var array
      */
-    function __construct(Collection $collection)
-    {
-        $this->collection = $collection;
-    }
-
-    /**
-     * @param string $activeField
-     * @return array
-     */
-    public function findAll(string $activeField = null): array
-    {
-        $activeData = [];
-        if ($activeField !== null) {
-            $activeData = [$activeField => 1];
-        }
-        return $this->collection->find($activeData)->toArray();
-    }
-
-    /**
-     * @param $id
-     * @return BSONDocument
-     */
-    public function findById($id): BSONDocument
-    {
-        $mongoId = new ObjectID($id);
-        return $this->collection->findOne(['_id' => $mongoId]);
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    abstract function insert($data);
-
-    /**
-     * @param array $data
-     * @param array $dateFields
-     * @return InsertOneResult
-     * @throws \Exception
-     */
-    public function persist(array $data, array $dateFields = []): InsertOneResult
-    {
-        if (empty($data)) {
-            throw new EmptyDataSetException('data set provided to persist is empty');
-        }
-        if (!empty($dateFields)) {
-            $this->prepareDateFields($data, $dateFields);
-        }
-        return $this->collection->insertOne($data);
-    }
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }
