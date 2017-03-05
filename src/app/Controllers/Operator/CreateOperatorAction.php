@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Models\Eloquent\OperatorRepository;
 use App\Models\Exception\EmptyDataSetException;
 use App\Models\Operator;
 use App\Models\OperatorLevel;
@@ -24,9 +25,9 @@ use Respect\Validation\Validator as v;
 final class CreateOperatorAction
 {
     /**
-     * @var Operator
+     * @var OperatorRepository
      */
-    protected $operatorModel;
+    protected $operatorRepository;
     /**
      * @var RouterInterface
      */
@@ -48,7 +49,7 @@ final class CreateOperatorAction
      * OperatorController constructor.
      * @param RouterInterface $router
      * @param Validator $validator
-     * @param Operator $operatorModel
+     * @param OperatorRepository $operatorRepository
      * @param Messages $flash
      * @param OperatorLevel $operatorLevel
      * @internal param View $view
@@ -56,12 +57,12 @@ final class CreateOperatorAction
     function __construct(
         RouterInterface $router,
         Validator $validator,
-        Operator $operatorModel,
+        OperatorRepository $operatorRepository,
         Messages $flash,
         OperatorLevel $operatorLevel
     )
     {
-        $this->operatorModel = $operatorModel;
+        $this->operatorRepository = $operatorRepository;
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
@@ -96,12 +97,8 @@ final class CreateOperatorAction
             $operatorData['csrf_value']
         );
 
-        $operatorData['join_date'] = date('m-d-y');
-        $operatorData['active'] = 1;
-        $operatorData['password'] = password_hash($operatorData['password'], PASSWORD_DEFAULT);
-
         try {
-            $this->operatorModel->insert($operatorData);
+            $this->operatorRepository->insert($operatorData);
             $this->flash->addMessage('info', 'Operator created correctly');
 
         } catch (\InvalidArgumentException $e) {

@@ -70,7 +70,7 @@ class OperatorActions implements ServiceProviderInterface
             return new CreateOperatorAction(
                 $container->router,
                 $container['validator'],
-                $container['OperatorModel'],
+                $container['OperatorRepository'],
                 $container['flash'],
                 $container['OperatorLevelModel']
             );
