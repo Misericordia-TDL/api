@@ -34,10 +34,6 @@ final class DeleteOperatorAction
      */
     private $flash;
     /**
-     * @var OperatorLevel
-     */
-    private $operatorLevel;
-    /**
      * @var Auth
      */
     private $auth;
@@ -48,7 +44,6 @@ final class DeleteOperatorAction
      * @param Auth $auth
      * @param OperatorRepository $operatorRepository
      * @param Messages $flash
-     * @param OperatorLevel $operatorLevel
      * @internal param Validator $validator
      * @internal param View $view
      */
@@ -56,13 +51,11 @@ final class DeleteOperatorAction
         RouterInterface $router,
         Auth $auth,
         OperatorRepository $operatorRepository,
-        Messages $flash,
-        OperatorLevel $operatorLevel
+        Messages $flash
     )
     {
         $this->router = $router;
         $this->flash = $flash;
-        $this->operatorLevel = $operatorLevel;
         $this->operatorRepository = $operatorRepository;
         $this->auth = $auth;
     }
