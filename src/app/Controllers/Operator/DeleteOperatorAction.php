@@ -7,15 +7,12 @@ namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
 use App\Models\Eloquent\OperatorRepository;
-use App\Models\Operator;
 use App\Models\OperatorLevel;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
-use Respect\Validation\Validator as v;
 
 /**
  * Class DeleteOperatorAction
@@ -86,9 +83,8 @@ final class DeleteOperatorAction
         }
 
         try {
-            $operator = $this->operatorRepository->delete($id);
 
-            if ($operator->active == 0) {
+            if ($this->operatorRepository->delete($id)) {
                 $this->flash->addMessage('info', 'Operator disabled correctly');
             } else {
                 $this->flash->addMessage('error', 'Operator not disabled correctly');
