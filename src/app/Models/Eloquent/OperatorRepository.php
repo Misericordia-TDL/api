@@ -5,6 +5,10 @@
 
 namespace App\Models\Eloquent;
 
+/**
+ * Class OperatorRepository
+ * @package App\Models\Eloquent
+ */
 class OperatorRepository
 {
 
@@ -29,5 +33,15 @@ class OperatorRepository
     public function findByEmail(string $email)
     {
         return $this->find('email', $email);
+    }
+
+    /**
+     * @param array $data
+     * @return
+     */
+    public function update($data)
+    {
+
+        return Operator::where('id', '=', $data['id'])->update($data);
     }
 }
