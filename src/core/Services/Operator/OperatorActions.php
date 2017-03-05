@@ -111,7 +111,6 @@ class OperatorActions implements ServiceProviderInterface
             return new DeleteOperatorAction(
                 $container->router,
                 $container['auth'],
-                $container['OperatorModel'],
                 $container['OperatorRepository'],
                 $container['flash'],
                 $container['OperatorLevelModel']

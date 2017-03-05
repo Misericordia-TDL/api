@@ -91,14 +91,8 @@ final class CreateOperatorAction
             return $response->withRedirect($this->router->pathFor('enter-operator-data'));
         }
 
-        $operatorData = $request->getParams();
-        unset(
-            $operatorData['csrf_name'],
-            $operatorData['csrf_value']
-        );
-
         try {
-            $this->operatorRepository->insert($operatorData);
+            $this->operatorRepository->insert($request->getParams());
             $this->flash->addMessage('info', 'Operator created correctly');
 
         } catch (\InvalidArgumentException $e) {
