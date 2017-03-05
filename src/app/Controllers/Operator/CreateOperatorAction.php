@@ -77,7 +77,7 @@ final class CreateOperatorAction
     {
 
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken($this->operatorModel),
+            'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken(),
             'password' => v::noWhitespace()->notEmpty(),
             'name' => v::notEmpty()->alpha()->length(2, 20),
             'surname' => v::notEmpty()->alpha()->length(2, 20),

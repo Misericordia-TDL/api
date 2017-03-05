@@ -10,17 +10,8 @@ use Respect\Validation\Rules\AbstractRule;
 
 class EmailNotTaken extends AbstractRule
 {
-    protected $operatorModel;
-
-    function __construct(
-        Operator $operatorModel
-    )
-    {
-        $this->operatorModel = $operatorModel;
-    }
-
     public function validate($input)
     {
-        return empty($this->operatorModel->findByEmail($input));
+        return empty(Operator::where('email', '=', $input)->first());
     }
 }
