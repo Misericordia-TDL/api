@@ -39,10 +39,6 @@ final class CreateOperatorAction
      * @var Messages
      */
     private $flash;
-    /**
-     * @var OperatorLevel
-     */
-    private $operatorLevel;
 
     /**
      * OperatorController constructor.
@@ -50,22 +46,19 @@ final class CreateOperatorAction
      * @param Validator $validator
      * @param OperatorRepository $operatorRepository
      * @param Messages $flash
-     * @param OperatorLevel $operatorLevel
      * @internal param View $view
      */
     function __construct(
         RouterInterface $router,
         Validator $validator,
         OperatorRepository $operatorRepository,
-        Messages $flash,
-        OperatorLevel $operatorLevel
+        Messages $flash
     )
     {
         $this->operatorRepository = $operatorRepository;
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
-        $this->operatorLevel = $operatorLevel;
     }
 
     /**
@@ -82,7 +75,7 @@ final class CreateOperatorAction
             'name' => v::notEmpty()->alpha()->length(2, 20),
             'surname' => v::notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
-            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid($this->operatorLevel),
+            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
         ]);
 
         if ($validation->failed()) {
