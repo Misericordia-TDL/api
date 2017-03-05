@@ -36,7 +36,7 @@ $app->group('/operator', function () {
     $this->get('/create', 'EnterOperatorDataAction')->setName('enter-operator-data');
     $this->post('/create', 'CreateOperatorAction')->setName('create-operator');
     $this->get('/update/{id}', 'EditOperatorAction')->setName('edit-operator');
-    $this->post('/update', 'UpdateOperatorAction')->setName('update-operator');
+    $this->post('/update/{id}', 'UpdateOperatorAction')->setName('update-operator');
     $this->post('/delete', 'DeleteOperatorAction')->setName('delete-operator');
     $this->get('/list', 'ListOperatorAction')->setName('list-operator');
 
