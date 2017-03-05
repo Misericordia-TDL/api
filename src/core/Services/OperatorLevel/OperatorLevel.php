@@ -7,6 +7,7 @@
 namespace Core\Services\OperatorLevel;
 
 use App\Models\OperatorLevel as OperatorLevelModel;
+use App\Repository\OperatorLevelRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -33,6 +34,14 @@ class OperatorLevel implements ServiceProviderInterface
             $userModel = new OperatorLevelModel($operatorLevelCollection);
 
             return $userModel;
+        };
+        /**
+         * @param Container $container
+         * @return OperatorLevelRepository
+         */
+        $container['OperatorLevelRepository'] = function (Container $container): OperatorLevelRepository {
+
+            return new OperatorLevelRepository();
         };
     }
 }
