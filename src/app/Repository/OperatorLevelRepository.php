@@ -15,4 +15,13 @@ class OperatorLevelRepository extends AbstractRepository
      * @var string
      */
     protected $modelClass = '\App\Models\OperatorLevelEloquent';
+
+    /**
+     * @param $level
+     * @return mixed
+     */
+    public function findByLevel($level)
+    {
+        return $this->find('level', $level);
+    }
 }
