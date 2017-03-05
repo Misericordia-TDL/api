@@ -24,7 +24,6 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Level</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -37,7 +36,6 @@
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ operatorLevel.name }}</td>
                         <td>{{ operatorLevel.description }}</td>
-                        <td>{{ operatorLevel.level }}</td>
                         <td>
                             <div class="btn-toolbar" role="group" aria-label="...">
                                 <a class="btn btn-default" href="{{ path_for('edit-operator-level',{'id': operatorLevel._id }) }}"
