@@ -43,14 +43,22 @@ class OperatorLevelActions implements ServiceProviderInterface
          * @return EnterOperatorLevelDataAction
          */
         $container['EnterOperatorLevelDataAction'] = function (Container $container): EnterOperatorLevelDataAction {
-
+            return new EnterOperatorLevelDataAction(
+                $container->view,
+                $container['OperatorLevelRepository']
+            );
         };
         /**
          * @param Container $container
          * @return CreateOperatorLevelAction
          */
         $container['CreateOperatorLevelAction'] = function (Container $container): CreateOperatorLevelAction {
-
+            return new CreateOperatorLevelAction(
+                $container->router,
+                $container['validator'],
+                $container['OperatorLevelRepository'],
+                $container['flash']
+            );
         };
         /**
          * @param Container $container
