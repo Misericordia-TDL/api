@@ -55,4 +55,15 @@ class OperatorRepository
         return $operator->delete();
 
     }
+    /**
+     * @param array $data
+     * @return
+     */
+    public function insert($data)
+    {
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        return Operator::create($data);
+
+    }
 }
