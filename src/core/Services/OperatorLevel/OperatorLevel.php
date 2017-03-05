@@ -6,7 +6,6 @@
 
 namespace Core\Services\OperatorLevel;
 
-use App\Models\OperatorLevel as OperatorLevelModel;
 use App\Repository\OperatorLevelRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -24,17 +23,6 @@ class OperatorLevel implements ServiceProviderInterface
     public function register(Container $container)
     {
 
-        /**
-         * @param Container $container
-         * @return OperatorLevelModel
-         */
-        $container['OperatorLevelModel'] = function (Container $container): OperatorLevelModel {
-            $mongoClient = $container['db'];
-            $operatorLevelCollection = $mongoClient->misericordia->operator_level;
-            $userModel = new OperatorLevelModel($operatorLevelCollection);
-
-            return $userModel;
-        };
         /**
          * @param Container $container
          * @return OperatorLevelRepository

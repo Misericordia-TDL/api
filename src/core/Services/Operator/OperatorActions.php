@@ -58,7 +58,7 @@ class OperatorActions implements ServiceProviderInterface
 
             return new EnterOperatorDataAction(
                 $container->view,
-                $container['OperatorLevelModel']
+                $container['OperatorLevelRepository']
             );
         };
         /**
@@ -71,8 +71,7 @@ class OperatorActions implements ServiceProviderInterface
                 $container->router,
                 $container['validator'],
                 $container['OperatorRepository'],
-                $container['flash'],
-                $container['OperatorLevelModel']
+                $container['flash']
             );
         };
         /**
@@ -111,8 +110,7 @@ class OperatorActions implements ServiceProviderInterface
                 $container->router,
                 $container['auth'],
                 $container['OperatorRepository'],
-                $container['flash'],
-                $container['OperatorLevelModel']
+                $container['flash']
             );
         };
 
