@@ -20,7 +20,7 @@ class OperatorRepository
     public function findById($id)
     {
 
-        return $this->find('id', $id);
+        return $this->find('_id', $id);
 
     }
 
@@ -42,6 +42,17 @@ class OperatorRepository
     public function update($data)
     {
 
-        return Operator::where('id', '=', $data['id'])->update($data);
+        return $this->findById($data['id'])->update($data);
+    }
+    /**
+     * @param string $id
+     * @return
+     */
+    public function delete($id)
+    {
+        $operator = $this->findById($id);
+
+        return $operator->delete();
+
     }
 }
