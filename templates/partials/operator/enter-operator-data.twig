@@ -49,7 +49,7 @@
                 <select name="operator_level" class="form-control">
                         <option value="-">Select level</option>
                     {% for level in levels %}
-                        <option value="{{ level.level }}" {{ old.operator_level == level.level ? ' selected' : '' }}>{{ level.name }}</option>
+                        <option value="{{ level._id }}" {{ old.operator_level == level._id ? ' selected' : '' }}>{{ level.name }}</option>
                     {% endfor %}
                 </select>
                 {% if errors.level %}

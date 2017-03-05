@@ -29,4 +29,9 @@ class Operator extends AbstractModel
         'operator_level',
         'phonenumber',
     ];
+
+    public function level()
+    {
+        return $this->embedsOne('App\Models\OperatorLevel', 'operator_level');
+    }
 }

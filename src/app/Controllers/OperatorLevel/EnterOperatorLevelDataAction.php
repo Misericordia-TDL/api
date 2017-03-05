@@ -52,6 +52,6 @@ final class EnterOperatorLevelDataAction
         $data = [
             'levels' => $levels
         ];
-        return $this->view->render($response, 'partials/operator-level/enter-operator-data.twig', $data);
+        return $this->view->render($response, 'partials/operator-level/enter-operator-level-data.twig', $data);
     }
 }

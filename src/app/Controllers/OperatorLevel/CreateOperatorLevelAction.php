@@ -5,8 +5,8 @@
 
 namespace App\Controllers\OperatorLevel;
 
-use App\Models\OperatorLevel;
 use App\Repository\OperatorLevelRepository;
+use App\Models\Exception\EmptyDataSetException;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
@@ -16,11 +16,11 @@ use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
 
 /**
- * Class UpdateOperatorLevelAction
- * @package App\Controllers\Operator
+ * Class CreateOperatorLevelAction
+ * @package App\Controllers\OperatorLevel
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class UpdateOperatorLevelAction
+final class CreateOperatorLevelAction
 {
     /**
      * @var OperatorLevelRepository
@@ -54,10 +54,10 @@ final class UpdateOperatorLevelAction
         Messages $flash
     )
     {
+        $this->operatorLevelRepository = $operatorLevelRepository;
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
-        $this->operatorLevelRepository = $operatorLevelRepository;
     }
 
     /**
@@ -69,11 +69,6 @@ final class UpdateOperatorLevelAction
     {
 
         try {
-            $id = $request->getAttribute('id');
-            /** @var  OperatorLevel $originalOperatorLevel */
-            $originalOperatorLevel = $this->operatorLevelRepository->findById($id);
-var_dump($originalOperatorLevel->operators()); die;;
-
             $validation = $this->validator->validate($request, [
                 'name' => v::notEmpty()->alpha()->length(2, 20),
                 'description' => v::notEmpty()->alpha()->length(2, 20),
@@ -81,18 +76,16 @@ var_dump($originalOperatorLevel->operators()); die;;
 
             if ($validation->failed()) {
                 $this->flash->addMessage('error', 'Operator level data is not correct');
-                return $response->withRedirect($this->router->pathFor('edit-operator-level', ['id' => $id]));
+                return $response->withRedirect($this->router->pathFor('enter-operator-level-data'));
             }
 
-            $originalOperatorLevel->update($request->getParams());
+            $this->operatorLevelRepository->insert($request->getParams());
+            $this->flash->addMessage('info', 'Operator created correctly');
 
-            $this->flash->addMessage('info', 'Operator Level updated correctly');
-
-            return $response->withRedirect($this->router->pathFor('list-operator-level'));
         } catch (\InvalidArgumentException $e) {
-            return $response->withRedirect($this->router->pathFor('list-operator-level'));
+        } catch (EmptyDataSetException $e) {
+            $this->flash->addMessage('error', $e->getMessage());
         }
-
-
+        return $response->withRedirect($this->router->pathFor('list-operator-level'));
     }
 }
