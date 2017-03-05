@@ -26,4 +26,10 @@ class OperatorLevel extends AbstractModel
         'description',
         'level',
     ];
+
+    public function operators()
+    {
+        return $this->embedsOne('App\Models\Operator', '_id','operator_level');
+    }
+
 }

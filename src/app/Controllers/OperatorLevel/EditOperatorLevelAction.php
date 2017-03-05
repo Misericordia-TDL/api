@@ -60,11 +60,6 @@ final class EditOperatorLevelAction
             $levels = $this->operatorLevelRepository->getAll();
 
             $operatorLevel = $this->operatorLevelRepository->findById($id);
-            $pe = $operatorLevel->operators();
-            foreach ($operatorLevel->operators() as $operator) {
-                var_dump($operator);
-                die('33');
-            }
             $data = [
                 'operatorLevel' => $operatorLevel,
                 'levels' => $levels,
