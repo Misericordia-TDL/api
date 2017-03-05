@@ -22,7 +22,19 @@ class Operator extends Eloquent
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'surname',
+        'email',
+        'password',
+        'operator_level',
+        'phonenumber',
+    ];
 }
