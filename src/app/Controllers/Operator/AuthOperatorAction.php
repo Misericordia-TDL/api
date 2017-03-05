@@ -6,9 +6,8 @@
 namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
-use App\Models\Operator;
-use Psr\Http\Message\ResponseInterface;
 use App\Validation\Validator;
+use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
 use Slim\Flash\Messages;
 use Slim\Http\Request;
@@ -34,11 +33,8 @@ final class AuthOperatorAction
      * @var RouterInterface
      */
     protected $router;
-    /**
-     * @var Operator
-     */
-    protected $operatorModel;
-    /** @var Messages  */
+
+    /** @var Messages */
     protected $flash;
 
     /**
@@ -46,21 +42,18 @@ final class AuthOperatorAction
      * @param RouterInterface $router
      * @param Auth $auth
      * @param Validator $validator
-     * @param Operator $operatorModel
      * @param Messages $flash
      */
     function __construct(
         RouterInterface $router,
         Auth $auth,
         Validator $validator,
-        Operator $operatorModel,
         Messages $flash
     )
     {
         $this->auth = $auth;
         $this->router = $router;
         $this->validator = $validator;
-        $this->operatorModel = $operatorModel;
         $this->flash = $flash;
     }
 
@@ -72,7 +65,7 @@ final class AuthOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->emailValid($this->operatorModel),
+            'email' => v::noWhitespace()->notEmpty()->emailValid(),
             'password' => v::noWhitespace()->notEmpty()->passwordValid($request->getParam('email'), $this->auth),
         ]);
 
