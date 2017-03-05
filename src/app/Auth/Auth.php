@@ -64,14 +64,15 @@ class Auth
     {
         //grab the user by email
         //if !user return false
-        if (!$operator = $this->operatorRepository->findByEmail($email)) {
-            return false;
-        }
-        //verify password for that user
-        if (password_verify($password, $operator->password)) {
-            //set into session
-            $_SESSION['operator'] = $operator->id;
-            return true;
+        try{
+            $operator = $this->operatorRepository->findByEmail($email);
+            //verify password for that user
+            if (password_verify($password, $operator->password)) {
+                //set into session
+                $_SESSION['operator'] = $operator->id;
+                return true;
+            }
+        } catch (\InvalidArgumentException $e) {
         }
         return false;
     }

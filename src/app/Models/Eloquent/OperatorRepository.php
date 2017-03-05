@@ -26,7 +26,7 @@ class OperatorRepository
     {
         $operator = Operator::where($field, '=', $value)->first();
 
-        if (!$operator) throw new \InvalidArgumentException;
+        if (!$operator) throw new \InvalidArgumentException('Operator not found');
 
         return $operator;
     }

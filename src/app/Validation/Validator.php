@@ -19,6 +19,8 @@ class Validator
                 $rule->setName(ucfirst($field))->assert($request->getParam($field));
             } catch (NestedValidationException $e) {
                 $this->errors[$field] = $e->getMessages();
+            } catch (\InvalidArgumentException $e) {
+                $this->errors[$field] = $e->getMessages();
             }
         }
 
