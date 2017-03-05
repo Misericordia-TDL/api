@@ -7,6 +7,7 @@ namespace App\Controllers\Operator;
 
 use App\Models\Operator;
 use App\Models\OperatorLevel;
+use App\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -24,6 +25,10 @@ final class EnterOperatorDataAction
      */
     protected $view;
     /**
+     * @var OperatorLevelRepository
+     */
+    protected $operatorLevelRepository;
+    /**
      * @var OperatorLevel
      */
     private $operatorLevel;
@@ -31,15 +36,15 @@ final class EnterOperatorDataAction
     /**
      * OperatorController constructor.
      * @param View $view
-     * @param OperatorLevel $operatorLevel
+     * @param OperatorLevelRepository $operatorLevelRepository
      */
     function __construct(
         View $view,
-        OperatorLevel $operatorLevel
+        OperatorLevelRepository $operatorLevelRepository
     )
     {
         $this->view = $view;
-        $this->operatorLevel = $operatorLevel;
+        $this->operatorLevelRepository = $operatorLevelRepository;
     }
 
     /**
@@ -49,7 +54,7 @@ final class EnterOperatorDataAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $levels = $this->operatorLevel->findAll();
+        $levels = $this->operatorLevelRepository->getAll();
         $data = [
             'levels' => $levels
         ];
