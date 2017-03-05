@@ -41,3 +41,14 @@ $app->group('/operator', function () {
     $this->get('/list', 'ListOperatorAction')->setName('list-operator');
 
 })->add(new AuthMiddleware($container));
+
+$app->group('/operator-level', function () {
+
+    $this->get('/create', 'EnterOperatorLevelDataAction')->setName('enter-operator-level-data');
+    $this->post('/create', 'CreateOperatorAction')->setName('create-operator-level');
+    $this->get('/update/{id}', 'EditOperatorAction')->setName('edit-operator-level');
+    $this->post('/update/{id}', 'UpdateOperatorAction')->setName('update-operator-level');
+    $this->post('/delete', 'DeleteOperatorAction')->setName('delete-operator-level');
+    $this->get('/list', 'ListOperatorLevelAction')->setName('list-operator-level');
+
+})->add(new AuthMiddleware($container));
