@@ -6,8 +6,7 @@
 
 namespace App\Auth;
 
-use App\Models\Operator;
-use MongoDB\BSON\ObjectID;
+use App\Models\Eloquent\OperatorRepository;
 
 
 /**
@@ -17,19 +16,19 @@ use MongoDB\BSON\ObjectID;
 class Auth
 {
 
-    /** @var Operator */
-    private $operator;
+    /** @var OperatorRepository */
+    private $operatorRepository;
     private $user = null;
 
     /**
      * Auth constructor.
-     * @param Operator $operator
+     * @param OperatorRepository $operatorRepository
      */
     function __construct(
-        Operator $operator
+        OperatorRepository $operatorRepository
     )
     {
-        $this->operator = $operator;
+        $this->operatorRepository = $operatorRepository;
     }
 
     public function check()
@@ -41,7 +40,7 @@ class Auth
     {
         if (isset($_SESSION['operator'])) {
             if ($this->user === null) {
-                $this->user = $this->operator->findById($_SESSION['operator']);
+                $this->user = $this->operatorRepository->findById($_SESSION['operator']);
             }
             return $this->user;
         }
@@ -65,13 +64,13 @@ class Auth
     {
         //grab the user by email
         //if !user return false
-        if (!$operator = $this->operator->findByEmail($email)) {
+        if (!$operator = $this->operatorRepository->findByEmail($email)) {
             return false;
         }
         //verify password for that user
         if (password_verify($password, $operator->password)) {
             //set into session
-            $_SESSION['operator'] = $operator->_id->__toString();
+            $_SESSION['operator'] = $operator->id;
             return true;
         }
         return false;

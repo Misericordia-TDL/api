@@ -67,7 +67,7 @@ class Common implements ServiceProviderInterface
 
         $container['auth'] = function (Container $container): Auth {
 
-            return new Auth($container['OperatorModel']);
+            return new Auth($container['OperatorRepository']);
         };
 
         /**
