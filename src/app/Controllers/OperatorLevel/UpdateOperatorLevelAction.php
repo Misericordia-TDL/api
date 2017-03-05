@@ -72,7 +72,6 @@ final class UpdateOperatorLevelAction
             $id = $request->getAttribute('id');
             /** @var  OperatorLevel $originalOperatorLevel */
             $originalOperatorLevel = $this->operatorLevelRepository->findById($id);
-var_dump($originalOperatorLevel->operators()); die;;
 
             $validation = $this->validator->validate($request, [
                 'name' => v::notEmpty()->alpha()->length(2, 20),
