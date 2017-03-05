@@ -10,13 +10,6 @@ use Respect\Validation\Rules\AbstractRule;
 
 class EmailValid extends AbstractRule
 {
-    protected $operatorModel;
-
-    function __construct(
-    )
-    {
-    }
-
     public function validate($input)
     {
         return !empty(Operator::where('email', '=', $input)->first());
