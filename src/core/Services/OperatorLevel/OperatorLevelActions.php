@@ -6,7 +6,12 @@
 
 namespace Core\Services\OperatorLevel;
 
+use App\Controllers\OperatorLevel\CreateOperatorLevelAction;
+use App\Controllers\OperatorLevel\DeleteOperatorLevelAction;
+use App\Controllers\OperatorLevel\EditOperatorLevelAction;
+use App\Controllers\OperatorLevel\EnterOperatorLevelDataAction;
 use App\Controllers\OperatorLevel\ListOperatorLevelAction;
+use App\Controllers\OperatorLevel\UpdateOperatorLevelAction;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -35,93 +40,39 @@ class OperatorLevelActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\EnterOperatorDataAction
+         * @return EnterOperatorLevelDataAction
          */
-        $container['EnterOperatorDataAction'] = function (Container $container): EnterOperatorDataAction {
+        $container['EnterOperatorLevelDataAction'] = function (Container $container): EnterOperatorLevelDataAction {
 
-            return new EnterOperatorDataAction(
-                $container->view,
-                $container['OperatorLevelRepository']
-            );
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\CreateOperatorAction
+         * @return CreateOperatorLevelAction
          */
-        $container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
+        $container['CreateOperatorLevelAction'] = function (Container $container): CreateOperatorLevelAction {
 
-            return new CreateOperatorAction(
-                $container->router,
-                $container['validator'],
-                $container['OperatorRepository'],
-                $container['flash']
-            );
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\UpdateOperatorAction
+         * @return UpdateOperatorLevelAction
          */
-        $container['UpdateOperatorAction'] = function (Container $container): UpdateOperatorAction {
+        $container['UpdateOperatorLevelAction'] = function (Container $container): UpdateOperatorLevelAction {
 
-            return new UpdateOperatorAction(
-                $container->router,
-                $container['validator'],
-                $container['OperatorRepository'],
-                $container['flash']
-            );
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\EditOperatorAction
+         * @return EditOperatorLevelAction
          */
-        $container['EditOperatorAction'] = function (Container $container): EditOperatorAction {
+        $container['EditOperatorLevelAction'] = function (Container $container): EditOperatorLevelAction {
 
-            return new EditOperatorAction(
-                $container->view,
-                $container['OperatorRepository'],
-                $container['OperatorLevelRepository'],
-                $container->router
-            );
+
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\DeleteOperatorAction
+         * @return DeleteOperatorLevelAction
          */
-        $container['DeleteOperatorAction'] = function (Container $container): DeleteOperatorAction {
+        $container['DeleteOperatorLevelAction'] = function (Container $container): DeleteOperatorLevelAction {
 
-            return new DeleteOperatorAction(
-                $container->router,
-                $container['auth'],
-                $container['OperatorRepository'],
-                $container['flash']
-            );
-        };
-
-        /**
-         * @param Container $container
-         * @return LogOutOperatorAction
-         */
-        $container['LogOutOperatorAction'] = function (Container $container): LogOutOperatorAction {
-
-            return new LogOutOperatorAction(
-                $container->router,
-                $container['auth']
-            );
-        };
-
-
-        /**
-         * @param Container $container
-         * @return \App\Controllers\Operator\AuthOperatorAction
-         */
-        $container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
-
-            return new AuthOperatorAction(
-                $container->router,
-                $container['auth'],
-                $container['validator'],
-                $container['flash']
-            );
         };
     }
 }
