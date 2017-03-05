@@ -68,29 +68,32 @@ final class UpdateOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $id = $request->getAttribute('id');
-        /** @var  Operator $originalOperator */
-        $originalOperator = $this->operatorRepository->findById($id);
+        try {
+            $id = $request->getAttribute('id');
+            /** @var  Operator $originalOperator */
+            $originalOperator = $this->operatorRepository->findById($id);
 
-        if (!$originalOperator) return $response->withRedirect($this->router->pathFor('list-operator'));
 
-        $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($originalOperator->email),
-            'name' => v::notEmpty()->alpha()->length(2, 20),
-            'surname' => v::notEmpty()->alpha()->length(2, 20),
-            'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
-            'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
-        ]);
+            $validation = $this->validator->validate($request, [
+                'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($originalOperator->email),
+                'name' => v::notEmpty()->alpha()->length(2, 20),
+                'surname' => v::notEmpty()->alpha()->length(2, 20),
+                'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
+                'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
+            ]);
 
-        if ($validation->failed()) {
-            $this->flash->addMessage('error', 'Operator data is not correct');
-            return $response->withRedirect($this->router->pathFor('edit-operator', ['id' => $id]));
+            if ($validation->failed()) {
+                $this->flash->addMessage('error', 'Operator data is not correct');
+                return $response->withRedirect($this->router->pathFor('edit-operator', ['id' => $id]));
+            }
+
+            $originalOperator->update($request->getParams());
+
+            $this->flash->addMessage('info', 'Operator updated correctly');
+
+            return $response->withRedirect($this->router->pathFor('list-operator'));
+        } catch (\InvalidArgumentException $e) {
+            return $response->withRedirect($this->router->pathFor('list-operator'));
         }
-
-        $originalOperator->update($request->getParams());
-
-        $this->flash->addMessage('info', 'Operator updated correctly');
-
-        return $response->withRedirect($this->router->pathFor('list-operator'));
     }
 }
