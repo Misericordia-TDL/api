@@ -5,12 +5,11 @@
 
 namespace App\Validation\Rules;
 
-use App\Models\Operator;
+use App\Models\Eloquent\Operator;
 use Respect\Validation\Rules\AbstractRule;
 
 class EmailEditable extends AbstractRule
 {
-    protected $operatorModel;
     /**
      * @var string
      */
@@ -18,25 +17,22 @@ class EmailEditable extends AbstractRule
 
     /**
      * EmailEditable constructor.
-     * @param Operator $operatorModel
      * @param string $originalEmail
      */
     function __construct(
-        Operator $operatorModel,
         string $originalEmail
     )
     {
-        $this->operatorModel = $operatorModel;
         $this->originalEmail = $originalEmail;
     }
 
     public function validate($input)
     {
-        $foundEmail =  $this->operatorModel->findByEmail($input);
+        $foundOperator =  Operator::where('email', '=', $input)->first();
 
         $return =  false;
 
-        if (empty($foundEmail) || $foundEmail->email == $this->originalEmail ) {
+        if (empty($foundOperator) || $foundOperator->email == $this->originalEmail ) {
             $return = true;
         }
         return $return;
