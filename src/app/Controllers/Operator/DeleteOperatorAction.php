@@ -6,6 +6,7 @@
 namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
+use App\Models\Eloquent\OperatorRepository;
 use App\Models\Operator;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
@@ -28,13 +29,13 @@ final class DeleteOperatorAction
      */
     protected $operatorModel;
     /**
+     * @var OperatorRepository
+     */
+    protected $operatorRepository;
+    /**
      * @var RouterInterface
      */
     private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
     /**
      * @var Messages
      */
@@ -52,7 +53,7 @@ final class DeleteOperatorAction
      * OperatorController constructor.
      * @param RouterInterface $router
      * @param Auth $auth
-     * @param Operator $operatorModel
+     * @param OperatorRepository $operatorRepository
      * @param Messages $flash
      * @param OperatorLevel $operatorLevel
      * @internal param Validator $validator
@@ -61,15 +62,15 @@ final class DeleteOperatorAction
     function __construct(
         RouterInterface $router,
         Auth $auth,
-        Operator $operatorModel,
+        OperatorRepository $operatorRepository,
         Messages $flash,
         OperatorLevel $operatorLevel
     )
     {
-        $this->operatorModel = $operatorModel;
         $this->router = $router;
         $this->flash = $flash;
         $this->operatorLevel = $operatorLevel;
+        $this->operatorRepository = $operatorRepository;
         $this->auth = $auth;
     }
 
@@ -89,7 +90,7 @@ final class DeleteOperatorAction
         }
 
         try {
-            $operator = $this->operatorModel->delete($id);
+            $operator = $this->operatorRepository->delete($id);
 
             if ($operator->active == 0) {
                 $this->flash->addMessage('info', 'Operator disabled correctly');
