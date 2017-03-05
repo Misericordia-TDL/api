@@ -11,7 +11,6 @@ use Respect\Validation\Rules\AbstractRule;
 
 class OperatorLevelValid extends AbstractRule
 {
-    protected $operatorModel;
     /**
      * @var OperatorLevel
      */

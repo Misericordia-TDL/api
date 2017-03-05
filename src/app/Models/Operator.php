@@ -3,71 +3,38 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Models {
+namespace App\Models;
 
-    use MongoDB\InsertOneResult;
-    use MongoDB\Model\BSONDocument;
-    use MongoDB\UpdateResult;
-    use MongoDB\BSON\ObjectID;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+
+class Operator extends Eloquent
+{
+    protected $collection = 'operator';
+
+    use SoftDeletes;
 
     /**
-     * Class Operator
-     * @package App\Models
+     * The attributes that should be mutated to dates.
      *
-     * @author Javier Mellado <sol@javiermellado.com>
+     * @var array
      */
-    class Operator extends AbstractModel
-    {
-
-
-        /**
-         * @param $data
-         * @return InsertOneResult
-         */
-        public function insert($data): InsertOneResult
-        {
-            return $this->persist($data, ['join_date']);
-        }
-
-        /**
-         * @param $data
-         * @return UpdateResult
-         */
-        public function update($data): UpdateResult
-        {
-            $id = $data['_id'];
-            unset($data['_id']);
-
-            return $this->collection->updateOne(
-                ['_id' => new ObjectID($id)],
-                ['$set' => $data]
-            );
-        }
-
-        /**
-         * @return array
-         */
-        public function getAll(): array
-        {
-            return $this->findAll('active');
-        }
-
-        /**
-         * @param $id
-         * @return UpdateResult
-         */
-        public function delete($id): UpdateResult
-        {
-            return $this->update(['_id' => $id, 'active' => 0]);
-        }
-
-        /**
-         * @param string $email
-         * @return BSONDocument
-         */
-        public function findByEmail(string $email)
-        {
-            return $this->collection->findOne(['email' => $email]);
-        }
-    }
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'surname',
+        'email',
+        'password',
+        'operator_level',
+        'phonenumber',
+    ];
 }

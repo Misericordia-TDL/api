@@ -6,7 +6,7 @@
 
 namespace App\Auth;
 
-use App\Models\Eloquent\OperatorRepository;
+use App\Repository\OperatorRepository;
 
 
 /**

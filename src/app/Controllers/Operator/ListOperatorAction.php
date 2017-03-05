@@ -5,7 +5,7 @@
 
 namespace App\Controllers\Operator;
 
-use App\Models\Eloquent\OperatorRepository;
+use App\Repository\OperatorRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;

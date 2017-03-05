@@ -6,8 +6,7 @@
 
 namespace Core\Services\Operator;
 
-use App\Models\Eloquent\OperatorRepository;
-use App\Models\Operator as OperatorModel;
+use App\Repository\OperatorRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -23,19 +22,6 @@ class Operator implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
-
-        /**
-         * @param Container $container
-         * @return OperatorModel
-         */
-        $container['OperatorModel'] = function (Container $container): OperatorModel {
-
-            $mongoClient = $container['db'];
-            $operatorCollection = $mongoClient->misericordia->operator;
-            $userModel = new OperatorModel($operatorCollection);
-
-            return $userModel;
-        };
         /**
          * @param Container $container
          * @return OperatorRepository

@@ -6,7 +6,7 @@
 namespace App\Controllers\Operator;
 
 use App\Auth\Auth;
-use App\Models\Eloquent\OperatorRepository;
+use App\Repository\OperatorRepository;
 use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Flash\Messages;

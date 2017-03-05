@@ -5,8 +5,7 @@
 
 namespace App\Controllers\Operator;
 
-use App\Models\Eloquent\OperatorRepository;
-use App\Models\Operator;
+use App\Repository\OperatorRepository;
 use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
@@ -25,10 +24,6 @@ final class EditOperatorAction
      * @var View
      */
     protected $view;
-    /**
-     * @var Operator
-     */
-    private $operatorModel;
     /**
      * @var OperatorLevel
      */

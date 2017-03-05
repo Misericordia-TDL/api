@@ -5,7 +5,7 @@
 
 namespace App\Controllers\Operator;
 
-use App\Models\Eloquent\OperatorRepository;
+use App\Repository\OperatorRepository;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
