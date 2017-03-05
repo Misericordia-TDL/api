@@ -5,7 +5,7 @@
 
 namespace App\Validation\Rules;
 
-use App\Models\Operator;
+use App\Models\Eloquent\Operator;
 use Respect\Validation\Rules\AbstractRule;
 
 class EmailNotTaken extends AbstractRule
