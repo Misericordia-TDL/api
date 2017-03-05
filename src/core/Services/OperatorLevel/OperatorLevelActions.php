@@ -57,16 +57,25 @@ class OperatorLevelActions implements ServiceProviderInterface
          * @return UpdateOperatorLevelAction
          */
         $container['UpdateOperatorLevelAction'] = function (Container $container): UpdateOperatorLevelAction {
-
+            return new UpdateOperatorLevelAction(
+                $container->router,
+                $container['validator'],
+                $container['OperatorLevelRepository'],
+                $container['flash']
+            );
         };
         /**
          * @param Container $container
          * @return EditOperatorLevelAction
          */
         $container['EditOperatorLevelAction'] = function (Container $container): EditOperatorLevelAction {
-
-
+            return new EditOperatorLevelAction(
+                $container->view,
+                $container['OperatorLevelRepository'],
+                $container->router
+            );
         };
+
         /**
          * @param Container $container
          * @return DeleteOperatorLevelAction
