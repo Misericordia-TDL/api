@@ -25,10 +25,6 @@ use Respect\Validation\Validator as v;
 final class DeleteOperatorAction
 {
     /**
-     * @var Operator
-     */
-    protected $operatorModel;
-    /**
      * @var OperatorRepository
      */
     protected $operatorRepository;
