@@ -84,7 +84,7 @@ class OperatorActions implements ServiceProviderInterface
             return new UpdateOperatorAction(
                 $container->router,
                 $container['validator'],
-                $container['OperatorModel'],
+                $container['OperatorRepository'],
                 $container['flash'],
                 $container['OperatorLevelModel']
             );
