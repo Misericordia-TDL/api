@@ -7,7 +7,6 @@ namespace App\Controllers\Operator;
 
 use App\Repository\OperatorLevelRepository;
 use App\Repository\OperatorRepository;
-use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -62,18 +61,18 @@ final class EditOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $id = $request->getAttribute('id');
-        $levels = $this->operatorLevelRepository->getAll();
+        try {
+            $id = $request->getAttribute('id');
+            $levels = $this->operatorLevelRepository->getAll();
 
-        $operator = $this->operatorRepository->findById($id);
-        if (!$operator) return $response->withRedirect($this->router->pathFor('list-operator'));
-
-        $data = [
-            'operator' => $operator,
-            'levels' => $levels,
-        ];
-
-        return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
-
+            $operator = $this->operatorRepository->findById($id);
+            $data = [
+                'operator' => $operator,
+                'levels' => $levels,
+            ];
+            return $this->view->render($response, 'partials/operator/edit-operator-data.twig', $data);
+        } catch (\InvalidArgumentException $e) {
+            return $response->withRedirect($this->router->pathFor('list-operator'));
+        }
     }
 }
