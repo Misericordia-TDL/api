@@ -7,15 +7,14 @@ namespace App\Controllers\Operator;
 
 use App\Models\Eloquent\OperatorRepository;
 use App\Models\Exception\EmptyDataSetException;
-use App\Models\Operator;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
+use Respect\Validation\Validator as v;
 use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
-use Respect\Validation\Validator as v;
 
 /**
  * Class createOperator
