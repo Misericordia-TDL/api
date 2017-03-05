@@ -5,7 +5,7 @@
 
 namespace App\Controllers\Operator;
 
-use App\Models\Operator;
+use App\Models\Eloquent\OperatorRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -23,22 +23,22 @@ final class ListOperatorAction
      */
     protected $view;
     /**
-     * @var Operator
+     * @var OperatorRepository
      */
-    private $operatorModel;
+    protected $operatorRepository;
 
     /**
      * IndexAction constructor.
      * @param View $view
-     * @param Operator $operatorModel
+     * @param OperatorRepository $operatorRepository
      */
     function __construct(
         View $view,
-        Operator $operatorModel
+        OperatorRepository $operatorRepository
     )
     {
         $this->view = $view;
-        $this->operatorModel = $operatorModel;
+        $this->operatorRepository = $operatorRepository;
     }
 
     /**
@@ -50,7 +50,7 @@ final class ListOperatorAction
     {
 
         $data = [
-            'operators' => $this->operatorModel->getAll()
+            'operators' => $this->operatorRepository->getAll()
         ];
         return $this->view->render($response, 'partials/operator/list.twig', $data);
     }

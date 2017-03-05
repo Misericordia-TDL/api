@@ -47,7 +47,7 @@ class OperatorActions implements ServiceProviderInterface
 
             return new ListOperatorAction(
                 $container->view,
-                $container['OperatorModel']
+                $container['OperatorRepository']
             );
         };
         /**

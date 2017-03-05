@@ -12,7 +12,7 @@ namespace App\Models\Eloquent;
 class OperatorRepository
 {
 
-    public function all()
+    public function getAll()
     {
         return Operator::all();
     }
