@@ -17,22 +17,18 @@ class OperatorRepository
         return Operator::all();
     }
 
-    public function findById($id)
+    public function findByEmail(string $email)
     {
-
-        return $this->find('_id', $id);
-
+        return $this->find('email', $email);
     }
 
     public function find($field, $value)
     {
+        $operator = Operator::where($field, '=', $value)->first();
 
-        return Operator::where($field, '=', $value)->first();
-    }
+        if (!$operator) throw new \InvalidArgumentException;
 
-    public function findByEmail(string $email)
-    {
-        return $this->find('email', $email);
+        return $operator;
     }
 
     /**
@@ -44,6 +40,12 @@ class OperatorRepository
 
         return $this->findById($data['id'])->update($data);
     }
+
+    public function findById($id)
+    {
+        return $this->find('_id', $id);
+    }
+
     /**
      * @param string $id
      * @return
