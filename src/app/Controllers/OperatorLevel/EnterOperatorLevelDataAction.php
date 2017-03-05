@@ -23,22 +23,14 @@ final class EnterOperatorLevelDataAction
      */
     protected $view;
     /**
-     * @var OperatorLevelRepository
-     */
-    protected $operatorLevelRepository;
-
-    /**
      * OperatorController constructor.
      * @param View $view
-     * @param OperatorLevelRepository $operatorLevelRepository
      */
     function __construct(
-        View $view,
-        OperatorLevelRepository $operatorLevelRepository
+        View $view
     )
     {
         $this->view = $view;
-        $this->operatorLevelRepository = $operatorLevelRepository;
     }
 
     /**
@@ -48,10 +40,6 @@ final class EnterOperatorLevelDataAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $levels = $this->operatorLevelRepository->getAll();
-        $data = [
-            'levels' => $levels
-        ];
-        return $this->view->render($response, 'partials/operator-level/enter-operator-level-data.twig', $data);
+        return $this->view->render($response, 'partials/operator-level/enter-operator-level-data.twig', []);
     }
 }
