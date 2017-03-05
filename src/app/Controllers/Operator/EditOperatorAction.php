@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Repository\OperatorLevelRepository;
 use App\Repository\OperatorRepository;
 use App\Models\OperatorLevel;
 use Psr\Http\Message\ResponseInterface;
@@ -25,9 +26,9 @@ final class EditOperatorAction
      */
     protected $view;
     /**
-     * @var OperatorLevel
+     * @var OperatorLevelRepository
      */
-    private $operatorLevel;
+    protected $operatorLevelRepository;
     /**
      * @var OperatorRepository
      */
@@ -37,17 +38,17 @@ final class EditOperatorAction
      * IndexAction constructor.
      * @param View $view
      * @param OperatorRepository $operatorRepository
-     * @param OperatorLevel $operatorLevel
+     * @param OperatorLevelRepository $operatorLevelRepository
      * @param RouterInterface $router
      */
     function __construct(
         View $view,
         OperatorRepository $operatorRepository,
-        OperatorLevel $operatorLevel,
+        OperatorLevelRepository $operatorLevelRepository,
         RouterInterface $router
     )
     {
-        $this->operatorLevel = $operatorLevel;
+        $this->operatorLevelRepository = $operatorLevelRepository;
         $this->operatorRepository = $operatorRepository;
         $this->view = $view;
         $this->router = $router;
@@ -62,7 +63,7 @@ final class EditOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
         $id = $request->getAttribute('id');
-        $levels = $this->operatorLevel->findAll();
+        $levels = $this->operatorLevelRepository->getAll();
 
         $operator = $this->operatorRepository->findById($id);
         if (!$operator) return $response->withRedirect($this->router->pathFor('list-operator'));
