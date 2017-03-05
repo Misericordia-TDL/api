@@ -12,6 +12,6 @@ class OperatorLevelValid extends AbstractRule
 {
     public function validate($input)
     {
-        return !empty(OperatorLevel::where('level', '=', $input)->first());
+        return !empty(OperatorLevel::where('level', '=', (int) $input)->first());
     }
 }
