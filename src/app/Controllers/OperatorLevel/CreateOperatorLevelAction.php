@@ -71,7 +71,7 @@ final class CreateOperatorLevelAction
         try {
             $validation = $this->validator->validate($request, [
                 'name' => v::notEmpty()->alpha()->length(2, 20),
-                'description' => v::notEmpty()->alpha()->length(2, 20),
+                'description' => v::notEmpty()->alpha()->length(2, 200),
             ]);
 
             if ($validation->failed()) {
