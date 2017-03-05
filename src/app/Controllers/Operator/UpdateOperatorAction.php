@@ -5,6 +5,7 @@
 
 namespace App\Controllers\Operator;
 
+use App\Models\Operator;
 use App\Repository\OperatorRepository;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
@@ -68,6 +69,7 @@ final class UpdateOperatorAction
     {
 
         $id = $request->getAttribute('id');
+        /** @var  Operator $originalOperator */
         $originalOperator = $this->operatorRepository->findById($id);
 
         if (!$originalOperator) return $response->withRedirect($this->router->pathFor('list-operator'));
@@ -85,14 +87,8 @@ final class UpdateOperatorAction
             return $response->withRedirect($this->router->pathFor('edit-operator', ['id' => $id]));
         }
 
-        $operatorData = $request->getParams();
-        $operatorData['id'] = $id;
-        unset(
-            $operatorData['csrf_name'],
-            $operatorData['csrf_value']
-        );
+        $originalOperator->update($request->getParams());
 
-        $this->operatorRepository->update($operatorData);
         $this->flash->addMessage('info', 'Operator updated correctly');
 
         return $response->withRedirect($this->router->pathFor('list-operator'));

@@ -72,13 +72,4 @@ class AbstractRepository
         return $modelClass::create($data);
 
     }
-
-    /**
-     * @param array $data
-     * @return mixed
-     */
-    public function update($data)
-    {
-        return $this->findById($data['id'])->update($data);
-    }
 }
