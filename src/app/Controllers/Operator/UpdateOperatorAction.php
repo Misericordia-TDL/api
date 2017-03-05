@@ -5,7 +5,7 @@
 
 namespace App\Controllers\Operator;
 
-use App\Models\Operator;
+use App\Models\Eloquent\OperatorRepository;
 use App\Models\OperatorLevel;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
@@ -23,9 +23,9 @@ use Respect\Validation\Validator as v;
 final class UpdateOperatorAction
 {
     /**
-     * @var Operator
+     * @var OperatorRepository
      */
-    protected $operatorModel;
+    protected $operatorRepository;
     /**
      * @var RouterInterface
      */
@@ -47,7 +47,7 @@ final class UpdateOperatorAction
      * OperatorController constructor.
      * @param RouterInterface $router
      * @param Validator $validator
-     * @param Operator $operatorModel
+     * @param OperatorRepository $operatorRepository
      * @param Messages $flash
      * @param OperatorLevel $operatorLevel
      * @internal param View $view
@@ -55,16 +55,16 @@ final class UpdateOperatorAction
     function __construct(
         RouterInterface $router,
         Validator $validator,
-        Operator $operatorModel,
+        OperatorRepository $operatorRepository,
         Messages $flash,
         OperatorLevel $operatorLevel
     )
     {
-        $this->operatorModel = $operatorModel;
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
         $this->operatorLevel = $operatorLevel;
+        $this->operatorRepository = $operatorRepository;
     }
 
     /**
@@ -75,11 +75,13 @@ final class UpdateOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $id = $request->getParam('id');
-        $originalOperator = $this->operatorModel->findById($id);
+        $id = $request->getAttribute('id');
+        $originalOperator = $this->operatorRepository->findById($id);
+
+        if (!$originalOperator) return $response->withRedirect($this->router->pathFor('list-operator'));
 
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($this->operatorModel,$originalOperator->email),
+            'email' => v::noWhitespace()->notEmpty()->email()->EmailEditable($originalOperator->email),
             'name' => v::notEmpty()->alpha()->length(2, 20),
             'surname' => v::notEmpty()->alpha()->length(2, 20),
             'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
@@ -92,14 +94,13 @@ final class UpdateOperatorAction
         }
 
         $operatorData = $request->getParams();
+        $operatorData['id'] = $id;
         unset(
             $operatorData['csrf_name'],
             $operatorData['csrf_value']
         );
 
-        $operatorData['_id'] = $id;
-
-        $this->operatorModel->update($operatorData);
+        $this->operatorRepository->update($operatorData);
         $this->flash->addMessage('info', 'Operator updated correctly');
 
         return $response->withRedirect($this->router->pathFor('list-operator'));
