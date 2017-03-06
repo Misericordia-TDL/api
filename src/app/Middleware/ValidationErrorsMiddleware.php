@@ -5,12 +5,24 @@
 
 namespace App\Middleware;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 
+/**
+ * Class ValidationErrorsMiddleware
+ * @package App\Middleware
+ */
 class ValidationErrorsMiddleware extends Middleware
 {
-    function __invoke($request, $response, $next)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $next
+     * @return Response
+     */
+    function __invoke(Request $request, Response $response, $next): Response
     {
-        $this->container->view->getEnvironment()->addGlobal('errors',$_SESSION['errors']);
+        $this->container->view->getEnvironment()->addGlobal('errors', $_SESSION['errors']);
 
         unset($_SESSION['errors']);
 
