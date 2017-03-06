@@ -14,11 +14,6 @@ use App\Core\Repository\AbstractRepository;
 class OperatorLevelRepository extends AbstractRepository
 {
     /**
-     * @var string
-     */
-    protected $modelClass = '\App\OperatorLevel\Model\OperatorLevel';
-
-    /**
      * @param $level
      * @return mixed
      */

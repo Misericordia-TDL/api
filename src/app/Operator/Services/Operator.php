@@ -10,7 +10,6 @@ use App\Operator\Repository\OperatorRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-
 /**
  * Class Operator
  * @package Core\Services\Operator\Actions
@@ -28,7 +27,7 @@ class Operator implements ServiceProviderInterface
          */
         $container['OperatorRepository'] = function (Container $container): OperatorRepository {
 
-            return new OperatorRepository();
+            return new OperatorRepository('\App\Operator\Model\Operator');
         };
     }
 }
