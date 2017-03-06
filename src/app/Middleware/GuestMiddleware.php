@@ -5,9 +5,22 @@
 
 namespace App\Middleware;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
+
+/**
+ * Class GuestMiddleware
+ * @package App\Middleware
+ */
 class GuestMiddleware extends Middleware
 {
-    function __invoke($request, $response, $next)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $next
+     * @return Response
+     */
+    function __invoke(Request $request, Response $response, $next): Response
     {
 
         if ($this->container->auth->check()) {

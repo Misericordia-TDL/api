@@ -6,7 +6,7 @@
 namespace App\Validation\Rules;
 
 use App\Auth\Auth;
-use App\Models\Operator;
+use App\Operator\Model\Operator;
 use Respect\Validation\Rules\AbstractRule;
 
 /**

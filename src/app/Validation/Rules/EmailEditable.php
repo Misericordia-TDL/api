@@ -5,7 +5,7 @@
 
 namespace App\Validation\Rules;
 
-use App\Models\Operator;
+use App\Operator\Model\Operator;
 use Respect\Validation\Rules\AbstractRule;
 
 class EmailEditable extends AbstractRule
