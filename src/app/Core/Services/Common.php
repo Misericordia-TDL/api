@@ -4,17 +4,18 @@
  */
 
 
-namespace Core\Services;
+namespace App\Core\Services;
 
 use App\Auth\Auth;
 use App\Validation\Validator;
-use MongoDB\Client;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\UidProcessor;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Slim\Csrf\Guard;
 use Slim\Flash\Messages;
-use \Slim\Views\Twig;
+use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 
 /**
@@ -37,20 +38,6 @@ class Common implements ServiceProviderInterface
         };
         $container['flash'] = function (Container $container): Messages {
             return new Messages;
-        };
-
-        /**
-         * @param Container $container
-         * @return \MongoDB\Client
-         */
-        $container['db'] = function (Container $container): Client {
-
-            $host = $container['settings']['db']['host'];
-            $port = $container['settings']['db']['port'];
-            $connectionUri = 'mongodb://' . $host . ':' . $port;
-            $dbConnection = new Client($connectionUri);
-
-            return $dbConnection;
         };
 
         /**
@@ -86,7 +73,7 @@ class Common implements ServiceProviderInterface
             $view->getEnvironment()->addGlobal('flash', $container->flash);
             $view->getEnvironment()->addGlobal('auth', [
                 'check' => $container->auth->check(),
-                'user'  => $container->auth->user()
+                'user' => $container->auth->user()
             ]);
             $view->addExtension(new \Twig_Extension_Debug());
 

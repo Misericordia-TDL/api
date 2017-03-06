@@ -3,11 +3,11 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Repository;
+namespace App\Core\Repository;
 
 /**
  * Class AbstractRepository
- * @package App\Repository
+ * @package App\Core\Repository
  */
 class AbstractRepository
 {
