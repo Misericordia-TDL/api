@@ -29,7 +29,7 @@ class OperatorLevel implements ServiceProviderInterface
          */
         $container['OperatorLevelRepository'] = function (Container $container): OperatorLevelRepository {
 
-            return new OperatorLevelRepository();
+            return new OperatorLevelRepository('\App\OperatorLevel\Model\OperatorLevel');
         };
     }
 }

@@ -17,6 +17,15 @@ class AbstractRepository
     protected $modelClass = null;
 
     /**
+     * AbstractRepository constructor.
+     * @param string $modelClassName
+     */
+    function __construct(string $modelClassName)
+    {
+        $this->modelClass = $modelClassName;
+    }
+
+    /**
      * @return mixed
      */
     public function getAll()
@@ -29,7 +38,7 @@ class AbstractRepository
      * @param string $id
      * @return mixed
      */
-    public function delete($id)
+    public function delete(string $id)
     {
 
         $model = $this->findById($id);
@@ -39,20 +48,20 @@ class AbstractRepository
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return mixed
      */
-    public function findById($id)
+    public function findById(string $id)
     {
         return $this->find('_id', $id);
     }
 
     /**
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param string $value
      * @return mixed
      */
-    public function find($field, $value)
+    public function find(string $field, string $value)
     {
         $modelClass = $this->modelClass;
         $model = $modelClass::where($field, '=', $value)->first();
@@ -66,7 +75,7 @@ class AbstractRepository
      * @param array $data
      * @return mixed
      */
-    public function insert($data)
+    public function insert(array $data)
     {
         $modelClass = $this->modelClass;
         return $modelClass::create($data);
