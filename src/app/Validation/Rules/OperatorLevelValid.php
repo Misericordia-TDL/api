@@ -5,7 +5,7 @@
 
 namespace App\Validation\Rules;
 
-use App\Models\OperatorLevel;
+use App\OperatorLevel\Model\OperatorLevel;
 use Respect\Validation\Rules\AbstractRule;
 
 class OperatorLevelValid extends AbstractRule
