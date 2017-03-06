@@ -3,9 +3,8 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Home;
+namespace App\Home\Actions;
 
-use App\Auth\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -13,7 +12,7 @@ use Slim\Views\Twig as View;
 
 /**
  * Class IndexAction
- * @package App\Controllers\Home
+ * @package App\Home
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class IndexAction
