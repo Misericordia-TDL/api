@@ -4,7 +4,7 @@
  */
 
 
-namespace Core\Services\Operator;
+namespace App\Operator\Services;
 
 use App\Operator\Repository\OperatorRepository;
 use Pimple\Container;

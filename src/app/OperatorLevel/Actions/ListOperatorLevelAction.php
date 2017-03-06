@@ -3,42 +3,42 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Home\Actions;
+namespace App\OperatorLevel\Actions;
 
-use App\Auth\Auth;
+use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class IndexAction
- * @package App\Controllers\Home
+ * Class ListOperatorLevelAction
+ * @package App\Controllers\OperatorLevel
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class IndexLoggedAction
+final class ListOperatorLevelAction
 {
     /**
      * @var View
      */
     protected $view;
     /**
-     * @var Auth
+     * @var OperatorLevelRepository
      */
-    protected $auth;
+    protected $operatorLevelRepository;
 
     /**
      * IndexAction constructor.
      * @param View $view
-     * @param Auth $auth
+     * @param OperatorLevelRepository $operatorLevelRepository
      */
     function __construct(
         View $view,
-        Auth $auth
+        OperatorLevelRepository $operatorLevelRepository
     )
     {
         $this->view = $view;
-        $this->auth = $auth;
+        $this->operatorLevelRepository = $operatorLevelRepository;
     }
 
     /**
@@ -48,7 +48,10 @@ final class IndexLoggedAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $data = [];
-        return $this->view->render($response, 'partials/home/index.twig', $data);
+
+        $data = [
+            'operatorsLevel' => $this->operatorLevelRepository->getAll()
+        ];
+        return $this->view->render($response, 'partials/operator-level/list.twig', $data);
     }
 }

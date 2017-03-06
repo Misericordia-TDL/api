@@ -3,7 +3,7 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace Core\Services\Operator;
+namespace App\Operator\Services;
 
 use App\Operator\Actions\AuthOperatorAction;
 use App\Operator\Actions\CreateOperatorAction;

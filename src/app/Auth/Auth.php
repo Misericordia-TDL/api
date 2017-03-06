@@ -6,7 +6,7 @@
 
 namespace App\Auth;
 
-use App\Repository\OperatorRepository;
+use App\Operator\Repository\OperatorRepository;
 
 
 /**
