@@ -3,18 +3,20 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Repository;
+namespace App\Operator\Repository;
+
+use App\Core\Repository\AbstractRepository;
 
 /**
  * Class OperatorRepository
- * @package App\Models\Eloquent
+ * @package App\Operator\Repository
  */
 class OperatorRepository extends AbstractRepository
 {
     /**
      * @var string
      */
-    protected $modelClass = '\App\Models\Operator';
+    protected $modelClass = '\App\Operator\Model\Operator';
 
     public function findByEmail(string $email)
     {

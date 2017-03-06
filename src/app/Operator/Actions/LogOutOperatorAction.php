@@ -3,15 +3,13 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Operator;
+namespace App\Operator\Actions;
 
 use App\Auth\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
-use Slim\Route;
-use Slim\Views\Twig as View;
 
 /**
  * Class LogOutOperatorAction

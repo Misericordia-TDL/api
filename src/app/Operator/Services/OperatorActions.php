@@ -5,17 +5,17 @@
 
 namespace Core\Services\Operator;
 
-use App\Controllers\Operator\AuthOperatorAction;
-use App\Controllers\Operator\LogOutOperatorAction;
+use App\Operator\Actions\AuthOperatorAction;
+use App\Operator\Actions\CreateOperatorAction;
+use App\Operator\Actions\DeleteOperatorAction;
+use App\Operator\Actions\EditOperatorAction;
+use App\Operator\Actions\EnterOperatorDataAction;
+use App\Operator\Actions\IndexAction as OperatorIndexAction;
+use App\Operator\Actions\ListOperatorAction;
+use App\Operator\Actions\LogOutOperatorAction;
+use App\Operator\Actions\UpdateOperatorAction;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use App\Controllers\Operator\EditOperatorAction;
-use App\Controllers\Operator\CreateOperatorAction;
-use App\Controllers\Operator\EnterOperatorDataAction;
-use App\Controllers\Operator\UpdateOperatorAction;
-use App\Controllers\Operator\DeleteOperatorAction;
-use App\Controllers\Operator\IndexAction as OperatorIndexAction;
-use App\Controllers\Operator\ListOperatorAction;
 
 /**
  * Class OperatorActions
@@ -31,7 +31,7 @@ class OperatorActions implements ServiceProviderInterface
 
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\IndexAction
+         * @return OperatorIndexAction
          */
         $container['OperatorIndexAction'] = function (Container $container): OperatorIndexAction {
 
@@ -41,7 +41,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\ListOperatorAction
+         * @return ListOperatorAction
          */
         $container['ListOperatorAction'] = function (Container $container): ListOperatorAction {
 
@@ -52,7 +52,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\EnterOperatorDataAction
+         * @return EnterOperatorDataAction
          */
         $container['EnterOperatorDataAction'] = function (Container $container): EnterOperatorDataAction {
 
@@ -63,7 +63,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\CreateOperatorAction
+         * @return CreateOperatorAction
          */
         $container['CreateOperatorAction'] = function (Container $container): CreateOperatorAction {
 
@@ -76,7 +76,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\UpdateOperatorAction
+         * @return UpdateOperatorAction
          */
         $container['UpdateOperatorAction'] = function (Container $container): UpdateOperatorAction {
 
@@ -89,7 +89,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\EditOperatorAction
+         * @return EditOperatorAction
          */
         $container['EditOperatorAction'] = function (Container $container): EditOperatorAction {
 
@@ -102,7 +102,7 @@ class OperatorActions implements ServiceProviderInterface
         };
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\DeleteOperatorAction
+         * @return DeleteOperatorAction
          */
         $container['DeleteOperatorAction'] = function (Container $container): DeleteOperatorAction {
 
@@ -129,7 +129,7 @@ class OperatorActions implements ServiceProviderInterface
 
         /**
          * @param Container $container
-         * @return \App\Controllers\Operator\AuthOperatorAction
+         * @return AuthOperatorAction
          */
         $container['AuthOperatorAction'] = function (Container $container): AuthOperatorAction {
 

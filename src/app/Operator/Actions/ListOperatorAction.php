@@ -3,34 +3,42 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Operator;
+namespace App\Operator\Actions;
 
+use App\Operator\Repository\OperatorRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as View;
 
 /**
- * Class IndexAction
- * @package App\Controllers\Home
+ * Class ListOperatorAction
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class IndexAction
+final class ListOperatorAction
 {
     /**
      * @var View
      */
     protected $view;
+    /**
+     * @var OperatorRepository
+     */
+    protected $operatorRepository;
 
     /**
      * IndexAction constructor.
      * @param View $view
+     * @param OperatorRepository $operatorRepository
      */
     function __construct(
-        View $view
+        View $view,
+        OperatorRepository $operatorRepository
     )
     {
         $this->view = $view;
+        $this->operatorRepository = $operatorRepository;
     }
 
     /**
@@ -41,7 +49,9 @@ final class IndexAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        $data = [];
-        return $this->view->render($response, 'partials/operator/index.twig', $data);
+        $data = [
+            'operators' => $this->operatorRepository->getAll()
+        ];
+        return $this->view->render($response, 'partials/operator/list.twig', $data);
     }
 }

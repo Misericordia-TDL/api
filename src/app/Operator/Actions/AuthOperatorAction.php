@@ -3,7 +3,7 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Operator;
+namespace App\Operator\Actions;
 
 use App\Auth\Auth;
 use App\Validation\Validator;

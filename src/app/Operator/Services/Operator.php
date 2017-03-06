@@ -6,7 +6,7 @@
 
 namespace Core\Services\Operator;
 
-use App\Repository\OperatorRepository;
+use App\Operator\Repository\OperatorRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

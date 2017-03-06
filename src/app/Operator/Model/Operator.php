@@ -3,7 +3,9 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Models;
+namespace App\Operator\Model;
+
+use App\Core\Model\AbstractModel;
 
 /**
  * Class Operator
@@ -32,6 +34,6 @@ class Operator extends AbstractModel
 
     public function level()
     {
-        return $this->embedsOne('App\Models\OperatorLevel', 'operator_level');
+        return $this->embedsOne('App\OperatorLevel\Model\OperatorLevel', 'operator_level');
     }
 }

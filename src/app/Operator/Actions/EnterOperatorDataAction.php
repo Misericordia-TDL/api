@@ -3,11 +3,10 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Operator;
+namespace App\Operator\Actions;
 
-use App\Models\Operator;
-use App\Models\OperatorLevel;
-use App\Repository\OperatorLevelRepository;
+use App\OperatorLevel\Model\OperatorLevel;
+use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -15,7 +14,7 @@ use Slim\Views\Twig as View;
 
 /**
  * Class EnterOperatorDataAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class EnterOperatorDataAction

@@ -3,10 +3,10 @@
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
  */
 
-namespace App\Controllers\Operator;
+namespace App\Operator\Actions;
 
-use App\Repository\OperatorLevelRepository;
-use App\Repository\OperatorRepository;
+use App\Operator\Repository\OperatorRepository;
+use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
