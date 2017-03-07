@@ -48,7 +48,7 @@
                 {% set oplevel = operator.operator_level %}
             {% endif %}
             <div class="dropdown">
-                <select name="operator_level" class="form-control">
+                <select name="operator_level_id" class="form-control">
                     <option value="-">Select level</option>
                     {% for level in levels %}
                         <option value="{{ level._id }}" {{ oplevel == level._id ? ' selected' : '' }}>{{ level.name }}</option>

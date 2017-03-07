@@ -33,7 +33,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ operator.name }} {{ operator.surname }} </td>
-                        <td>{{ operator.level.find(operator.operator_level).name}}</td>
+                        <td>{{ operator.level.name}}</td>
                         <td>
                             <div class="btn-toolbar" role="group" aria-label="...">
                                 <a class="btn btn-default" href="{{ path_for('edit-operator',{'id': operator._id}) }}"

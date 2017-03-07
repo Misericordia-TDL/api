@@ -5,6 +5,7 @@
 
 namespace App\Operator\Actions;
 
+use App\Operator\Model\Operator;
 use App\Operator\Repository\OperatorRepository;
 use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -64,7 +65,7 @@ final class EditOperatorAction
         try {
             $id = $request->getAttribute('id');
             $levels = $this->operatorLevelRepository->getAll();
-
+            /** @var Operator $operator */
             $operator = $this->operatorRepository->findById($id);
             $data = [
                 'operator' => $operator,

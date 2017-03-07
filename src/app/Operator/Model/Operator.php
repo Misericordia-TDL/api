@@ -34,6 +34,9 @@ class Operator extends AbstractModel
 
     public function level()
     {
-        return $this->embedsOne('App\OperatorLevel\Model\OperatorLevel', 'operator_level');
+        return $this->belongsTo(
+            'App\OperatorLevel\Model\OperatorLevel',
+            'operator_level_id'
+        );
     }
 }
