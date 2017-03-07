@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * Application settings
  */
 
 return [
@@ -18,6 +20,7 @@ return [
             'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
+        //database settings
         'db' => [
             'driver'   => 'mongodb',
             'host'     => 'mongo',
