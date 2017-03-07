@@ -18,14 +18,6 @@ $app->group('', function () {
 $app->group('', function () {
 
     $this->get('/home', 'HomeLoggedinIndexAction')->setName('home-loggedin');
-    $this->get('/refugee', 'RefugeeController:index');
-    $this->get('/operator-level', 'OperatorLevelController:index');
-    $this->get('/structure', 'StructureController:index')->setName('structure');
-    $this->get('/meal', 'MealController:index');
-    $this->get('/food', 'FoodController:index');
-    $this->get('/medicine', 'MedicineController:index');
-    $this->get('/clothe', 'ClotheController:index');
-    $this->get('/medical-attention', 'MedicalAttentionController:index');
     $this->get('/logout', 'LogOutOperatorAction')->setName('logout-operator');
 
 })->add(new AuthMiddleware($container));
