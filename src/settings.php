@@ -25,13 +25,13 @@ return [
         ],
         //database settings
         'db' => [
-            'driver'   => 'mongodb',
-            'host'     => 'mongo',
-            'port'     => 27017,
+            'driver' => 'mongodb',
+            'host' => 'mongo',
+            'port' => 27017,
             'database' => 'misericordia',
 //            'username' => '',
 //            'password' => '',
-            'options'  => [
+            'options' => [
                 'database' => 'admin' // sets the authentication database required by mongo 3
             ]
         ],
