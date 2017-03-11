@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action will destroy a valid session for current operator.
  */
 
 namespace App\Operator\Actions;
@@ -13,7 +15,7 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * Class LogOutOperatorAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class LogOutOperatorAction
@@ -49,7 +51,7 @@ final class LogOutOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
         if ($this->auth->check()) {
-            unset($_SESSION['operator']);
+            $this->auth->destroySession();
         }
 
         return $response->withRedirect($this->router->pathFor('home'));
