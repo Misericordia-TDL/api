@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This class will update the data from an operator
  */
 
 namespace App\Operator\Actions;
@@ -17,7 +19,7 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * Class UpdateOperatorAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class UpdateOperatorAction
@@ -69,6 +71,7 @@ final class UpdateOperatorAction
     {
 
         try {
+            //get id from url
             $id = $request->getAttribute('id');
             /** @var  Operator $originalOperator */
             $originalOperator = $this->operatorRepository->findById($id);
@@ -82,6 +85,7 @@ final class UpdateOperatorAction
                 'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
             ]);
 
+            //If validation fails, return to edit form with error messages embeded in the view
             if ($validation->failed()) {
                 $this->flash->addMessage('error', 'Operator data is not correct');
                 return $response->withRedirect($this->router->pathFor('edit-operator', ['id' => $id]));

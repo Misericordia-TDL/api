@@ -1,13 +1,17 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This class will check if there's a valid session for the current user. In the case
+ * there's a valid session, an Operator model will be return.
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 
 
 namespace App\Auth;
 
+use App\Operator\Model\Operator;
 use App\Operator\Repository\OperatorRepository;
-
 
 /**
  * Class Auth
@@ -18,6 +22,9 @@ class Auth
 
     /** @var OperatorRepository */
     private $operatorRepository;
+    /**
+     * @var null
+     */
     private $user = null;
 
     /**
@@ -31,11 +38,28 @@ class Auth
         $this->operatorRepository = $operatorRepository;
     }
 
+    /**
+     * Check if there's a valid session for current operator.
+     * @return bool
+     */
     public function check()
     {
         return isset($_SESSION['operator']);
     }
 
+    /**
+     * destroy a valid session
+     * @return void
+     */
+    public function destroySession()
+    {
+        unset($_SESSION['operator']);
+    }
+
+    /**
+     * Return current logged in operator
+     * @return Operator|null
+     */
     public function user()
     {
         if (isset($_SESSION['operator'])) {
@@ -47,6 +71,10 @@ class Auth
         return null;
     }
 
+    /**
+     * Return current logged in operator id
+     * @return string | null
+     */
     public function currentUserId()
     {
         if (isset($_SESSION['operator'])) {
@@ -56,6 +84,8 @@ class Auth
     }
 
     /**
+     * Attempt to login with provided email and passord
+     *
      * @param string $email
      * @param string $password
      * @return bool
@@ -64,7 +94,7 @@ class Auth
     {
         //grab the user by email
         //if !user return false
-        try{
+        try {
             $operator = $this->operatorRepository->findByEmail($email);
             //verify password for that user
             if (password_verify($password, $operator->password)) {

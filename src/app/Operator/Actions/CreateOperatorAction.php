@@ -1,6 +1,10 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action class will receive a data to create a new operator. If validation fails
+ * Request will be redirected to EnterOperatorDataAction with the validation error messages
+ * in its views.
  */
 
 namespace App\Operator\Actions;
@@ -17,7 +21,7 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * Class createOperator
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class CreateOperatorAction
@@ -68,6 +72,7 @@ final class CreateOperatorAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
+        //validate rules for a new operator
         $validation = $this->validator->validate($request, [
             'email' => v::noWhitespace()->notEmpty()->email()->emailNotTaken(),
             'password' => v::noWhitespace()->notEmpty(),
@@ -77,11 +82,14 @@ final class CreateOperatorAction
             'operator_level_id' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
         ]);
 
+        //check if validation passes
         if ($validation->failed()) {
             $this->flash->addMessage('error', 'Operator data is not correct');
             return $response->withRedirect($this->router->pathFor('enter-operator-data'));
         }
 
+        //Try to insert data into operator collection and in case
+        //There's an error, a flash message in the view will inform the user what went wrong.
         try {
             $this->operatorRepository->insert($request->getParams());
             $this->flash->addMessage('info', 'Operator created correctly');

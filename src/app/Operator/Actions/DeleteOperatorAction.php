@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action will mark as delete an operator
  */
 
 namespace App\Operator\Actions;
@@ -15,7 +17,7 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * Class DeleteOperatorAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class DeleteOperatorAction
@@ -69,11 +71,14 @@ final class DeleteOperatorAction
 
         $id = $request->getParam('id');
 
+        //An operator can't delete itself
         if ($this->auth->currentUserId() == $id) {
             $this->flash->addMessage('error', 'You can\'t delete yourself');
             return $response->withRedirect($this->router->pathFor('list-operator'));
         }
 
+        //delete an operator and in case of an error, flash message with error message
+        //will be sent to the view.
         try {
 
             if ($this->operatorRepository->delete($id)) {

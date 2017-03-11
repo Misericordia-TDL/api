@@ -1,6 +1,11 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * In this file all the routes of the application will be configured
+ * each route corresponds with an action. Each entry point has a unique task
+ *
+ * @see https://www.slimframework.com/docs/objects/router.html
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
@@ -9,12 +14,14 @@ use App\Middleware\GuestMiddleware;
 
 // Routes
 
+// Routes for logged out functionality
 $app->group('', function () {
     $this->get('/', 'HomeIndexAction')->setName('home');
     $this->post('/auth-operator', 'AuthOperatorAction')->setName('auth-operator');
 
 })->add(new GuestMiddleware($container));
 
+// Routes for authenticated users
 $app->group('', function () {
 
     $this->get('/home', 'HomeLoggedinIndexAction')->setName('home-loggedin');
@@ -22,6 +29,7 @@ $app->group('', function () {
 
 })->add(new AuthMiddleware($container));
 
+// All routes of the operator module
 $app->group('/operator', function () {
 
     $this->get('', 'OperatorIndexAction')->setName('index-operator');
@@ -34,6 +42,7 @@ $app->group('/operator', function () {
 
 })->add(new AuthMiddleware($container));
 
+// All routes of the operator level module
 $app->group('/operator-level', function () {
 
     $this->get('/create', 'EnterOperatorLevelDataAction')->setName('enter-operator-level-data');

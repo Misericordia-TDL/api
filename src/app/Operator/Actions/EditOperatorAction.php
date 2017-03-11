@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action will represent operator data into a form to be edited
  */
 
 namespace App\Operator\Actions;
@@ -16,7 +18,7 @@ use Slim\Views\Twig as View;
 
 /**
  * Class EditOperatorAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class EditOperatorAction
@@ -62,6 +64,8 @@ final class EditOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
+        //fetch data from operator
+        //In case of operator not found, redirect to list operator action
         try {
             $id = $request->getAttribute('id');
             $levels = $this->operatorLevelRepository->getAll();

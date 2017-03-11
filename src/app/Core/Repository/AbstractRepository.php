@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * In this class can be found the common operations that all models will inhere
  */
 
 namespace App\Core\Repository;

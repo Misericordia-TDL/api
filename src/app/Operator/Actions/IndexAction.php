@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This class will list the number of actions can be taken for operator
  */
 
 namespace App\Operator\Actions;
@@ -12,7 +14,7 @@ use Slim\Views\Twig as View;
 
 /**
  * Class IndexAction
- * @package App\Controllers\Home
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class IndexAction

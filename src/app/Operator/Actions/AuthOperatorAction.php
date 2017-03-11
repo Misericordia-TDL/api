@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action class will be in charge of the operator authentication.
  */
 
 namespace App\Operator\Actions;
@@ -16,7 +18,7 @@ use Slim\Interfaces\RouterInterface;
 
 /**
  * Class AuthOperatorAction
- * @package App\Controllers\Operator
+ * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class AuthOperatorAction
@@ -64,11 +66,13 @@ final class AuthOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
+        //check email is valid and password matches the operator
         $validation = $this->validator->validate($request, [
             'email' => v::noWhitespace()->notEmpty()->emailValid(),
             'password' => v::noWhitespace()->notEmpty()->passwordValid($request->getParam('email'), $this->auth),
         ]);
 
+        //return to loing page with error messages in the view
         if ($validation->failed()) {
             $this->flash->addMessage('error', 'Login failed. Wrong Credentials');
             return $response->withRedirect($this->router->pathFor('home'));
