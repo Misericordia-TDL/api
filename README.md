@@ -50,7 +50,6 @@ In this example can be see
 that all routes in the module will require the operator to be logged it. 
 For this purpose we add the `AuthMiddleware` too all the routes. Otherwise `GuestMiddleware` would be used.
 
-    ```php
      // All routes of the operator module
      $app->group('/operator', function () {
      
@@ -63,9 +62,8 @@ For this purpose we add the `AuthMiddleware` too all the routes. Otherwise `Gues
          $this->get('/list', 'ListOperatorAction')->setName('list-operator');
      
      })->add(new AuthMiddleware($container));
-     ```
-    
-    In case a new middleware will be required for your module, don't forget to add it to `src/middleware.php`.
+     
+   In case a new middleware will be required for your module, don't forget to add it to `src/middleware.php`.
 
 2) In the case that your module requires access to a collection, add an eloquent model to your module.
 See `src/app/Operator/Model/Operator.php` as an example of a basic model with a many to one relationship 
@@ -80,17 +78,22 @@ inject dependencies in actions and register a model as service.
 
 5) Edit `src/dependencies.php` and register in the container all the dependencies and services a new module
 could have. In this example we are registering all Operator model and actions as service in the container. 
-
-    First import classes
-    ```php
+    
+    
+    
+    
+   First import classes
+    
+    
     use App\Operator\Services\Operator as OperatorService;
     use App\Operator\Services\OperatorActions as OperatorActionsService;
-    ```
-    Second register them into the container
     
-    ```php
+    
+   Second register them into the container
+    
+    
     $container->register(new OperatorService());
     $container->register(new OperatorActionsService());
-    ```
+    
 6) In the case your module will need templates, place them inside of `templates/partials/component-name`.
 See `templates/partials/operator` as an example of templates for the operator module.
