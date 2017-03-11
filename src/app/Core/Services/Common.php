@@ -32,20 +32,21 @@ class Common implements ServiceProviderInterface
     public function register(Container $container)
     {
 
+        // this service be used to protect the application agains cross side request forgery attacks
         $container['csrf'] = function (Container $container): Guard {
             return new Guard();
         };
+        // this service will be used to validate data from a submitted form
         $container['validator'] = function (Container $container): Validator {
             return new Validator();
         };
+
+        // this service will be used to print out messages after an action is submitted.
         $container['flash'] = function (Container $container): Messages {
             return new Messages;
         };
 
-        /**
-         * @param Container $container
-         * @return Logger
-         */
+        // application logger
         $container['logger'] = function (Container $container): Logger {
             $settings = $container->get('settings')['logger'];
             $logger = new Logger($settings['name']);
@@ -53,16 +54,13 @@ class Common implements ServiceProviderInterface
             $logger->pushHandler(new StreamHandler($settings['path'], $settings['level']));
             return $logger;
         };
-
+        // application authenticator service
         $container['auth'] = function (Container $container): Auth {
 
             return new Auth($container['OperatorRepository']);
         };
 
-        /**
-         * @param Container $container
-         * @return \Slim\Views\Twig
-         */
+        // twig template service for slimphp framework
         $container['view'] = function (Container $container): Twig {
             $settings = $container['settings']['renderer'];
             $view = new Twig($settings['template_path'], $settings['debugger']);
