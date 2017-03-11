@@ -7,7 +7,7 @@ Table of contents
 -----------------
 * [Environment setup](#environment-setup)
 * [Installation](#installation)
-* [Add a new module](#upgrading)
+* [Add a new module](#add-a-new-module)
 
 Environment setup
 ------------
@@ -21,7 +21,9 @@ Once docker is setup, we have to import a copy of the database.
 
 A copy of the database can be found at [database repository](https://github.com/Misericordia-TDL/project-accoglienza-database)
 
-Alternatively in the mongo container there's a minimal copy of the db
+Alternatively in the mongo container there's a minimal copy of the db.
+
+To import data into mongo execute:
 
 ```php
 docker exec -it mongo mongorestore --db misericordia /root/misericordia/
