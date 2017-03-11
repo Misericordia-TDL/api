@@ -20,11 +20,11 @@ $container = $app->getContainer();
 //@see https://en.wikipedia.org/wiki/Cross-site_request_forgery
 $app->add(new CsrfMiddleware($container));
 
-//this middleware will pass the errors from session to the views
+//this middleware will pass the form validation errors from session to the views
 //before they get cleared
 $app->add(new ValidationErrorsMiddleware($container));
 
-//this middleware will provide the previous entered data to the views in
+//this middleware will provide the previous form entered data to the views in
 //forms with validation errors
 $app->add(new OldInputMiddleware($container));
 
