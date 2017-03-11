@@ -1,6 +1,8 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ * This middleware will check if the provided session id does not correspond to an authenticated user
+ * If yes, request will be redirected to the logged in home page
  */
 
 namespace App\Middleware;
@@ -11,6 +13,7 @@ use Slim\Http\Response;
 /**
  * Class GuestMiddleware
  * @package App\Middleware
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 class GuestMiddleware extends Middleware
 {

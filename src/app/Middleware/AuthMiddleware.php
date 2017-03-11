@@ -1,6 +1,9 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This middleware will check if the provided session id corresponds to an authenticated user
+ * If not, request will be redirected to the login page
  */
 
 namespace App\Middleware;
@@ -11,6 +14,7 @@ use Slim\Http\Response;
 /**
  * Class AuthMiddleware
  * @package App\Middleware
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 class AuthMiddleware extends Middleware
 {
@@ -20,7 +24,7 @@ class AuthMiddleware extends Middleware
      * @param $next
      * @return Response
      */
-    function __invoke(Request $request, Response $response, $next) : Response
+    function __invoke(Request $request, Response $response, $next): Response
     {
 
         if (!$this->container->auth->check()) {

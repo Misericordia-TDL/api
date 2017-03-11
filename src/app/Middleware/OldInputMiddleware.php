@@ -1,6 +1,7 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ * This middleware will inject submitted form non data for the user to amend it
  */
 
 namespace App\Middleware;
@@ -11,6 +12,7 @@ use Slim\Http\Response;
 /**
  * Class OldInputMiddleware
  * @package App\Middleware
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 class OldInputMiddleware extends Middleware
 {
