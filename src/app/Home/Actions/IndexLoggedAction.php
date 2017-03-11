@@ -13,7 +13,7 @@ use Slim\Views\Twig as View;
 
 /**
  * Class IndexAction
- * @package App\Controllers\Home
+ * @package App\Home
  * @author Javier Mellado <sol@javiermellado.com>
  */
 final class IndexLoggedAction

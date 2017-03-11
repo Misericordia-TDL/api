@@ -12,7 +12,7 @@ use Pimple\ServiceProviderInterface;
 
 /**
  * Class Home
- * @package Core\Services\Home
+ * @package App\Home\Services
  */
 class Home implements ServiceProviderInterface
 {

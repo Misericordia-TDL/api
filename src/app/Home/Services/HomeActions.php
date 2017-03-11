@@ -9,6 +9,10 @@ use App\Home\Actions\IndexLoggedAction;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
+/**
+ * Class HomeActions
+ * @package App\Home\Services
+ */
 class HomeActions implements ServiceProviderInterface
 {
     /**
