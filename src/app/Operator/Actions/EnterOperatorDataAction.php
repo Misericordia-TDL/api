@@ -1,11 +1,12 @@
 <?php
 /**
  * Copyright (c) 2017. This file belongs to Misericordia di "Torre del lago Puccini"
+ *
+ * This action will create a valid new operator form to be added to the operator collection
  */
 
 namespace App\Operator\Actions;
 
-use App\OperatorLevel\Model\OperatorLevel;
 use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
@@ -27,10 +28,6 @@ final class EnterOperatorDataAction
      * @var OperatorLevelRepository
      */
     protected $operatorLevelRepository;
-    /**
-     * @var OperatorLevel
-     */
-    private $operatorLevel;
 
     /**
      * OperatorController constructor.
