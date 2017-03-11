@@ -48,6 +48,15 @@ class Auth
     }
 
     /**
+     * destroy a valid session
+     * @return void
+     */
+    public function destroySession()
+    {
+        unset($_SESSION['operator']);
+    }
+
+    /**
      * Return current logged in operator
      * @return Operator|null
      */
