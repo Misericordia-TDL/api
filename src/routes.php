@@ -57,6 +57,7 @@ $app->group('/operator-level', function () {
 // All routes of the food module
 $app->group('/food', function () {
 
+    $this->post('/delete', 'DeleteFoodAction')->setName('delete-food');
     $this->get('/list', 'ListFoodAction')->setName('list-food');
 
 })->add(new AuthMiddleware($container));

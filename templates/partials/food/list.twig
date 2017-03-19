@@ -25,7 +25,7 @@
             <tbody>
 
             {% for food in foods %}
-                <form action="" method="post" id="delete-user-{{ food._id }}" name="delete-user-{{ food._id }}">
+                <form action="{{ path_for('delete-food') }}" method="post" id="delete-user-{{ food._id }}" name="delete-user-{{ food._id }}">
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ food.name }}</td>

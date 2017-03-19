@@ -5,6 +5,7 @@
 
 namespace App\Food\Services;
 
+use App\Food\Actions\DeleteFoodAction;
 use App\Food\Actions\ListFoodAction;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -20,6 +21,19 @@ class FoodActions implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
+
+        /**
+         * @param Container $container
+         * @return DeleteFoodAction
+         */
+        $container['DeleteFoodAction'] = function (Container $container): DeleteFoodAction {
+
+            return new DeleteFoodAction(
+                $container->router,
+                $container['FoodRepository'],
+                $container['flash']
+            );
+        };
 
         /**
          * @param Container $container
