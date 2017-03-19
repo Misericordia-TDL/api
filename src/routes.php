@@ -53,3 +53,11 @@ $app->group('/operator-level', function () {
     $this->get('/list', 'ListOperatorLevelAction')->setName('list-operator-level');
 
 })->add(new AuthMiddleware($container));
+
+// All routes of the food module
+$app->group('/food', function () {
+
+    $this->get('/list', 'ListFoodAction')->setName('list-food');
+
+})->add(new AuthMiddleware($container));
+

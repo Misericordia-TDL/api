@@ -17,6 +17,8 @@ use App\Operator\Services\Operator as OperatorService;
 use App\Operator\Services\OperatorActions as OperatorActionsService;
 use App\OperatorLevel\Services\OperatorLevel as OperatorLevelService;
 use App\OperatorLevel\Services\OperatorLevelActions as OperatorLevelActionsService;
+use App\Food\Services\FoodActions as FoodActionsService;
+use App\Food\Services\Food as FoodService;
 use Illuminate\Database\Capsule\Manager;
 use Jenssegers\Mongodb\Connection;
 use Respect\Validation\Validator;
@@ -33,6 +35,8 @@ $container->register(new OperatorService());
 $container->register(new OperatorActionsService());
 $container->register(new OperatorLevelService());
 $container->register(new OperatorLevelActionsService());
+$container->register(new FoodService());
+$container->register(new FoodActionsService());
 $container->register(new HomeService());
 $container->register(new HomeActionsService());
 
