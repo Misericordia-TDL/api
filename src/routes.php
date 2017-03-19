@@ -54,6 +54,11 @@ $app->group('/operator-level', function () {
 
 })->add(new AuthMiddleware($container));
 
+// Index route for inventory module
+$app->group('/inventory', function () {
+    $this->get('', 'InventoryIndexAction')->setName('index-inventory');
+})->add(new AuthMiddleware($container));
+
 // All routes of the food module
 $app->group('/food', function () {
 
