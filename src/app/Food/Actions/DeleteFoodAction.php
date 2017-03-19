@@ -17,7 +17,7 @@ use Slim\Interfaces\RouterInterface;
 /**
  * Class DeleteFoodAction
  * @package App\Food\Actions
- * @author Javier Mellado <sol@javiermellado.com>
+ * @author Cyprian Laskowski <cyplas@gmail.com>
  */
 final class DeleteFoodAction
 {

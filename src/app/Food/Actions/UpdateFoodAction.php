@@ -20,7 +20,7 @@ use Slim\Interfaces\RouterInterface;
 /**
  * Class UpdateFoodAction
  * @package App\Food\Actions
- * @author Javier Mellado <sol@javiermellado.com>
+ * @author Cyprian Laskowski <cyplas@gmail.com>
  */
 final class UpdateFoodAction
 {

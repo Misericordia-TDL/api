@@ -18,7 +18,7 @@ use Slim\Views\Twig as View;
 /**
  * Class EditFoodAction
  * @package App\Food\Actions
- * @author Javier Mellado <sol@javiermellado.com>
+ * @author Cyprian Laskowski <cyplas@gmail.com>
  */
 final class EditFoodAction
 {

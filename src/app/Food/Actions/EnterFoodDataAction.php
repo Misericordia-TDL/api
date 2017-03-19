@@ -15,7 +15,7 @@ use Slim\Views\Twig as View;
 /**
  * Class EnterFoodDataAction
  * @package App\Food\Actions
- * @author Javier Mellado <sol@javiermellado.com>
+ * @author Cyprian Laskowski <cyplas@gmail.com>
  */
 final class EnterFoodDataAction
 {
