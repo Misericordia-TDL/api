@@ -23,13 +23,17 @@ A copy of the database can be found at [database repository](https://github.com/
 
 Alternatively in the mongo container there's a minimal copy of the db.
 
-To import data into mongo execute:
+To import data into mongo:
+
+Copy the [database dump](https://github.com/Misericordia-TDL/project-accoglienza-database/blob/master/misericordia.zip) and place it inside the mongo container in /root/. Make sure to have the unzip utility to expand the content.
+
+Once unzipped, execute:
 
 ```php
 docker exec -it mongo mongorestore --db misericordia /root/misericordia/
 ```
 
-Once environment is ready, install the application with composer.
+After the environment is ready, install the application with composer.
 
 Installation
 ------------
