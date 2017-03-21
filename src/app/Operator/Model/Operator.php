@@ -28,7 +28,7 @@ class Operator extends AbstractModel
         'surname',
         'email',
         'password',
-        'operator_level',
+        'operator_level_id',
         'phonenumber',
     ];
 

@@ -82,7 +82,7 @@ final class UpdateOperatorAction
                 'name' => v::notEmpty()->alpha()->length(2, 20),
                 'surname' => v::notEmpty()->alpha()->length(2, 20),
                 'phonenumber' => v::noWhitespace()->notEmpty()->numeric()->phone(),
-                'operator_level' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
+                'operator_level_id' => v::noWhitespace()->notEmpty()->OperatorLevelValid(),
             ]);
 
             //If validation fails, return to edit form with error messages embeded in the view
