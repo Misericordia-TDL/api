@@ -30,6 +30,7 @@ class Operator extends AbstractModel
         'password',
         'operator_level_id',
         'phonenumber',
+        'password_reset_token',
     ];
 
     public function level()
