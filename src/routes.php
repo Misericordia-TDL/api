@@ -18,7 +18,10 @@ use App\Middleware\GuestMiddleware;
 $app->group('', function () {
     $this->get('/', 'HomeIndexAction')->setName('home');
     $this->post('/auth-operator', 'AuthOperatorAction')->setName('auth-operator');
-
+    $this->get('/reset-password', 'EnterResetPasswordEmailAction')->setName('enter-restore-password-email');
+    $this->post('/reset-password', 'ResetPasswordAction')->setName('reset-password');
+    $this->get('/enter-new-password/{token}', 'EnterNewPasswordAction')->setName('enter-new-password');
+    $this->post('/enter-new-password/{token}', 'SaveNewPasswordAction')->setName('save-new-password');
 })->add(new GuestMiddleware($container));
 
 // Routes for authenticated users
@@ -26,10 +29,6 @@ $app->group('', function () {
 
     $this->get('/home', 'HomeLoggedinIndexAction')->setName('home-loggedin');
     $this->get('/logout', 'LogOutOperatorAction')->setName('logout-operator');
-    $this->get('/reset-password', 'EnterResetPasswordEmailAction')->setName('enter-restore-password-email');
-    $this->post('/reset-password', 'ResetPasswordAction')->setName('reset-password');
-    $this->get('/enter-new-password', 'EnterNewPasswordAction')->setName('enter-new-password');
-    $this->post('/enter-new-password', 'SaveNewPasswordAction')->setName('save-new-password');
 
 })->add(new AuthMiddleware($container));
 
