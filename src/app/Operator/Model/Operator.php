@@ -40,4 +40,11 @@ class Operator extends AbstractModel
             'operator_level_id'
         );
     }
+
+    public function saveNewPassword($password)
+    {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $this->update(['password' => $password]);
+        $this->unset('password_reset_token');
+    }
 }
