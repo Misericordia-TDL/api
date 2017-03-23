@@ -77,12 +77,12 @@ final class ResetPasswordAction
 
             //send email with link to enter new password page
 
-            $this->flash->addMessage('info', 'If ' . $email . ' entered exists in the system, we will send an email with ' .
+            $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
 
             return $response->withRedirect($this->router->pathFor('home'));
         } catch (\InvalidArgumentException $e) {
-            $this->flash->addMessage('info', 'If ' . $email . ' entered exists in the system, we will send an email with ' .
+            $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
             return $response->withRedirect($this->router->pathFor('home'));
         }
