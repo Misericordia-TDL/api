@@ -5,6 +5,7 @@
 
 namespace App\Home\Actions;
 
+use App\Operator\Model\Operator;
 use App\Operator\Repository\OperatorRepository;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
@@ -68,40 +69,36 @@ final class SaveNewPasswordAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
+        //get token from url
+        $token = $request->getAttribute('token');
         try {
-            //get token from url
-            $token = $request->getAttribute('token');
-//            /** @var  Operator $originalOperator */
-//            $originalOperator = $this->operatorRepository->findById($id);
+           /** @var  Operator $originalOperator */
+           $originalOperator = $this->operatorRepository->findByResetToken($token);
 
 
-            $validation = $this->validator->validate($request, [
+            $baseValidation = $this->validator->validate($request, [
                 'password1' => v::notEmpty()->length(2, 20),
                 'password2' => v::notEmpty()->length(2, 20),
-                v::keyValue('password1', 'equals', 'password2'),
             ]);
 
+            $passwordEquals = v::keyValue('password1', 'equals', 'password2')->check($request->getParams());
 
-            var_export($_SESSION['errors']);
-            var_export($request->getParams());
-            die;
-            //If validation fails, return to edit form with error messages embeded in the view
-            if ($validation->failed()) {
-                $this->flash->addMessage('error', 'Operator data is not correct');
+            //If validation fails, return to edit form with error message
+            if ($baseValidation->failed() || !$passwordEquals) {
+                $this->flash->addMessage('error', 'Password length is not between 2 and 20 characters');
                 return $response->withRedirect($this->router->pathFor('edit-operator', ['token' => $token]));
             }
+            $originalOperator->saveNewPassword($request->getParam('password1'));
 
-            $originalOperator->update($request->getParams());
-
-            $this->flash->addMessage('info', 'Operator updated correctly');
+            $this->flash->addMessage('info', 'Password updated successfully ');
 
             return $response->withRedirect($this->router->pathFor('home'));
         } catch (EqualsException $e) {
-
             $this->flash->addMessage('error', 'Passwords don\'t match');
             return $response->withRedirect($this->router->pathFor('enter-new-password', ['token' => $token]));
         } catch (\InvalidArgumentException $e) {
-            return $response->withRedirect($this->router->pathFor('home'));
+            $this->flash->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->router->pathFor('enter-new-password', ['token' => $token]));
         }
     }
 }
