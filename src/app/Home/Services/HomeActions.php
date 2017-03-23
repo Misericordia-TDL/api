@@ -53,7 +53,10 @@ class HomeActions implements ServiceProviderInterface
         $container['EnterNewPasswordAction'] = function (Container $container): EnterNewPasswordAction {
 
             return new EnterNewPasswordAction(
-                $container->view
+                $container->view,
+                $container['OperatorRepository'],
+                $container['flash'],
+                $container->router
             );
         };
 
