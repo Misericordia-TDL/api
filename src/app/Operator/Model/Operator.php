@@ -6,6 +6,7 @@
 namespace App\Operator\Model;
 
 use App\Core\Model\AbstractModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Operator
@@ -33,7 +34,10 @@ class Operator extends AbstractModel
         'password_reset_token',
     ];
 
-    public function level()
+    /**
+     * @return BelongsTo
+     */
+    public function level() : BelongsTo
     {
         return $this->belongsTo(
             'App\OperatorLevel\Model\OperatorLevel',
@@ -41,6 +45,9 @@ class Operator extends AbstractModel
         );
     }
 
+    /**
+     * @param $password
+     */
     public function saveNewPassword($password)
     {
         $password = password_hash($password, PASSWORD_DEFAULT);
