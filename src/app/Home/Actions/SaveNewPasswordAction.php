@@ -72,8 +72,8 @@ final class SaveNewPasswordAction
         //get token from url
         $token = $request->getAttribute('token');
         try {
-           /** @var  Operator $originalOperator */
-           $originalOperator = $this->operatorRepository->findByResetToken($token);
+            /** @var  Operator $originalOperator */
+            $originalOperator = $this->operatorRepository->findByResetToken($token);
 
 
             $baseValidation = $this->validator->validate($request, [
@@ -95,10 +95,10 @@ final class SaveNewPasswordAction
             return $response->withRedirect($this->router->pathFor('home'));
         } catch (EqualsException $e) {
             $this->flash->addMessage('error', 'Passwords don\'t match');
-            return $response->withRedirect($this->router->pathFor('enter-new-password', ['token' => $token]));
         } catch (\InvalidArgumentException $e) {
             $this->flash->addMessage('error', $e->getMessage());
-            return $response->withRedirect($this->router->pathFor('enter-new-password', ['token' => $token]));
         }
+
+        return $response->withRedirect($this->router->pathFor('enter-new-password', ['token' => $token]));
     }
 }
