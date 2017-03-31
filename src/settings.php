@@ -17,6 +17,7 @@ return [
             'template_path' => __DIR__ . '/../templates',
             'debugger' => ['debug' => true]
         ],
+        'base_url' => getenv('BASE_URL'),
         // Monolog settings
         'logger' => [
             'name' => 'slim-app',
