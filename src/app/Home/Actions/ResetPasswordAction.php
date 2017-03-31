@@ -13,6 +13,7 @@ use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
+use Slim\Views\Twig as View;
 
 /**
  * Class ResetPasswordAction
@@ -37,6 +38,10 @@ final class ResetPasswordAction
      * @var Messages
      */
     private $flash;
+    /**
+     * @var View
+     */
+    private $view;
 
     /**
      * OperatorController constructor.
@@ -44,19 +49,23 @@ final class ResetPasswordAction
      * @param Validator $validator
      * @param OperatorRepository $operatorRepository
      * @param Messages $flash
+     * @param View $view
      * @internal param View $view
      */
     function __construct(
         RouterInterface $router,
         Validator $validator,
         OperatorRepository $operatorRepository,
-        Messages $flash
+        Messages $flash,
+        View $view
+
     )
     {
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
         $this->operatorRepository = $operatorRepository;
+        $this->view = $view;
     }
 
     /**
@@ -72,19 +81,27 @@ final class ResetPasswordAction
         try {
             /** @var  Operator $originalOperator */
             $originalOperator = $this->operatorRepository->findByEmail($email);
+            $resetToken = sha1(uniqid());
 
-            $originalOperator->update(['password_reset_token' => sha1(uniqid())]);
+            $originalOperator->update(['password_reset_token' => $resetToken]);
 
+            //render email message with operator data
+            $data = [
+                'email' => $email,
+                'name' => $originalOperator->name,
+                'token' => $resetToken
+            ];
+            $emailBody = $this->view->fetch('emails/reset-password.twig', $data);
             //send email with link to enter new password page
 
             $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
 
-            return $response->withRedirect($this->router->pathFor('home'));
         } catch (\InvalidArgumentException $e) {
             $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
-            return $response->withRedirect($this->router->pathFor('home'));
         }
+
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 }
