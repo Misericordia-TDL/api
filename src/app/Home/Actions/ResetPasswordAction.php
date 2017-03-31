@@ -5,6 +5,7 @@
 
 namespace App\Home\Actions;
 
+use App\Email\EmailService;
 use App\Operator\Model\Operator;
 use App\Operator\Repository\OperatorRepository;
 use App\Validation\Validator;
@@ -42,6 +43,10 @@ final class ResetPasswordAction
      * @var View
      */
     private $view;
+    /**
+     * @var EmailService
+     */
+    private $emailService;
 
     /**
      * OperatorController constructor.
@@ -57,7 +62,8 @@ final class ResetPasswordAction
         Validator $validator,
         OperatorRepository $operatorRepository,
         Messages $flash,
-        View $view
+        View $view,
+        EmailService $emailService
 
     )
     {
@@ -66,6 +72,7 @@ final class ResetPasswordAction
         $this->flash = $flash;
         $this->operatorRepository = $operatorRepository;
         $this->view = $view;
+        $this->emailService = $emailService;
     }
 
     /**
@@ -86,13 +93,18 @@ final class ResetPasswordAction
             $originalOperator->update(['password_reset_token' => $resetToken]);
 
             //render email message with operator data
+            $operatorName = $originalOperator->name;
+            $operatorFullName = $operatorName . ' ' . $originalOperator->surname;
+
             $data = [
                 'email' => $email,
-                'name' => $originalOperator->name,
+                'name' => $operatorName,
                 'token' => $resetToken
             ];
+
             $emailBody = $this->view->fetch('emails/reset-password.twig', $data);
             //send email with link to enter new password page
+            $this->emailService->sendResetPasswordEmail($emailBody, $email, $operatorFullName);
 
             $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
@@ -100,6 +112,8 @@ final class ResetPasswordAction
         } catch (\InvalidArgumentException $e) {
             $this->flash->addMessage('info', 'If ' . $email . ' exists in the system, we will send an email with ' .
                 'reset password instructions');
+        }catch (\LogicException $e) {
+            $this->flash->addMessage('error', 'Email was not sent due to an email service error');
         }
 
         return $response->withRedirect($this->router->pathFor('home'));

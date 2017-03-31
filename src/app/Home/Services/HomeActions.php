@@ -72,7 +72,8 @@ class HomeActions implements ServiceProviderInterface
                 $container['validator'],
                 $container['OperatorRepository'],
                 $container['flash'],
-                $container->view
+                $container->view,
+                $container['email']
             );
         };
         /**
