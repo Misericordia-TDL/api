@@ -9,6 +9,7 @@
 namespace App\Core\Services;
 
 use App\Auth\Auth;
+use App\Email\EmailService;
 use App\Validation\Validator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -78,6 +79,10 @@ class Common implements ServiceProviderInterface
             $view->addExtension(new \Twig_Extension_Debug());
 
             return $view;
+        };
+        // email service
+        $container['email'] = function (Container $container): EmailService {
+            return new EmailService($container['settings']['mail']);
         };
     }
 }

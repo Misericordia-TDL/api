@@ -23,6 +23,15 @@ class OperatorRepository extends AbstractRepository
     }
 
     /**
+     * @param string $token
+     * @return mixed
+     */
+    public function findByResetToken(string $token)
+    {
+        return $this->find('password_reset_token', $token);
+    }
+
+    /**
      * @param array $data
      * @return mixed
      */
