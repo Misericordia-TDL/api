@@ -24,6 +24,11 @@ return [
             'path' => __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
+        'mail' => [
+            'host' =>  getenv('MAIL_HOST') ?: '',//enter a mail server host
+            'user_name' =>  getenv('MAIL_USER_NAME') ?: '',//enter a gmail address
+            'user_password' =>  getenv('MAIL_USER_PASSWORD') ?: '' //enter the password
+        ],
         //database settings
         'db' => [
             'driver' => 'mongodb',
