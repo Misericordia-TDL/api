@@ -10,12 +10,12 @@
 
 return [
     'settings' => [
-        'displayErrorDetails' => true, // set to false in production
+        'displayErrorDetails' => getenv('DISPLAY_ERROR_DETAILS', true), // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
         // Renderer settings
         'renderer' => [
             'template_path' => __DIR__ . '/../templates',
-            'debugger' => ['debug' => true]
+            'debugger' => ['debug' => getenv('DEBUGGER_DEBUG', true)]
         ],
         'base_url' => getenv('BASE_URL'),
         // Monolog settings
@@ -27,13 +27,13 @@ return [
         //database settings
         'db' => [
             'driver' => 'mongodb',
-            'host' => 'mongo',
-            'port' => 27017,
-            'database' => 'misericordia',
+            'host' => getenv('DB_HOST', 'mongo'),
+            'port' => getenv('DB_PORT', 27017),
+            'database' => getenv('DB_PORT', 'misericordia'),
 //            'username' => '',
 //            'password' => '',
             'options' => [
-                'database' => 'admin' // sets the authentication database required by mongo 3
+                'database' => getenv('DB_OPTIONS_DATABASE', 'admin') // sets the authentication database required by mongo 3
             ]
         ],
     ],
