@@ -72,31 +72,49 @@ final class CreateFoodAction
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
 
-        //validate rules for a new food
-        $validation = $this->validator->validate($request, [
-            'name' => v::notEmpty()->alpha()->length(2, 20),
-            'quantity' => v::noWhitespace()->notEmpty()->intVal(),
-        ]);
-
-        //check if validation passes
-        if ($validation->failed()) {
-            $this->flash->addMessage('error', 'Food data is not correct');
-            return $response->withRedirect($this->router->pathFor('enter-food-data'));
-        }
-
-        //Try to insert data into food collection and in case
-        //There's an error, a flash message in the view will inform the user what went wrong.
+        //Check if food with this name already exists
         try {
-            $this->foodRepository->insert($request->getParams());
-            $this->flash->addMessage('info', 'Food created correctly');
-
+            $name = $request->getParam('name');
+            /** @var Food $food */
+            $food = $this->foodRepository->findByName($name);
+	    $found = true;
         } catch (\InvalidArgumentException $e) {
-            $this->flash->addMessage('error', 'Food not found. Could not perform deletion.');
-        } catch (EmptyDataSetException $e) {
-            $this->flash->addMessage('error', $e->getMessage());
+	    $found = false;
         }
 
+	if ($found) {
+
+	   $this->flash->addMessage('error', 'Food with this name already exists.');
+
+	} else {
+
+            //validate rules for a new food
+            $validation = $this->validator->validate($request, [
+                'name' => v::notEmpty()->alpha()->length(2, 20),
+                'quantity' => v::noWhitespace()->notEmpty()->intVal(),
+            ]);
+    
+            //check if validation passes
+            if ($validation->failed()) {
+                $this->flash->addMessage('error', 'Food data is not correct');
+                return $response->withRedirect($this->router->pathFor('enter-food-data'));
+            }
+    
+            //Try to insert data into food collection and in case
+            //There's an error, a flash message in the view will inform the user what went wrong.
+            try {
+                $this->foodRepository->insert($request->getParams());
+                $this->flash->addMessage('info', 'Food created correctly');
+    
+            } catch (\InvalidArgumentException $e) {
+                $this->flash->addMessage('error', 'Food not found. Could not perform deletion.');
+            } catch (EmptyDataSetException $e) {
+                $this->flash->addMessage('error', $e->getMessage());
+            }
+		
+        }
 
         return $response->withRedirect($this->router->pathFor('list-food'));
-    }
+		
+    }	
 }
