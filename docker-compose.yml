@@ -10,8 +10,6 @@ services:
     container_name: mongo
     ports:
       - "27017:27017"
-    environment:
-      MONGODB_ROOT_PASSWORD: password
     networks:
       - back-tier
     volumes:
