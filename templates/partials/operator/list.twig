@@ -29,11 +29,12 @@
             <tbody>
 
             {% for operator in operators %}
-                <form action="{{ path_for('delete-operator') }}" method="post" id="delete-user-{{ operator._id }}" name="delete-user-{{ operator._id }}">
+                <form action="{{ path_for('delete-operator') }}" method="post" id="delete-user-{{ operator._id }}"
+                      name="delete-user-{{ operator._id }}">
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ operator.name }} {{ operator.surname }} </td>
-                        <td>{{ operator.level.name}}</td>
+                        <td>{{ operator.level.name }}</td>
                         <td>
                             <div class="btn-toolbar" role="group" aria-label="...">
                                 <a class="btn btn-primary" href="{{ path_for('edit-operator',{'id': operator._id}) }}"
@@ -49,4 +50,7 @@
             </tbody>
         </table>
     </div>
+    {% set vars = {'page': page, 'totalLinks': 3} %}
+    {% include 'partials/common/pagination.twig' with vars %}
+
 {% endblock %}
