@@ -7,6 +7,9 @@
 
 namespace App\Core\Repository;
 
+use App\Core\Model\AbstractModel;
+use Illuminate\Support\Collection;
+
 /**
  * Class AbstractRepository
  * @package App\Core\Repository
@@ -14,7 +17,7 @@ namespace App\Core\Repository;
 class AbstractRepository
 {
     /**
-     * @var string
+     * @var AbstractModel
      */
     protected $modelClass = null;
 
@@ -28,12 +31,15 @@ class AbstractRepository
     }
 
     /**
-     * @return mixed
+     * @param int $page
+     * @param int $perPage
+     * @return Collection
      */
-    public function getAll()
+    public function getAll($page = 0, $perPage = 15): Collection
     {
         $modelClass = $this->modelClass;
-        return $modelClass::all();
+
+        return $modelClass::all()->forPage($page, $perPage);
     }
 
     /**
