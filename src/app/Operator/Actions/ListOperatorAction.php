@@ -54,7 +54,8 @@ final class ListOperatorAction
 
         $data = [
             'operators' => $this->operatorRepository->getAll($page,2),
-            'page' => $page
+            'page' => $page,
+            'totalOperators' => $this->operatorRepository->getTotalCount()
         ];
         return $this->view->render($response, 'partials/operator/list.twig', $data);
     }
