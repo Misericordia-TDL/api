@@ -1,42 +1,28 @@
-<div class="text-center">
-    <nav aria-label="Page navigation pagination-lg">
-        <ul class="pagination">
-            <li>
-                {% if page-1 > 0 %}
-                    <a href="{{ path_for('list-operator',{'page': page - 1}) }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                {% endif %}
-            </li>
-            {% for i in 0..totalLinks %}
-                <li><a href="{{ path_for('list-operator',{'page': page + i }) }}">{{ page + i }}</a></li>
-            {% endfor %}
-            {#{% for operator in operators %}#}
-            {#<form action="{{ path_for('delete-operator') }}" method="post" id="delete-user-{{ operator._id }}"#}
-            {#name="delete-user-{{ operator._id }}">#}
-            {#<tr>#}
-            {#<th scope="row">{{ loop.index }}</th>#}
-            {#<td>{{ operator.name }} {{ operator.surname }} </td>#}
-            {#<td>{{ operator.level.name }}</td>#}
-            {#<td>#}
-            {#<div class="btn-toolbar" role="group" aria-label="...">#}
-            {#<a class="btn btn-primary" href="{{ path_for('edit-operator',{'id': operator._id}) }}"#}
-            {#role="button">Edit</a>#}
-            {#<input type="submit" class="btn btn-danger" value="Delete">#}
-            {#</div>#}
-            {#</td>#}
-            {#</tr>#}
-            {#<input type="hidden" name="id" value="{{ operator._id }}">#}
-            {#{{ csrf.field  | raw }}#}
-            {#</form>#}
-            {#{% endfor %}#}
+{{ page }}
+{{ totalElements / totalLinks }}
+{% if page <= totalElements / totalLinks + 1%}
+    <div class="text-center">
+        <nav aria-label="Page navigation pagination-lg">
+            <ul class="pagination">
+                <li>
+                    {% if page-1 > 0 %}
+                        <a href="{{ path_for('list-operator',{'page': page - 1}) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+                {% for i in 0..totalLinks if i <= totalElements / totalLinks%}
+                    <li><a href="{{ path_for('list-operator',{'page': page + i }) }}">{{ page + i }}</a></li>
+                {% endfor %}
 
-
-            <li>
-                <a href="{{ path_for('list-operator',{'page': page + 1}) }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+                <li>
+                    {% if page+1 < totalElements / totalLinks %}
+                        <a href="{{ path_for('list-operator',{'page': page + 1}) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
+{% endif %}

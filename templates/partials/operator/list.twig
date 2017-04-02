@@ -50,7 +50,7 @@
             </tbody>
         </table>
     </div>
-    {% set vars = {'page': page, 'totalLinks': 3} %}
+    {% set vars = {'page': page, 'totalLinks': 3, 'totalElements': totalOperators} %}
     {% include 'partials/common/pagination.twig' with vars %}
 
 {% endblock %}
