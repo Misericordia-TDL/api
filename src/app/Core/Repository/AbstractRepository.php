@@ -89,4 +89,12 @@ class AbstractRepository
         return $modelClass::create($data);
 
     }
+
+    /**
+     * Get total documents in the collection
+     */
+    public function getTotalCount() {
+        $modelClass = $this->modelClass;
+        return $modelClass::count();
+    }
 }
