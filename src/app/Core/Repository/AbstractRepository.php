@@ -7,14 +7,19 @@
 
 namespace App\Core\Repository;
 
+use App\Core\Model\AbstractModel;
+use Illuminate\Support\Collection;
+
 /**
  * Class AbstractRepository
  * @package App\Core\Repository
  */
 class AbstractRepository
 {
+    const ELEMENTS_PER_PAGE = 3;
+
     /**
-     * @var string
+     * @var AbstractModel
      */
     protected $modelClass = null;
 
@@ -28,12 +33,15 @@ class AbstractRepository
     }
 
     /**
-     * @return mixed
+     * @param int $page
+     * @param int $perPage
+     * @return Collection
      */
-    public function getAll()
+    public function getAll($page = 0, $perPage = self::ELEMENTS_PER_PAGE): Collection
     {
         $modelClass = $this->modelClass;
-        return $modelClass::all();
+
+        return $modelClass::all()->forPage($page, $perPage);
     }
 
     /**
@@ -82,5 +90,23 @@ class AbstractRepository
         $modelClass = $this->modelClass;
         return $modelClass::create($data);
 
+    }
+
+    /**
+     * Get total pages
+     * @return float|int
+     */
+    public function getTotalPages()
+    {
+        return round($this->getTotalCount() / self::ELEMENTS_PER_PAGE);
+    }
+
+    /**
+     * Get total documents in the collection
+     */
+    public function getTotalCount()
+    {
+        $modelClass = $this->modelClass;
+        return $modelClass::count();
     }
 }
