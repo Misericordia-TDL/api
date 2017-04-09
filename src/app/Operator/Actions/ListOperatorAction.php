@@ -52,7 +52,7 @@ final class ListOperatorAction
     {
         $totalPages = $this->operatorRepository->getTotalPages();
 
-        $page = $request->getAttribute('page') <= $totalPages ? $request->getAttribute('page') : 1;
+        $page = $request->getAttribute('page', 1) <= $totalPages ? $request->getAttribute('page', 1) : 1;
 
         $data = [
             'operators' => $this->operatorRepository->getAll($page),
