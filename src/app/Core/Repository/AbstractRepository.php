@@ -16,6 +16,8 @@ use Illuminate\Support\Collection;
  */
 class AbstractRepository
 {
+    const ELEMENTS_PER_PAGE = 3;
+
     /**
      * @var AbstractModel
      */
@@ -35,7 +37,7 @@ class AbstractRepository
      * @param int $perPage
      * @return Collection
      */
-    public function getAll($page = 0, $perPage = 15): Collection
+    public function getAll($page = 0, $perPage = self::ELEMENTS_PER_PAGE): Collection
     {
         $modelClass = $this->modelClass;
 
@@ -91,9 +93,19 @@ class AbstractRepository
     }
 
     /**
+     * Get total pages
+     * @return float|int
+     */
+    public function getTotalPages()
+    {
+        return round($this->getTotalCount() / self::ELEMENTS_PER_PAGE);
+    }
+
+    /**
      * Get total documents in the collection
      */
-    public function getTotalCount() {
+    public function getTotalCount()
+    {
         $modelClass = $this->modelClass;
         return $modelClass::count();
     }
