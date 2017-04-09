@@ -50,12 +50,14 @@ final class ListOperatorAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $page = $request->getAttribute('page') ?: 1;
+        $totalPages = $this->operatorRepository->getTotalPages();
+
+        $page = $request->getAttribute('page') <= $totalPages ? $request->getAttribute('page') : 1;
 
         $data = [
-            'operators' => $this->operatorRepository->getAll($page,2),
+            'operators' => $this->operatorRepository->getAll($page),
             'page' => $page,
-            'totalOperators' => $this->operatorRepository->getTotalCount()
+            'totalPages' => $totalPages
         ];
         return $this->view->render($response, 'partials/operator/list.twig', $data);
     }
