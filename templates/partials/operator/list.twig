@@ -50,7 +50,11 @@
             </tbody>
         </table>
     </div>
-    {% set vars = {'page': page, 'totalLinks': 3, 'totalElements': totalOperators} %}
-    {% include 'partials/common/pagination.twig' with vars %}
-
+    {% include 'partials/common/pagination.twig' with {
+        currentFilters: {},
+        currentPage: page,
+        paginationPath: 'list-operator',
+        lastPage: totalPages,
+        showAlwaysFirstAndLast: false
+    } only %}
 {% endblock %}
