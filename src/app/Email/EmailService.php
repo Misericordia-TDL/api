@@ -42,7 +42,7 @@ class EmailService extends PHPMailer
         //Set who the message is to be sent to
         $this->addAddress($email, $name);
         //email subject
-        $this->Subject = 'Misericordia accoglienza - Reset Passord';
+        $this->Subject = 'Misericordia Accoglienza - Reset Password';
         //set email body message
         $this->msgHTML($body);
         //override xmailer header
