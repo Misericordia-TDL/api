@@ -20,6 +20,8 @@ use App\OperatorLevel\Services\OperatorLevelActions as OperatorLevelActionsServi
 use App\Inventory\Services\InventoryActions as InventoryActionsService;
 use App\Food\Services\FoodActions as FoodActionsService;
 use App\Food\Services\Food as FoodService;
+use App\Clothe\Services\ClotheActions as ClotheActionsService;
+use App\Clothe\Services\Clothe as ClotheService;
 use Illuminate\Database\Capsule\Manager;
 use Jenssegers\Mongodb\Connection;
 use Respect\Validation\Validator;
@@ -38,6 +40,8 @@ $container->register(new OperatorLevelService());
 $container->register(new OperatorLevelActionsService());
 $container->register(new FoodService());
 $container->register(new FoodActionsService());
+$container->register(new ClotheService());
+$container->register(new ClotheActionsService());
 $container->register(new InventoryActionsService());
 $container->register(new HomeService());
 $container->register(new HomeActionsService());

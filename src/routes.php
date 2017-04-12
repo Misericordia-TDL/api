@@ -74,3 +74,15 @@ $app->group('/food', function () {
 
 })->add(new AuthMiddleware($container));
 
+// All routes of the clothe module
+$app->group('/clothing', function () {
+
+    $this->get('/create', 'EnterClotheDataAction')->setName('enter-clothe-data');
+    $this->post('/create', 'CreateClotheAction')->setName('create-clothe');
+    $this->get('/update/{id}', 'EditClotheAction')->setName('edit-clothe');
+    $this->post('/update/{id}', 'UpdateClotheAction')->setName('update-clothe');
+    $this->post('/delete', 'DeleteClotheAction')->setName('delete-clothe');
+    $this->get('/list', 'ListClotheAction')->setName('list-clothe');
+
+})->add(new AuthMiddleware($container));
+

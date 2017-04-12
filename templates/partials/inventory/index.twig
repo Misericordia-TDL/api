@@ -7,9 +7,9 @@
 {% block container %}
     <div class="jumbotron">
         <h1>Inventory section</h1>
-        <p>In this part you can manage food inventories (later also clothing and medicine)</p>
+        <p>In this part you can manage food and clothing inventories (later also medicine)</p>
         <p>
-		<a class="btn btn-default btn-lg disabled" href="#" role="button">Manage Clothing</a>
+		<a class="btn btn-primary btn-lg" href="{{ path_for('list-clothe') }}" role="button">Manage Clothing</a>
         	<a class="btn btn-primary btn-lg" href="{{ path_for('list-food') }}" role="button">Manage Food</a>
         	<a class="btn btn-default btn-lg disabled" href="#" role="button">Manage Medicine</a>
 	</p>

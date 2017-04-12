@@ -1,0 +1,53 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Clothing
+{% endblock %}
+{% block container %}
+    <div class="jumbotron">
+        <h1>Clothing</h1>
+        <p>In this part you can edit, delete or add clothes</p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Clothing</div>
+        <div class="panel-body">
+            <a class="btn btn-primary" href="{{ path_for('enter-clothe-data') }}" role="button">Add new clothing</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Quantity</th>
+		<th>Arrival date</th>
+		<th>Actions</th>		
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for clothe in clothes %}
+                <form action="{{ path_for('delete-clothe') }}" method="post" id="delete-user-{{ clothe._id }}" name="delete-user-{{ clothe._id }}">
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ clothe.name }}</td>
+                        <td>{{ clothe.size }}</td>
+                        <td>{{ clothe.quantity }}</td>
+                        <td>{{ clothe.arrival_date.date|date('Y-m-d') }}</td>			
+                        <td>
+                            <div class="btn-toolbar" role="group" aria-label="...">
+                                <a class="btn btn-primary" href="{{ path_for('edit-clothe',{'id': clothe._id}) }}"
+                                   role="button">Edit</a>
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </div>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="id" value="{{ clothe._id }}">
+                    {{ csrf.field  | raw }}
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

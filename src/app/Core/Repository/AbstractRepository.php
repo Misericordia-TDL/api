@@ -87,7 +87,7 @@ class AbstractRepository
      */
     public function insert(array $data)
     {
-        $modelClass = $this->modelClass;
+         $modelClass = $this->modelClass;
         return $modelClass::create($data);
 
     }
