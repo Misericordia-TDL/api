@@ -1,0 +1,43 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Medicine
+{% endblock %}
+
+{% block container %}
+    <form class="form-signin" action="{{ path_for('create-medicine') }}" method="post">
+        <h2 class="form-signin-heading">Add medicine data</h2>
+        <div class="form-group{{ errors.name ? ' has-error' : ''}} ">
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="text" id="inputName" name="name" class="form-control" placeholder="Name" required autofocus value="{{ old.name }}">
+            {% for error in errors.name %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group{{ errors.quantity ? ' has-error' : ''}} ">
+            <label for="inputQuantity" class="sr-only">Quantity</label>
+            <input type="tel" id="inputQuantity" name="quantity" class="form-control" placeholder="Quantity" required autofocus value="{{ old.quantity }}">
+            {% if errors.quantity %}
+                {% for error in errors.quantity %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group{{ errors.arrival_date ? ' has-error' : ''}} ">
+            <label for="inputArrivalDate" class="sr-only">Arrival date</label>
+            <input type="date" id="inputArrivalDate" name="arrival_date" class="form-control" placeholder="Arrival date" required value="{{ old.arrival_date }}">
+            {% for error in errors.arrival_date %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group{{ errors.expiry_date ? ' has-error' : ''}} ">
+            <label for="inputExpiryDate" class="sr-only">Expiry date</label>
+            <input type="date" id="inputExpiryDate" name="expiry_date" class="form-control" placeholder="Expiry date" required autofocus value="{{ old.expiry_date }}">
+            {% for error in errors.expiry_date %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+        {{ csrf.field  | raw}}
+    </form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Medicine
+{% endblock %}
+{% block container %}
+    <div class="jumbotron">
+        <h1>Medicine</h1>
+        <p>In this part you can edit, delete or add medicine</p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Medicine</div>
+        <div class="panel-body">
+            <a class="btn btn-primary" href="{{ path_for('enter-medicine-data') }}" role="button">Add new medicine</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Quantity</th>
+		<th>Arrival date</th>
+		<th>Expiry date</th>
+		<th>Actions</th>		
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for medicine in medicines %}
+                <form action="{{ path_for('delete-medicine') }}" method="post" id="delete-user-{{ medicine._id }}" name="delete-user-{{ medicine._id }}">
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ medicine.name }}</td>
+                        <td>{{ medicine.quantity }}</td>
+                        <td>{{ medicine.arrival_date.date|date('Y-m-d') }}</td>			
+                        <td>{{ medicine.expiry_date.date|date('Y-m-d') }}</td>			
+                        <td>
+                            <div class="btn-toolbar" role="group" aria-label="...">
+                                <a class="btn btn-primary" href="{{ path_for('edit-medicine',{'id': medicine._id}) }}"
+                                   role="button">Edit</a>
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </div>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="id" value="{{ medicine._id }}">
+                    {{ csrf.field  | raw }}
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

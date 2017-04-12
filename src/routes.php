@@ -86,3 +86,15 @@ $app->group('/clothing', function () {
 
 })->add(new AuthMiddleware($container));
 
+// All routes of the medicine module
+$app->group('/medicine', function () {
+
+    $this->get('/create', 'EnterMedicineDataAction')->setName('enter-medicine-data');
+    $this->post('/create', 'CreateMedicineAction')->setName('create-medicine');
+    $this->get('/update/{id}', 'EditMedicineAction')->setName('edit-medicine');
+    $this->post('/update/{id}', 'UpdateMedicineAction')->setName('update-medicine');
+    $this->post('/delete', 'DeleteMedicineAction')->setName('delete-medicine');
+    $this->get('/list', 'ListMedicineAction')->setName('list-medicine');
+
+})->add(new AuthMiddleware($container));
+
