@@ -1,0 +1,51 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Structure
+{% endblock %}
+{% block container %}
+    <div class="jumbotron">
+        <h1>Structure</h1>
+        <p>In this part you can edit, delete or add Structure</p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Structure</div>
+        <div class="panel-body">
+            <a class="btn btn-primary" href="{{ path_for('enter-structure-data') }}" role="button">Add a new structure</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for structure in structures %}
+                <form action="{{ path_for('delete-structure') }}" method="post" id="delete-user-{{ structure._id }}" name="delete-user-{{ structure._id }}">
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ structure.name }}</td>
+                        <td>{{ structure.address }}</td>
+                        <td>{{ structure.capacity }}</td>
+                        <td>
+                            <div class="btn-toolbar" role="group" aria-label="...">
+                                <a class="btn btn-primary" href="{{ path_for('edit-structure',{'id': structure._id}) }}"
+                                   role="button">Edit</a>
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </div>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="id" value="{{ structure._id }}">
+                    {{ csrf.field  | raw }}
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
