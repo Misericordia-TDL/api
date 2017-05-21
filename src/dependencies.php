@@ -10,20 +10,22 @@
  * @author Javier Mellado <sol@javiermellado.com>
  */
 
+use App\Clothe\Services\Clothe as ClotheService;
+use App\Clothe\Services\ClotheActions as ClotheActionsService;
 use App\Core\Services\Common as CommonServices;
+use App\Food\Services\Food as FoodService;
+use App\Food\Services\FoodActions as FoodActionsService;
 use App\Home\Services\Home as HomeService;
 use App\Home\Services\HomeActions as HomeActionsService;
+use App\Inventory\Services\InventoryActions as InventoryActionsService;
+use App\Medicine\Services\Medicine as MedicineService;
+use App\Medicine\Services\MedicineActions as MedicineActionsService;
 use App\Operator\Services\Operator as OperatorService;
 use App\Operator\Services\OperatorActions as OperatorActionsService;
 use App\OperatorLevel\Services\OperatorLevel as OperatorLevelService;
 use App\OperatorLevel\Services\OperatorLevelActions as OperatorLevelActionsService;
-use App\Inventory\Services\InventoryActions as InventoryActionsService;
-use App\Food\Services\FoodActions as FoodActionsService;
-use App\Food\Services\Food as FoodService;
-use App\Clothe\Services\ClotheActions as ClotheActionsService;
-use App\Clothe\Services\Clothe as ClotheService;
-use App\Medicine\Services\MedicineActions as MedicineActionsService;
-use App\Medicine\Services\Medicine as MedicineService;
+use App\Structure\Services\Structure;
+use App\Structure\Services\StructureActions;
 use Illuminate\Database\Capsule\Manager;
 use Jenssegers\Mongodb\Connection;
 use Respect\Validation\Validator;
@@ -49,6 +51,8 @@ $container->register(new MedicineActionsService());
 $container->register(new InventoryActionsService());
 $container->register(new HomeService());
 $container->register(new HomeActionsService());
+$container->register(new Structure());
+$container->register(new StructureActions());
 
 //Setup eloquent for mongodb to work
 $capsule = new Manager();
