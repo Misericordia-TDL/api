@@ -10,17 +10,27 @@ services:
     container_name: mongo
     ports:
       - "27017:27017"
+    environment:
+      MONGODB_ROOT_PASSWORD: password
     networks:
       - back-tier
     volumes:
       - data:/data/db
-
+  hub:
+    image: selenium/hub
+    ports:
+      - "4444:4444"
 
   php:
     image: teseo/mis_php
     container_name: php
     volumes:
       - ${PWD}:/var/www
+    environment:
+      MAIL_HOST: smtp.gmail.com
+      MAIL_USER_NAME: misericordiarefugeeapp@gmail.com
+      MAIL_USER_PASSWORD: Vw%CPsR2*Pnh2FvP3#
+      XDEBUG_HOST: 192.168.1.65
     ports:
       - "80:80"
     networks:

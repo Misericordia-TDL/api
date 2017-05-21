@@ -98,7 +98,7 @@ class AbstractRepository
      */
     public function getTotalPages()
     {
-        return round($this->getTotalCount() / self::ELEMENTS_PER_PAGE);
+        return ceil($this->getTotalCount() / self::ELEMENTS_PER_PAGE);
     }
 
     /**

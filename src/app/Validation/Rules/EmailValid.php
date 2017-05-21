@@ -5,13 +5,22 @@
 
 namespace App\Validation\Rules;
 
-use App\Operator\Model\Operator;
+use App\Operator\Repository\OperatorRepository;
 use Respect\Validation\Rules\AbstractRule;
 
 class EmailValid extends AbstractRule
 {
+    protected $operatorRepository;
+
+    function __construct(
+        OperatorRepository $operatorRepository
+    )
+    {
+        $this->operatorRepository = $operatorRepository;
+    }
+
     public function validate($input)
     {
-        return !empty(Operator::where('email', '=', $input)->first());
+        return !empty($this->operatorRepository->findByEmail($input));
     }
 }

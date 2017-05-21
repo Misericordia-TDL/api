@@ -18,7 +18,7 @@ $container = $app->getContainer();
 
 //middleware to protect against cross site request forgery
 //@see https://en.wikipedia.org/wiki/Cross-site_request_forgery
-$app->add(new CsrfMiddleware($container));
+//$app->add(new CsrfMiddleware($container));
 
 //this middleware will pass the form validation errors from session to the views
 //before they get cleared
@@ -29,4 +29,4 @@ $app->add(new ValidationErrorsMiddleware($container));
 $app->add(new OldInputMiddleware($container));
 
 //after all middleware loaded, the csrf package gets added into the app.
-$app->add($container['csrf']);
+//$app->add($container['csrf']);

@@ -8,6 +8,7 @@
 namespace App\Operator\Actions;
 
 use App\Auth\Auth;
+use App\Operator\Repository\OperatorRepository;
 use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
@@ -38,18 +39,24 @@ final class AuthOperatorAction
 
     /** @var Messages */
     protected $flash;
+    /**
+     * @var OperatorRepository
+     */
+    private $operatorRepository;
 
     /**
      * OperatorController constructor.
      * @param RouterInterface $router
      * @param Auth $auth
      * @param Validator $validator
+     * @param OperatorRepository $operatorRepository
      * @param Messages $flash
      */
     function __construct(
         RouterInterface $router,
         Auth $auth,
         Validator $validator,
+        OperatorRepository $operatorRepository,
         Messages $flash
     )
     {
@@ -57,6 +64,7 @@ final class AuthOperatorAction
         $this->router = $router;
         $this->validator = $validator;
         $this->flash = $flash;
+        $this->operatorRepository = $operatorRepository;
     }
 
     /**
@@ -68,7 +76,7 @@ final class AuthOperatorAction
     {
         //check email is valid and password matches the operator
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->emailValid(),
+            'email' => v::noWhitespace()->notEmpty()->emailValid($this->operatorRepository),
             'password' => v::noWhitespace()->notEmpty()->passwordValid($request->getParam('email'), $this->auth),
         ]);
 

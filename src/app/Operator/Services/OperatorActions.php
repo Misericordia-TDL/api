@@ -137,6 +137,7 @@ class OperatorActions implements ServiceProviderInterface
                 $container->router,
                 $container['auth'],
                 $container['validator'],
+                $container['OperatorRepository'],
                 $container['flash']
             );
         };

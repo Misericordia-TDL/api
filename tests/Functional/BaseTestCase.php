@@ -5,6 +5,7 @@
 
 namespace Tests\Functional;
 
+use Psr\Http\Message\ResponseInterface;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -25,15 +26,19 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $withMiddleware = true;
 
+    public function setUp()
+    {
+        $_SESSION = array();
+    }
     /**
      * Process the application given a request method and URI
      *
      * @param string $requestMethod the request method (e.g. GET, POST, etc.)
      * @param string $requestUri the request URI
      * @param array|object|null $requestData the request data
-     * @return \Slim\Http\Response
+     * @return ResponseInterface
      */
-    public function runApp($requestMethod, $requestUri, $requestData = null)
+    public function runApp($requestMethod, $requestUri, $requestData = null, $mock)
     {
         // Create a mock environment for testing with
         $environment = Environment::mock(
@@ -55,21 +60,25 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $response = new Response();
 
         // Use the application settings
-        $settings = require __DIR__ . '/../../src/core/settings.php';
+        $settings = require __DIR__ . '/../../src/settings.php';
 
         // Instantiate the application
         $app = new App($settings);
 
         // Set up dependencies
-        require __DIR__ . '/../../src/core/dependencies.php';
+        require __DIR__ . '/../../src/dependencies.php';
 
         // Register middleware
         if ($this->withMiddleware) {
-            require __DIR__ . '/../../src/core/middleware.php';
+            require __DIR__ . '/../../src/middleware.php';
+        }
+        // Register middleware
+        if ($this->containerOverride = true) {
+            $app->getContainer()['OperatorRepository'] = $mock;
         }
 
         // Register routes
-        require __DIR__ . '/../../src/core/routes.php';
+        require __DIR__ . '/../../src/routes.php';
 
         // Process the application
         $response = $app->process($request, $response);
