@@ -7,10 +7,7 @@ namespace App\Core\Actions;
 
 use App\Core\Repository\RepositoryInterface;
 use App\Validation\Validator;
-use Psr\Http\Message\ResponseInterface;
 use Slim\Flash\Messages;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Slim\Interfaces\RouterInterface;
 
 /**
@@ -19,7 +16,7 @@ use Slim\Interfaces\RouterInterface;
  * @author Javier Mellado <sol@javiermellado.com>
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-abstract class CreateAction
+abstract class CreateAction implements InvokableActionInterface
 {
     /**
      * @var RepositoryInterface
@@ -58,5 +55,4 @@ abstract class CreateAction
         $this->flash = $flash;
     }
 
-    abstract function __invoke(Request $request, Response $response): ResponseInterface;
 }
