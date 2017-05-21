@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
  * Class AbstractRepository
  * @package App\Core\Repository
  */
-class AbstractRepository
+class AbstractRepository implements RepositoryInterface
 {
     const ELEMENTS_PER_PAGE = 3;
 
@@ -108,5 +108,14 @@ class AbstractRepository
     {
         $modelClass = $this->modelClass;
         return $modelClass::count();
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function findByName(string $name)
+    {
+        return $this->find('name', $name);
     }
 }
