@@ -14,8 +14,6 @@ use Illuminate\Support\Collection;
  */
 interface RepositoryInterface
 {
-    const ELEMENTS_PER_PAGE = 3;
-
     /**
      * AbstractRepository constructor.
      * @param string $modelClassName
