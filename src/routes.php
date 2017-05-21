@@ -98,3 +98,16 @@ $app->group('/medicine', function () {
 
 })->add(new AuthMiddleware($container));
 
+
+// All routes of the structure module
+$app->group('/structure', function () {
+
+    $this->get('/create', 'EnterStructureDataAction')->setName('enter-structure-data');
+    $this->post('/create', 'CreateStructureAction')->setName('create-structure');
+    $this->get('/update/{id}', 'EditStructureAction')->setName('edit-structure');
+    $this->post('/update/{id}', 'UpdateStructureAction')->setName('update-structure');
+    $this->post('/delete', 'DeleteStructureAction')->setName('delete-structure');
+    $this->get('/list', 'ListStructureAction')->setName('list-structure');
+
+})->add(new AuthMiddleware($container));
+
