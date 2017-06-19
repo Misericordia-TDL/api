@@ -21,6 +21,7 @@ use Slim\Http\Response;
  * Class createClothe
  * @package App\Clothe\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class CreateClotheAction extends CreateAction
 {
@@ -35,18 +36,18 @@ final class CreateClotheAction extends CreateAction
         //Check if clothe with this name already exists
         try {
             $name = $request->getParam('name');
-            /** @var ClotheRepository $this->repository */
+            /** @var ClotheRepository $this ->repository */
             $clothe = $this->repository->findByName($name);
-	    $found = true;
+            $found = true;
         } catch (\InvalidArgumentException $e) {
-	    $found = false;
+            $found = false;
         }
 
-	if ($found) {
+        if ($found) {
 
-	   $this->flash->addMessage('error', 'Clothing with this name already exists.');
+            $this->flash->addMessage('error', 'Clothing with this name already exists.');
 
-	} else {
+        } else {
 
             //validate rules for a new clothe
             $validation = $this->validator->validate($request, [
@@ -54,18 +55,18 @@ final class CreateClotheAction extends CreateAction
                 'size' => v::notEmpty()->alpha()->length(1, 4),
                 'quantity' => v::noWhitespace()->notEmpty()->intVal(),
             ]);
-    
+
             //check if validation passes
             if ($validation->failed()) {
                 $this->flash->addMessage('error', 'Clothing data is not correct');
                 return $response->withRedirect($this->router->pathFor('enter-clothe-data'));
             }
-    
+
             //Try to insert data into clothe collection and in case
             //There's an error, a flash message in the view will inform the user what went wrong.
             try {
-       	        $params = $request->getParams();
-	        $params['arrival_date'] = date_create($params['arrival_date']);
+                $params = $request->getParams();
+                $params['arrival_date'] = date_create($params['arrival_date']);
                 $this->repository->insert($params);
                 $this->flash->addMessage('info', 'Clothing created correctly');
 
@@ -74,10 +75,10 @@ final class CreateClotheAction extends CreateAction
             } catch (EmptyDataSetException $e) {
                 $this->flash->addMessage('error', $e->getMessage());
             }
-		
+
         }
 
         return $response->withRedirect($this->router->pathFor('list-clothe'));
-		
-    }	
+
+    }
 }
