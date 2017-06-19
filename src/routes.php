@@ -53,7 +53,7 @@ $app->group('/operator-level', function () {
     $this->get('/update/{id}', 'EditOperatorLevelAction')->setName('edit-operator-level');
     $this->post('/update/{id}', 'UpdateOperatorLevelAction')->setName('update-operator-level');
     $this->post('/delete', 'DeleteOperatorLevelAction')->setName('delete-operator-level');
-    $this->get('/list', 'ListOperatorLevelAction')->setName('list-operator-level');
+    $this->get('/list[/{page}]', 'ListOperatorLevelAction')->setName('list-operator-level');
 
 })->add(new AuthMiddleware($container));
 
