@@ -31,11 +31,11 @@ abstract class DeleteAction implements InvokableActionInterface
     /**
      * @var RouterInterface
      */
-    private $router;
+    protected $router;
     /**
      * @var Messages
      */
-    private $flash;
+    protected $flash;
 
     /**
      * FoodController constructor.

@@ -8,6 +8,7 @@
 namespace App\Operator\Actions;
 
 use App\Auth\Auth;
+use App\Core\Actions\DeleteAction;
 use App\Operator\Repository\OperatorRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Flash\Messages;
@@ -20,20 +21,8 @@ use Slim\Interfaces\RouterInterface;
  * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class DeleteOperatorAction
+final class DeleteOperatorAction extends DeleteAction
 {
-    /**
-     * @var OperatorRepository
-     */
-    protected $operatorRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Messages
-     */
-    private $flash;
     /**
      * @var Auth
      */
@@ -55,9 +44,11 @@ final class DeleteOperatorAction
         Messages $flash
     )
     {
-        $this->router = $router;
-        $this->flash = $flash;
-        $this->operatorRepository = $operatorRepository;
+        parent::__construct(
+            $router,
+            $operatorRepository,
+            $flash
+        );
         $this->auth = $auth;
     }
 
@@ -81,7 +72,7 @@ final class DeleteOperatorAction
         //will be sent to the view.
         try {
 
-            if ($this->operatorRepository->delete($id)) {
+            if ($this->repository->delete($id)) {
                 $this->flash->addMessage('info', 'Operator disabled correctly');
             } else {
                 $this->flash->addMessage('error', 'Operator not disabled correctly');
