@@ -7,60 +7,20 @@
 
 namespace App\Operator\Actions;
 
+use App\Core\Actions\UpdateAction;
 use App\Operator\Model\Operator;
-use App\Operator\Repository\OperatorRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class UpdateOperatorAction
  * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class UpdateOperatorAction
+final class UpdateOperatorAction extends UpdateAction
 {
-    /**
-     * @var OperatorRepository
-     */
-    protected $operatorRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * OperatorController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param OperatorRepository $operatorRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        OperatorRepository $operatorRepository,
-        Messages $flash
-    )
-    {
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-        $this->operatorRepository = $operatorRepository;
-    }
 
     /**
      * @param Request $request
@@ -74,7 +34,7 @@ final class UpdateOperatorAction
             //get id from url
             $id = $request->getAttribute('id');
             /** @var  Operator $originalOperator */
-            $originalOperator = $this->operatorRepository->findById($id);
+            $originalOperator = $this->repository->findById($id);
 
 
             $validation = $this->validator->validate($request, [

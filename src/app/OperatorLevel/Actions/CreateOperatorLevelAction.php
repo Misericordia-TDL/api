@@ -5,61 +5,20 @@
 
 namespace App\OperatorLevel\Actions;
 
+use App\Core\Actions\CreateAction;
 use App\Core\Model\Exception\EmptyDataSetException;
-use App\OperatorLevel\Repository\OperatorLevelRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class CreateOperatorLevelAction
  * @package App\OperatorLevel
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class CreateOperatorLevelAction
+final class CreateOperatorLevelAction extends CreateAction
 {
-    /**
-     * @var OperatorLevelRepository
-     */
-    protected $operatorLevelRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * OperatorController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param OperatorLevelRepository $operatorLevelRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        OperatorLevelRepository $operatorLevelRepository,
-        Messages $flash
-    )
-    {
-        $this->operatorLevelRepository = $operatorLevelRepository;
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -79,7 +38,7 @@ final class CreateOperatorLevelAction
                 return $response->withRedirect($this->router->pathFor('enter-operator-level-data'));
             }
 
-            $this->operatorLevelRepository->insert($request->getParams());
+            $this->repository->insert($request->getParams());
             $this->flash->addMessage('info', 'Operator created correctly');
 
         } catch (\InvalidArgumentException $e) {

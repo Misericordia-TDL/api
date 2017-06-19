@@ -7,61 +7,21 @@
 
 namespace App\Food\Actions;
 
+use App\Core\Actions\UpdateAction;
 use App\Food\Model\Food;
-use App\Food\Repository\FoodRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class UpdateFoodAction
  * @package App\Food\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
-final class UpdateFoodAction
+final class UpdateFoodAction extends UpdateAction
 {
-    /**
-     * @var FoodRepository
-     */
-    protected $foodRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * FoodController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param FoodRepository $foodRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        FoodRepository $foodRepository,
-        Messages $flash
-    )
-    {
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-        $this->foodRepository = $foodRepository;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -74,7 +34,7 @@ final class UpdateFoodAction
             //get id from url
             $id = $request->getAttribute('id');
             /** @var  Food $originalFood */
-            $originalFood = $this->foodRepository->findById($id);
+            $originalFood = $this->repository->findById($id);
 
 
             $validation = $this->validator->validate($request, [

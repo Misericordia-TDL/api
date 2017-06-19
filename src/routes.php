@@ -53,7 +53,7 @@ $app->group('/operator-level', function () {
     $this->get('/update/{id}', 'EditOperatorLevelAction')->setName('edit-operator-level');
     $this->post('/update/{id}', 'UpdateOperatorLevelAction')->setName('update-operator-level');
     $this->post('/delete', 'DeleteOperatorLevelAction')->setName('delete-operator-level');
-    $this->get('/list', 'ListOperatorLevelAction')->setName('list-operator-level');
+    $this->get('/list[/{page}]', 'ListOperatorLevelAction')->setName('list-operator-level');
 
 })->add(new AuthMiddleware($container));
 
@@ -70,7 +70,7 @@ $app->group('/food', function () {
     $this->get('/update/{id}', 'EditFoodAction')->setName('edit-food');
     $this->post('/update/{id}', 'UpdateFoodAction')->setName('update-food');
     $this->post('/delete', 'DeleteFoodAction')->setName('delete-food');
-    $this->get('/list', 'ListFoodAction')->setName('list-food');
+    $this->get('/list[/{page}]', 'ListFoodAction')->setName('list-food');
 
 })->add(new AuthMiddleware($container));
 
@@ -82,7 +82,7 @@ $app->group('/clothing', function () {
     $this->get('/update/{id}', 'EditClotheAction')->setName('edit-clothe');
     $this->post('/update/{id}', 'UpdateClotheAction')->setName('update-clothe');
     $this->post('/delete', 'DeleteClotheAction')->setName('delete-clothe');
-    $this->get('/list', 'ListClotheAction')->setName('list-clothe');
+    $this->get('/list[/{page}]', 'ListClotheAction')->setName('list-clothe');
 
 })->add(new AuthMiddleware($container));
 
@@ -94,7 +94,20 @@ $app->group('/medicine', function () {
     $this->get('/update/{id}', 'EditMedicineAction')->setName('edit-medicine');
     $this->post('/update/{id}', 'UpdateMedicineAction')->setName('update-medicine');
     $this->post('/delete', 'DeleteMedicineAction')->setName('delete-medicine');
-    $this->get('/list', 'ListMedicineAction')->setName('list-medicine');
+    $this->get('/list[/{page}]', 'ListMedicineAction')->setName('list-medicine');
+
+})->add(new AuthMiddleware($container));
+
+
+// All routes of the structure module
+$app->group('/structure', function () {
+
+    $this->get('/create', 'EnterStructureDataAction')->setName('enter-structure-data');
+    $this->post('/create', 'CreateStructureAction')->setName('create-structure');
+    $this->get('/update/{id}', 'EditStructureAction')->setName('edit-structure');
+    $this->post('/update/{id}', 'UpdateStructureAction')->setName('update-structure');
+    $this->post('/delete', 'DeleteStructureAction')->setName('delete-structure');
+    $this->get('/list[/{page}]', 'ListStructureAction')->setName('list-structure');
 
 })->add(new AuthMiddleware($container));
 

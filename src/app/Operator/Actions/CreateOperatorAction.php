@@ -9,61 +9,20 @@
 
 namespace App\Operator\Actions;
 
+use App\Core\Actions\CreateAction;
 use App\Core\Model\Exception\EmptyDataSetException;
-use App\Operator\Repository\OperatorRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class createOperator
  * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class CreateOperatorAction
+final class CreateOperatorAction extends CreateAction
 {
-    /**
-     * @var OperatorRepository
-     */
-    protected $operatorRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * OperatorController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param OperatorRepository $operatorRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        OperatorRepository $operatorRepository,
-        Messages $flash
-    )
-    {
-        $this->operatorRepository = $operatorRepository;
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -91,7 +50,7 @@ final class CreateOperatorAction
         //Try to insert data into operator collection and in case
         //There's an error, a flash message in the view will inform the user what went wrong.
         try {
-            $this->operatorRepository->insert($request->getParams());
+            $this->repository->insert($request->getParams());
             $this->flash->addMessage('info', 'Operator created correctly');
 
         } catch (\InvalidArgumentException $e) {

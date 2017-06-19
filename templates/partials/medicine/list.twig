@@ -50,4 +50,11 @@
             </tbody>
         </table>
     </div>
+    {% include 'partials/common/pagination.twig' with {
+    currentFilters: {},
+    currentPage: page,
+    paginationPath: 'list-medicine',
+    lastPage: totalPages,
+    showAlwaysFirstAndLast: false
+    } only %}
 {% endblock %}

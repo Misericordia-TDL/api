@@ -5,61 +5,20 @@
 
 namespace App\OperatorLevel\Actions;
 
+use App\Core\Actions\UpdateAction;
 use App\OperatorLevel\Model\OperatorLevel;
-use App\OperatorLevel\Repository\OperatorLevelRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class UpdateOperatorLevelAction
  * @package App\Controllers\Operator
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class UpdateOperatorLevelAction
+final class UpdateOperatorLevelAction extends UpdateAction
 {
-    /**
-     * @var OperatorLevelRepository
-     */
-    protected $operatorLevelRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * OperatorController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param OperatorLevelRepository $operatorLevelRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        OperatorLevelRepository $operatorLevelRepository,
-        Messages $flash
-    )
-    {
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-        $this->operatorLevelRepository = $operatorLevelRepository;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -71,7 +30,7 @@ final class UpdateOperatorLevelAction
         try {
             $id = $request->getAttribute('id');
             /** @var  OperatorLevel $originalOperatorLevel */
-            $originalOperatorLevel = $this->operatorLevelRepository->findById($id);
+            $originalOperatorLevel = $this->repository->findById($id);
 
             $validation = $this->validator->validate($request, [
                 'name' => v::notEmpty()->alpha()->length(2, 20),

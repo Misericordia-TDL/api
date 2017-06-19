@@ -1,0 +1,36 @@
+{% extends "base/base.twig" %}
+
+{% block title %}
+    Manage Structure
+{% endblock %}
+
+{% block container %}
+    <form class="form-signin" action="{{ path_for('create-structure') }}" method="post">
+        <h2 class="form-signin-heading">Add Structure data</h2>
+        <div class="form-group{{ errors.name ? ' has-error' : ''}} ">
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="text" id="inputName" name="name" class="form-control" placeholder="Name" required autofocus value="{{ old.name }}">
+            {% for error in errors.name %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group{{ errors.capacity ? ' has-error' : ''}} ">
+            <label for="inputCapacity" class="sr-only">Capacity</label>
+            <input type="tel" id="inputCapacity" name="capacity" class="form-control" placeholder="Capacity" required autofocus value="{{ old.capacity }}">
+            {% if errors.capacity %}
+                {% for error in errors.capacity %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group{{ errors.address ? ' has-error' : ''}} ">
+            <label for="inputAddress" class="sr-only">Address address</label>
+            <input type="text" id="inputAddress" name="address" class="form-control" placeholder="Address address" required autofocus value="{{ old.address }}">
+            {% for error in errors.address %}
+                <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+        {{ csrf.field  | raw}}
+    </form>
+{% endblock %}

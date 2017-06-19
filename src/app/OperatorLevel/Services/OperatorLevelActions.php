@@ -90,7 +90,6 @@ class OperatorLevelActions implements ServiceProviderInterface
         $container['DeleteOperatorLevelAction'] = function (Container $container): DeleteOperatorLevelAction {
             return new DeleteOperatorLevelAction(
                 $container->router,
-                $container['auth'],
                 $container['OperatorLevelRepository'],
                 $container['flash']
             );

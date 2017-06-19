@@ -14,14 +14,4 @@ use App\Core\Repository\AbstractRepository;
 class FoodRepository extends AbstractRepository
 {
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function findByName(string $name)
-    {
-        return $this->find('name', $name);
-    }
-
-
 }

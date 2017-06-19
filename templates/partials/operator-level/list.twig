@@ -51,4 +51,11 @@
             </tbody>
         </table>
     </div>
+    {% include 'partials/common/pagination.twig' with {
+    currentFilters: {},
+    currentPage: page,
+    paginationPath: 'list-operator-level',
+    lastPage: totalPages,
+    showAlwaysFirstAndLast: false
+    } only %}
 {% endblock %}
