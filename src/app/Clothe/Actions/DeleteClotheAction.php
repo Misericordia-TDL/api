@@ -13,6 +13,7 @@ use App\Core\Actions\DeleteAction;
  * Class DeleteClotheAction
  * @package App\Clothe\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class DeleteClotheAction extends DeleteAction
 {

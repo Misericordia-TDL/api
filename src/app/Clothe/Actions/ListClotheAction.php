@@ -13,6 +13,7 @@ use App\Core\Actions\ListAction;
  * Class ListClotheAction
  * @package App\Clothe\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class ListClotheAction extends ListAction
 {
