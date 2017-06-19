@@ -9,61 +9,21 @@
 
 namespace App\Clothe\Actions;
 
-use App\Core\Model\Exception\EmptyDataSetException;
 use App\Clothe\Repository\ClotheRepository;
-use App\Validation\Validator;
+use App\Core\Actions\CreateAction;
+use App\Core\Model\Exception\EmptyDataSetException;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class createClothe
  * @package App\Clothe\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class CreateClotheAction
+final class CreateClotheAction extends CreateAction
 {
-    /**
-     * @var ClotheRepository
-     */
-    protected $clotheRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * ClotheController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param ClotheRepository $clotheRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        ClotheRepository $clotheRepository,
-        Messages $flash
-    )
-    {
-        $this->clotheRepository = $clotheRepository;
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -75,7 +35,8 @@ final class CreateClotheAction
         //Check if clothe with this name already exists
         try {
             $name = $request->getParam('name');
-            $clothe = $this->clotheRepository->findByName($name);
+            /** @var ClotheRepository $this->repository */
+            $clothe = $this->repository->findByName($name);
 	    $found = true;
         } catch (\InvalidArgumentException $e) {
 	    $found = false;
@@ -105,7 +66,7 @@ final class CreateClotheAction
             try {
        	        $params = $request->getParams();
 	        $params['arrival_date'] = date_create($params['arrival_date']);
-                $this->clotheRepository->insert($params);
+                $this->repository->insert($params);
                 $this->flash->addMessage('info', 'Clothing created correctly');
 
             } catch (\InvalidArgumentException $e) {
