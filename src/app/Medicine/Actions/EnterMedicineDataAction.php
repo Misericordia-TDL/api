@@ -7,41 +7,14 @@
 
 namespace App\Medicine\Actions;
 
-use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig as View;
+use App\Core\Actions\EnterDataAction;
 
 /**
  * Class EnterMedicineDataAction
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class EnterMedicineDataAction
+final class EnterMedicineDataAction extends EnterDataAction
 {
-    /**
-     * @var View
-     */
-    protected $view;
-   
-    /**
-     * MedicineController constructor.
-     * @param View $view
-     */
-    function __construct(
-        View $view
-    )
-    {
-        $this->view = $view;
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function __invoke(Request $request, Response $response): ResponseInterface
-    {
-        return $this->view->render($response, 'partials/medicine/enter-medicine-data.twig', []);
-    }
+    protected $template = 'partials/medicine/enter-medicine-data.twig';
 }
