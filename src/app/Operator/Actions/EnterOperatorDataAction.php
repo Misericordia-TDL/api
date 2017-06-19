@@ -7,6 +7,7 @@
 
 namespace App\Operator\Actions;
 
+use App\Core\Actions\EnterDataAction;
 use App\OperatorLevel\Repository\OperatorLevelRepository;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
@@ -18,16 +19,12 @@ use Slim\Views\Twig as View;
  * @package App\Operator\Actions
  * @author Javier Mellado <sol@javiermellado.com>
  */
-final class EnterOperatorDataAction
+final class EnterOperatorDataAction extends EnterDataAction
 {
-    /**
-     * @var View
-     */
-    protected $view;
     /**
      * @var OperatorLevelRepository
      */
-    protected $operatorLevelRepository;
+    protected $repository;
 
     /**
      * OperatorController constructor.
@@ -39,8 +36,10 @@ final class EnterOperatorDataAction
         OperatorLevelRepository $operatorLevelRepository
     )
     {
-        $this->view = $view;
-        $this->operatorLevelRepository = $operatorLevelRepository;
+        parent::__construct(
+            $view
+        );
+        $this->repository = $operatorLevelRepository;
     }
 
     /**
@@ -50,7 +49,7 @@ final class EnterOperatorDataAction
      */
     public function __invoke(Request $request, Response $response): ResponseInterface
     {
-        $levels = $this->operatorLevelRepository->getAll();
+        $levels = $this->repository->getAll();
         $data = [
             'levels' => $levels
         ];
