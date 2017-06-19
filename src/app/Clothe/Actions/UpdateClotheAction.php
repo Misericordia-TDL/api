@@ -8,59 +8,20 @@
 namespace App\Clothe\Actions;
 
 use App\Clothe\Model\Clothe;
-use App\Clothe\Repository\ClotheRepository;
-use App\Validation\Validator;
+use App\Core\Actions\UpdateAction;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class UpdateClotheAction
  * @package App\Clothe\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class UpdateClotheAction
+final class UpdateClotheAction extends UpdateAction
 {
-    /**
-     * @var ClotheRepository
-     */
-    protected $clotheRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
 
-    /**
-     * ClotheController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param ClotheRepository $clotheRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        ClotheRepository $clotheRepository,
-        Messages $flash
-    )
-    {
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-        $this->clotheRepository = $clotheRepository;
-    }
 
     /**
      * @param Request $request
@@ -74,7 +35,7 @@ final class UpdateClotheAction
             //get id from url
             $id = $request->getAttribute('id');
             /** @var  Clothe $originalClothe */
-            $originalClothe = $this->clotheRepository->findById($id);
+            $originalClothe = $this->repository->findById($id);
 
 
             $validation = $this->validator->validate($request, [
