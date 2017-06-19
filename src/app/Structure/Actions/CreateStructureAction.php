@@ -63,7 +63,7 @@ class CreateStructureAction extends CreateAction
                 $this->flash->addMessage('info', 'Structure created correctly');
 
             } catch (\InvalidArgumentException $e) {
-                $this->flash->addMessage('error', 'Structure not found. Could not perform deletion.');
+                $this->flash->addMessage('error', 'Structure not found. Could not perform insertion.');
             } catch (EmptyDataSetException $e) {
                 $this->flash->addMessage('error', $e->getMessage());
             }
