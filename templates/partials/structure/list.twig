@@ -48,4 +48,11 @@
             </tbody>
         </table>
     </div>
+    {% include 'partials/common/pagination.twig' with {
+    currentFilters: {},
+    currentPage: page,
+    paginationPath: 'list-structure',
+    lastPage: totalPages,
+    showAlwaysFirstAndLast: false
+    } only %}
 {% endblock %}
