@@ -13,6 +13,7 @@ use App\Core\Actions\ListAction;
  * Class ListMedicineAction
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class ListMedicineAction extends ListAction
 {

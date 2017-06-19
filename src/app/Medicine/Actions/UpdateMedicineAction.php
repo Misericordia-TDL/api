@@ -18,6 +18,7 @@ use Slim\Http\Response;
  * Class UpdateMedicineAction
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class UpdateMedicineAction extends UpdateAction
 {

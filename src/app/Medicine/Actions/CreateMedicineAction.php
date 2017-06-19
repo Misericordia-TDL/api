@@ -20,6 +20,7 @@ use Slim\Http\Response;
  * Class createMedicine
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class CreateMedicineAction extends CreateAction
 {

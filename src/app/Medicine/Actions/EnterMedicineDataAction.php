@@ -13,6 +13,7 @@ use App\Core\Actions\EnterDataAction;
  * Class EnterMedicineDataAction
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class EnterMedicineDataAction extends EnterDataAction
 {
