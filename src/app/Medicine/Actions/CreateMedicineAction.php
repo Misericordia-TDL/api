@@ -9,61 +9,20 @@
 
 namespace App\Medicine\Actions;
 
+use App\Core\Actions\CreateAction;
 use App\Core\Model\Exception\EmptyDataSetException;
-use App\Medicine\Repository\MedicineRepository;
-use App\Validation\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
-use Slim\Flash\Messages;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Interfaces\RouterInterface;
 
 /**
  * Class createMedicine
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class CreateMedicineAction
+final class CreateMedicineAction extends CreateAction
 {
-    /**
-     * @var MedicineRepository
-     */
-    protected $medicineRepository;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var Validator
-     */
-    private $validator;
-    /**
-     * @var Messages
-     */
-    private $flash;
-
-    /**
-     * MedicineController constructor.
-     * @param RouterInterface $router
-     * @param Validator $validator
-     * @param MedicineRepository $medicineRepository
-     * @param Messages $flash
-     * @internal param View $view
-     */
-    function __construct(
-        RouterInterface $router,
-        Validator $validator,
-        MedicineRepository $medicineRepository,
-        Messages $flash
-    )
-    {
-        $this->medicineRepository = $medicineRepository;
-        $this->router = $router;
-        $this->validator = $validator;
-        $this->flash = $flash;
-    }
-
     /**
      * @param Request $request
      * @param Response $response
@@ -75,37 +34,37 @@ final class CreateMedicineAction
         //Check if medicine with this name already exists
         try {
             $name = $request->getParam('name');
-            $medicine = $this->medicineRepository->findByName($name);
-	    $found = true;
+            $medicine = $this->repository->findByName($name);
+            $found = true;
         } catch (\InvalidArgumentException $e) {
-	    $found = false;
+            $found = false;
         }
 
-	if ($found) {
+        if ($found) {
 
-	   $this->flash->addMessage('error', 'Medicine with this name already exists.');
+            $this->flash->addMessage('error', 'Medicine with this name already exists.');
 
-	} else {
+        } else {
 
             //validate rules for a new medicine
             $validation = $this->validator->validate($request, [
                 'name' => v::notEmpty()->alpha()->length(2, 20),
                 'quantity' => v::noWhitespace()->notEmpty()->intVal(),
             ]);
-    
+
             //check if validation passes
             if ($validation->failed()) {
                 $this->flash->addMessage('error', 'Medicine data is not correct');
                 return $response->withRedirect($this->router->pathFor('enter-medicine-data'));
             }
-    
+
             //Try to insert data into medicine collection and in case
             //There's an error, a flash message in the view will inform the user what went wrong.
             try {
-       	        $params = $request->getParams();
-	        $params['arrival_date'] = date_create($params['arrival_date']);
-	        $params['expiry_date'] = date_create($params['expiry_date']);		
-                $this->medicineRepository->insert($params);
+                $params = $request->getParams();
+                $params['arrival_date'] = date_create($params['arrival_date']);
+                $params['expiry_date'] = date_create($params['expiry_date']);
+                $this->repository->insert($params);
                 $this->flash->addMessage('info', 'Medicine created correctly');
 
             } catch (\InvalidArgumentException $e) {
@@ -113,10 +72,10 @@ final class CreateMedicineAction
             } catch (EmptyDataSetException $e) {
                 $this->flash->addMessage('error', $e->getMessage());
             }
-		
+
         }
 
         return $response->withRedirect($this->router->pathFor('list-medicine'));
-		
-    }	
+
+    }
 }
