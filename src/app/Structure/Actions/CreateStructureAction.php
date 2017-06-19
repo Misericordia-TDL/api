@@ -14,6 +14,10 @@ use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class CreateStructureAction
+ * @author Javier Mellado <sol@javiermellado.com>
+ */
 class CreateStructureAction extends CreateAction
 {
     /**

@@ -7,6 +7,10 @@ namespace App\Structure\Actions;
 
 use App\Core\Actions\ListAction;
 
+/**
+ * Class ListStructureAction
+ * @author Javier Mellado <sol@javiermellado.com>
+ */
 class ListStructureAction extends ListAction
 {
     /**

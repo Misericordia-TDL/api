@@ -10,7 +10,7 @@ use App\Core\Actions\EditAction;
 /**
  * Class EditFoodAction
  * @package App\Food\Actions
- * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class EditStructureAction extends EditAction
 {
