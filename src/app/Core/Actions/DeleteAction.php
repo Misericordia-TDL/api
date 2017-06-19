@@ -64,7 +64,7 @@ abstract class DeleteAction implements InvokableActionInterface
 
         $id = $request->getParam('id');
 
-        //delete a food and in case of an error, flash message with error message
+        //delete the element and in case of an error, flash message with error message
         //will be sent to the view.
         $flashElement = strtoupper($this->element);
         try {
