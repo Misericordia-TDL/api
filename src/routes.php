@@ -82,7 +82,7 @@ $app->group('/clothing', function () {
     $this->get('/update/{id}', 'EditClotheAction')->setName('edit-clothe');
     $this->post('/update/{id}', 'UpdateClotheAction')->setName('update-clothe');
     $this->post('/delete', 'DeleteClotheAction')->setName('delete-clothe');
-    $this->get('/list', 'ListClotheAction')->setName('list-clothe');
+    $this->get('/list[/{page}]', 'ListClotheAction')->setName('list-clothe');
 
 })->add(new AuthMiddleware($container));
 
@@ -107,7 +107,7 @@ $app->group('/structure', function () {
     $this->get('/update/{id}', 'EditStructureAction')->setName('edit-structure');
     $this->post('/update/{id}', 'UpdateStructureAction')->setName('update-structure');
     $this->post('/delete', 'DeleteStructureAction')->setName('delete-structure');
-    $this->get('/list', 'ListStructureAction')->setName('list-structure');
+    $this->get('/list[/{page}]', 'ListStructureAction')->setName('list-structure');
 
 })->add(new AuthMiddleware($container));
 
