@@ -46,4 +46,11 @@
             </tbody>
         </table>
     </div>
+    {% include 'partials/common/pagination.twig' with {
+    currentFilters: {},
+    currentPage: page,
+    paginationPath: 'list-food',
+    lastPage: totalPages,
+    showAlwaysFirstAndLast: false
+    } only %}
 {% endblock %}

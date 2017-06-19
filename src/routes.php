@@ -70,7 +70,7 @@ $app->group('/food', function () {
     $this->get('/update/{id}', 'EditFoodAction')->setName('edit-food');
     $this->post('/update/{id}', 'UpdateFoodAction')->setName('update-food');
     $this->post('/delete', 'DeleteFoodAction')->setName('delete-food');
-    $this->get('/list', 'ListFoodAction')->setName('list-food');
+    $this->get('/list[/{page}]', 'ListFoodAction')->setName('list-food');
 
 })->add(new AuthMiddleware($container));
 

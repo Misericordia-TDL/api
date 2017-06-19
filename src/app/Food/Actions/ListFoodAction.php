@@ -7,53 +7,21 @@
 
 namespace App\Food\Actions;
 
-use App\Food\Repository\FoodRepository;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig as View;
+use App\Core\Actions\ListAction;
 
 /**
  * Class ListFoodAction
  * @package App\Food\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class ListFoodAction
+final class ListFoodAction extends ListAction
 {
     /**
-     * @var View
+     * @var string
      */
-    protected $view;
+    protected $listElements = 'foods';
     /**
-     * @var FoodRepository
+     * @var  string
      */
-    protected $foodRepository;
-
-    /**
-     * IndexAction constructor.
-     * @param View $view
-     * @param FoodRepository $foodRepository
-     */
-    function __construct(
-        View $view,
-	FoodRepository $foodRepository
-    )
-    {
-        $this->view = $view;
-	$this->foodRepository = $foodRepository;
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function __invoke(Request $request, Response $response): ResponseInterface
-    {
-
-        $data = [
-            'foods' => $this->foodRepository->getAll()
-        ];
-        return $this->view->render($response, 'partials/food/list.twig', $data);
-    }
+    protected $template = 'partials/food/list.twig';
 }
