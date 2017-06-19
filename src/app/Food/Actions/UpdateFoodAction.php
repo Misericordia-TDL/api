@@ -18,6 +18,7 @@ use Slim\Http\Response;
  * Class UpdateFoodAction
  * @package App\Food\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class UpdateFoodAction extends UpdateAction
 {

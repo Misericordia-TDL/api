@@ -11,6 +11,7 @@ namespace App\Food\Actions;
 
 use App\Core\Actions\CreateAction;
 use App\Core\Model\Exception\EmptyDataSetException;
+use App\Food\Model\Food;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator as v;
 use Slim\Http\Request;
@@ -20,6 +21,7 @@ use Slim\Http\Response;
  * Class createFood
  * @package App\Food\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class CreateFoodAction extends CreateAction
 {

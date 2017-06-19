@@ -13,6 +13,7 @@ use App\Core\Actions\EnterDataAction;
  * Class EnterFoodDataAction
  * @package App\Food\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
+ * @author Javier Mellado <sol@javiermellado.com>
  */
 final class EnterFoodDataAction extends EnterDataAction
 {
