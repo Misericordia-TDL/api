@@ -94,7 +94,7 @@ $app->group('/medicine', function () {
     $this->get('/update/{id}', 'EditMedicineAction')->setName('edit-medicine');
     $this->post('/update/{id}', 'UpdateMedicineAction')->setName('update-medicine');
     $this->post('/delete', 'DeleteMedicineAction')->setName('delete-medicine');
-    $this->get('/list', 'ListMedicineAction')->setName('list-medicine');
+    $this->get('/list[/{page}]', 'ListMedicineAction')->setName('list-medicine');
 
 })->add(new AuthMiddleware($container));
 

@@ -7,53 +7,21 @@
 
 namespace App\Medicine\Actions;
 
-use App\Medicine\Repository\MedicineRepository;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig as View;
+use App\Core\Actions\ListAction;
 
 /**
  * Class ListMedicineAction
  * @package App\Medicine\Actions
  * @author Cyprian Laskowski <cyplas@gmail.com>
  */
-final class ListMedicineAction
+final class ListMedicineAction extends ListAction
 {
     /**
-     * @var View
+     * @var string
      */
-    protected $view;
+    protected $listElements = 'medicines';
     /**
-     * @var MedicineRepository
+     * @var  string
      */
-    protected $medicineRepository;
-
-    /**
-     * IndexAction constructor.
-     * @param View $view
-     * @param MedicineRepository $medicineRepository
-     */
-    function __construct(
-        View $view,
-	MedicineRepository $medicineRepository
-    )
-    {
-        $this->view = $view;
-	$this->medicineRepository = $medicineRepository;
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function __invoke(Request $request, Response $response): ResponseInterface
-    {
-
-        $data = [
-            'medicines' => $this->medicineRepository->getAll()
-        ];
-        return $this->view->render($response, 'partials/medicine/list.twig', $data);
-    }
+    protected $template = 'partials/medicine/list.twig';
 }
